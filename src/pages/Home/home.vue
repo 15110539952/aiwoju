@@ -16,7 +16,7 @@
     </div>
     <div class="hotel-name">山西爱蜗居青年创客公寓</div>
     <div class="hotel-select-block">
-      <div class="date-select van-hairline--top">
+      <div class="date-select van-hairline--top" @click="showCalendar = true;nowDate = new Date()">
         <img src="~assets/img/date-time.png" alt="">
         <div class="content">
           <p class="font55">01</p>
@@ -27,12 +27,12 @@
           <p>入住</p>
           <p>—</p>
           <p>离店</p>
-          <p>01</p>
+          <p class="font55">01</p>
           <p class="column">
-            <span>03月</span>
-            <span>周一</span>
+            <span><span class="font24">02</span><span class="font20">月</span></span>
+            <span class="font24">周一</span>
           </p>
-          <p>1<span>晚</span></p>
+          <p><span class="font36">1</span><span class="font24">晚</span></p>
         </div>
         <img src="~assets/img/arrow-right.png" alt="">
       </div>
@@ -71,7 +71,18 @@
       <div class="right">每七日一轮</div>
     </div>
     <v-footer></v-footer>
-    <v-article></v-article>
+    <van-popup v-model="showCalendar" position="bottom" style="height:100%">
+      <calender
+        :date="nowDate"
+        :monthNumber="4"
+        v-on:asureEvent="asureClick"
+        :onlyOne="roomType === 1 ? false : true"
+        :isShowDatePicker="isShowDatePicker"
+      ></calender>
+<!--      <inlineCalendar />-->
+    </van-popup>
+    <div></div>
+<!--    <v-article></v-article>-->
   </div>
 </template>
 
@@ -80,6 +91,14 @@ import header from "@/components/Header/header";
 import banner from "@/components/Banner/banner";
 import article from "@/components/Article/article";
 import footer from "@/components/Footer";
+import Calender from '@/components/Calender/calender.vue'
+
+var moment = require('moment');
+console.log(moment().format('l'));
+console.log(moment().date());
+console.log(moment().toArray());
+console.log(moment().format('YYYY-MM-DD'));
+
 export default {
     data(){
         return {
@@ -89,14 +108,31 @@ export default {
             'https://img.yzcdn.cn/2.jpg'
           ],
           dateTime:require('assets/img/date-time.png'),
-          is_hour_home: false,
+          is_hour_home: false, // 钟点房选择
+          showCalendar: false, // 是否现实日期选择
+          nowDate: new Date(),
+          roomType:1,
+          isShowDatePicker:true,
         }
     },
     components: {
         "v-header": header,
         "v-banner": banner,
         "v-footer": footer,
-        "v-article":article
+        "v-article":article,
+        "Calender":Calender
+    },
+    methods:{
+
+      asureClick (chooseDate) {
+        console.log(chooseDate)
+        this.showCalendar = false;
+        // this.IS_SHOW_DATE_PICKER(false)
+        // this.CHECK_IN_OUT_INFO({
+        //   checkinDate: chooseDate.startDate.format,
+        //   checkoutDate: chooseDate.endDate.format
+        // })
+      }
     }
 }
 

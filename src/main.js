@@ -10,10 +10,16 @@ Vue.prototype.$ajax = ajax;
 // import MintUI from 'mint-ui'
 // Vue.use(MintUI)
 
-import Vant from 'vant';
-import 'vant/lib/index.css';
+import Vant from 'vant'
+import 'vant/lib/index.css'
 
-Vue.use(Vant);
+Vue.use(Vant)
+
+// 酒店日期选择组件
+// import VueBetterCalendar from 'vue-better-calendar'
+// Vue.use(VueBetterCalendar)
+import Calendar from 'vue-mobile-calendar'
+Vue.use(Calendar);
 
 // import { Tabbar, TabbarItem, Swipe, SwipeItem,Image,CellGroup } from 'vant'
 // import 'vant/lib/index.css';
