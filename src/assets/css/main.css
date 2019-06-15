@@ -45,7 +45,7 @@ input {
   .clearfix:after {
     clear: both; }
 
-.text-ellipsis{
+.text-ellipsis{ /* 单行省略 */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

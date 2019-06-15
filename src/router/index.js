@@ -16,6 +16,11 @@ export default new Router({
       component: () => import('pages/me'),
     },
     {
+      path: '/hotel',
+      name: 'hotel', // 登录
+      component: () => import('pages/hotel'),
+    },
+    {
       path: '/order',
       name: 'order', // 登录
       component: () => import('pages/order'),

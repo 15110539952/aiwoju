@@ -1,23 +1,32 @@
 <template>
   <div id="header">
+    <p class="back" @click="$router.back(-1)"><i class="iconfont iconarrow-left"></i></p>
     <div class="title">{{title}}</div>
+    <slot class="right" name="right-icon"><i></i></slot>
   </div>
 </template>
 <script>
 export default {
-  props: ["title"]
+  props: ["title",'img']
 };
 </script>
 <style lang="scss" scoped>
 #header {
+  display: flex;
+  justify-content: space-between;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  color: #333;
+  font-size: 36px;
+  i{
+    font-size: 36px;
+    display: inline-block;
+    width: 100px;
+  }
   .title {
-    width: 100%;
-    height: 1.333333rem;
-    line-height: 1.333333rem;
-    font-size: 0.4rem;
-    font-weight: 500;
-    overflow: hidden;
-    @include border-1px(#ccc);
+    line-height: 100px;
+    //@include border-1px(#ccc);
   }
 }
 </style>

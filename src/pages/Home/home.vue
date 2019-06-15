@@ -41,7 +41,7 @@
         <span>钟点房</span>
       </div>
       <div class="btn-block van-hairline--top">
-        <van-button type="primary" size="large">默认按钮</van-button>
+        <van-button type="primary" size="large" @click="go()">订房间</van-button>
       </div>
     </div>
     <div class="notice-tip">
@@ -87,17 +87,15 @@
 </template>
 
 <script>
-import header from "@/components/Header/header";
-import banner from "@/components/Banner/banner";
 import article from "@/components/Article/article";
 import footer from "@/components/Footer";
 import Calender from '@/components/Calender/calender.vue'
 
 var moment = require('moment');
-console.log(moment().format('l'));
-console.log(moment().date());
-console.log(moment().toArray());
-console.log(moment().format('YYYY-MM-DD'));
+// console.log(moment().format('l'));
+// console.log(moment().date());
+// console.log(moment().toArray());
+// console.log(moment().format('YYYY-MM-DD'));
 
 export default {
     data(){
@@ -116,8 +114,6 @@ export default {
         }
     },
     components: {
-        "v-header": header,
-        "v-banner": banner,
         "v-footer": footer,
         "v-article":article,
         "Calender":Calender
@@ -132,6 +128,9 @@ export default {
         //   checkinDate: chooseDate.startDate.format,
         //   checkoutDate: chooseDate.endDate.format
         // })
+      },
+      go(){
+        this.$router.push({ path: '/hotel' });
       }
     }
 }
