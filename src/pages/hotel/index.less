@@ -1,4 +1,10 @@
 
+.child-view{
+  padding-top: 100px;
+}
+#header{
+  background: transparent;
+}
 .banner{
   width: 100%;
   height: 446px;
@@ -51,7 +57,12 @@
     }
     .three{
       margin-top: 20px;
-      img{
+      color: #ff8200;
+      .white{
+        color: #fff;
+        opacity: .8;
+      }
+      img,i{
         margin-right: 5px;
       }
     }
@@ -297,6 +308,17 @@
   color: #333333;
   margin-bottom: 40px;
   text-align: left;
+  position: relative;
+  .title-right{
+    position: absolute;
+    top:6px;
+    right:0;
+    font-size: 24px;
+    color: #086fa1;
+    &:active{
+      background: #f2f3f5;
+    }
+  }
 }
 .rule-box{
   margin-top: 20px;
@@ -304,3 +326,148 @@
   width: 100%;
   padding: 40px 40px 20px;
 }
+.rule-item{
+  text-align: left;
+  font-size: 24px;
+  line-height: 40px;
+  margin-bottom: 30px;
+  .rule-title{
+   color: #ff8900;
+  }
+  .rule-content{
+    color: #333;
+  }
+  .left{
+    margin-right: 50px;
+    span{
+      margin-left: 15px;
+    }
+  }
+}
+//配套设施
+.facilities{
+  margin-top: 20px;
+  padding: 40px 40px 20px;
+  background: #fff;
+  .rule-item{margin-bottom: 0;}
+  .rule-content{
+    display: flex;
+    justify-content: start;
+    p{
+      margin-right: 50px;
+      vertical-align: center;
+    }
+    img{
+      margin-right: 10px;
+      vertical-align: center;
+    }
+  }
+}
+
+// 房间评价
+.facilities-score{
+  display: flex;
+  justify-content: start;
+  padding-bottom: 40px;
+  .left{
+    height: 55px;
+    color: #ff8900;
+    font-size: 24px;
+    vertical-align: top;
+    span{
+      font-family: Oswald-Regular;
+      font-size: 45px;
+    }
+    border-right: 1px solid #999;
+    padding-right: 20px;
+  }
+  .right{
+    padding-left: 20px;
+    text-align: left;
+    p:first-child{
+      font-size: 20px;
+      color: #393939;
+    }
+    p:last-child{
+      i{
+        font-size: 22px;
+        margin-right: 5px;
+      }
+      color: #ff8900;
+    }
+  }
+}
+
+// 评价列表
+.score-box{
+  margin: 10px 0 15px;
+  text-align: left;
+  i{
+    font-size: 22px;
+    margin-right: 5px;
+  }
+  color: #ff8900;
+}
+.evaluate-item{
+  display: flex;
+  justify-content: start;
+  padding-top: 40px;
+  .head{
+    width: 94px;
+    height: 94px;
+    background-color: #41c880;
+    margin-right: 10px;
+    border-radius: 50%;
+  }
+  .content{
+    width: 566px;
+    text-align: left;
+    .one{
+      display: flex;
+      justify-content: space-between;
+      p:first-child{
+        font-size: 28px;
+        line-height: 35px;
+        color: #ff8900;
+      }
+      p:last-child{
+        font-size: 24px;
+        line-height: 35px;
+        color: #949494;
+      }
+    }
+    .time-block{
+      display: flex;
+      justify-content: space-between;
+      p{
+        font-size: 20px;
+        line-height: 35px;
+        color: #b6b6b6;
+        span{
+          margin-right: 15px;
+        }
+      }
+    }
+    .detail{
+      margin: 30px 0;
+      font-size: 28px;
+      line-height: 35px;
+      color: #404040;
+    }
+    .img-box{
+      display: flex;
+      justify-content: start;
+      flex-wrap: wrap;
+      .evaluate-img{
+        width: 172px;
+        height: 132px;
+        background-size: cover;
+        background-position: center;
+        margin-right: 15px;
+        margin-bottom: 15px;
+        //background-color: #ff8200;
+      }
+    }
+  }
+}
+

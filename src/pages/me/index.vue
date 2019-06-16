@@ -1,10 +1,40 @@
 <template>
   <div>
-      <v-header title="个人中心"></v-header>
-      <v-banner></v-banner>
-      <v-footer></v-footer>
-      <v-article></v-article>
-      <img src="~assets/img/me.png" alt="">
+    <div class="banner">
+      <i class="iconfont iconsetting"></i>
+      <div class="head-bg">
+        <div class="head">
+          <van-image
+            width="100%"
+            height="100%"
+            fit="cover"
+            :src="require('assets/img/dear.png')"
+            />
+        </div>
+        <p class="head-bm">Handsome</p>
+      </div>
+      <p class="username">星旅者XT01</p>
+      <div class="me-type">
+        <div class="item"><span>0</span><p>我的积分</p></div>
+        <div class="item"><span>0</span><p>我的评价</p></div>
+        <div class="item"><span>0</span><p>联系人</p></div>
+        <div class="item"><span>-</span><p>优惠券</p></div>
+      </div>
+    </div>
+    <div class="hotel-broker">
+      <p class="title">酒店经纪人 <i class="iconfont iconarrow-right"></i></p>
+      <div class="qrcode">
+        <img src="~assets/img/dear.png" alt="">
+        <p>我的推广二维码</p>
+      </div>
+      <div class="broker-type">
+        <div class="item"><span>0</span><p>当前佣金</p></div>
+        <div class="item"><span>0</span><p>已提取</p></div>
+        <div class="item"><span>0</span><p>可提取</p></div>
+      </div>
+      <van-button type="primary" size="large" @click="">注册成为酒店经纪人</van-button>
+    </div>
+    <v-footer></v-footer>
   </div>
 </template>
 
@@ -29,18 +59,5 @@ export default {
 
 </script>
 <style lang='less' scoped>
-  .textfont{
-    width: 200px;
-    height: 200px;
-    margin: 0 auto;
-    background: gray;
-    font-size: 30px;
-  }
-  .textfont1{
-    width: 200PX;
-    height: 200PX;
-    margin: 0 auto;
-    background: gray;
-    font-size: 30px; /*no*/
-  }
+  @import 'index';
 </style>

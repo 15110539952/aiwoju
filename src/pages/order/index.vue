@@ -1,10 +1,6 @@
 <template>
   <div>
-      <v-header title="订单"></v-header>
-      <v-banner></v-banner>
       <v-footer></v-footer>
-      <v-article></v-article>
-      <img src="~assets/img/me.png" alt="">
   </div>
 </template>
 

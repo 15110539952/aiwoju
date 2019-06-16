@@ -19,6 +19,15 @@ export default {
   text-align: center;
   color: #333;
   font-size: 36px;
+  position: fixed;
+  top:0;
+  left: 0;
+  width: 100%;
+  z-index: 9;
+  background: #fff;
+  .iconfont:before{
+    font-size: 36px;
+  }
   i{
     font-size: 36px;
     display: inline-block;

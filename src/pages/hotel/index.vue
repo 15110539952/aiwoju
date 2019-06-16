@@ -15,12 +15,18 @@
         <p class="one">2018年装修</p>
         <p class="two"><span>4.0</span>分</p>
         <p class="three">
-          <img src="~assets/img/star-yes.png"
-               v-for="(item,index) in score"
-               :key="index">
-          <img src="~assets/img/star-no.png"
-               v-for="(item,index) in 5-score"
-               :key="index">
+          <i class="iconfont iconpinglun2"
+             v-for="(item,index) in score"
+             :key="'facilities-yes'+index"></i>
+          <i class="iconfont iconpinglun2 white"
+             v-for="(item,index) in 5-score"
+             :key="'facilities-no'+index"></i>
+<!--          <img src="~assets/img/star-yes.png"-->
+<!--               v-for="(item,index) in score"-->
+<!--               :key="'yes-'+index">-->
+<!--          <img src="~assets/img/star-no.png"-->
+<!--               v-for="(item,index) in 5-score"-->
+<!--               :key="'no-'+index">-->
         </p>
       </div>
     </div>
@@ -149,6 +155,84 @@
 
     <div class="rule-box">
       <p class="title-one">订房必读</p>
+      <div class="rule-item">
+        <p class="rule-title">入离时间</p>
+        <p class="rule-content">
+          <span class="left">入店时间<span>12:00</span>以后</span>
+          <span class="right">离店时间<span>12:00</span>之前</span>
+        </p>
+      </div>
+      <div class="rule-item">
+        <p class="rule-title">宠物携带</p>
+        <p class="rule-content">不可携带宠物</p>
+      </div>
+      <div class="rule-item">
+        <p class="rule-title">退订政策</p>
+        <p class="rule-content">部分限时退订</p>
+      </div>
+    </div>
+<!--    配套设施-->
+    <div class="facilities">
+      <div class="title-one">配套设施<p class="title-right">设施详情 <i class="iconfont iconarrow-right"></i></p></div>
+      <div class="rule-item">
+        <p class="rule-title">2018年开业</p>
+        <div class="rule-content">
+          <p><img src="~assets/img/wifi.png"> 无限上网</p>
+          <p><img src="~assets/img/stop-car.png"> 停车场</p>
+          <p><img src="~assets/img/hot-water.png"> 24小时热水</p>
+        </div>
+      </div>
+    </div>
+<!--    房间评价-->
+    <div class="facilities">
+      <div class="title-one">
+        房间评价<p class="title-right">更多评价 <i class="iconfont iconarrow-right"></i></p>
+      </div>
+      <div class="facilities-score van-hairline--bottom">
+        <div class="left"><span>4.0</span>分</div>
+        <div class="right">
+          <p>2154条评价</p>
+          <p>
+            <i class="iconfont iconpinglun2"
+               v-for="(item,index) in score"
+               :key="'facilities-yes'+index"></i>
+            <i class="iconfont iconshoucang_shoucang"
+               v-for="(item,index) in 5-score"
+               :key="'facilities-no'+index"></i>
+          </p>
+        </div>
+      </div>
+      <div class="evaluate-item">
+        <div class="head"></div>
+        <div class="content">
+          <div class="one">
+            <p>米斯热的迷失</p><p>商务大床房</p>
+          </div>
+          <div class="score-box">
+            <i class="iconfont iconpinglun2"
+               v-for="(item,index) in score"
+               :key="'facilities-yes'+index"></i>
+            <i class="iconfont iconshoucang_shoucang"
+               v-for="(item,index) in 5-score"
+               :key="'facilities-no'+index"></i>
+          </div>
+          <div class="time-block">
+            <p><span>2018.10.12</span>入住</p><p><span>2018.10.13</span>  发表</p>
+          </div>
+          <div class="detail">房间挺好挺舒适，下回还来！</div>
+          <div class="img-box">
+<!--            style="background-image: url('')"-->
+            <div class="evaluate-img" v-for="i in 5">
+              <van-image
+                width="100%"
+                height="100%"
+                fit="cover"
+                :src="require('assets/img/dear.png')"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -180,18 +264,4 @@ export default {
 </script>
 <style lang='less' scoped>
   @import "index";
-  .textfont{
-    width: 200px;
-    height: 200px;
-    margin: 0 auto;
-    background: gray;
-    font-size: 30px;
-  }
-  .textfont1{
-    width: 200PX;
-    height: 200PX;
-    margin: 0 auto;
-    background: gray;
-    font-size: 30px; /*no*/
-  }
 </style>

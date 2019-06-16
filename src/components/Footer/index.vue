@@ -71,4 +71,8 @@ export default {
     left: 0;
     bottom: 0;
   }
+  img{
+    width: 56px;
+    height: 56px;
+  }
 </style>
