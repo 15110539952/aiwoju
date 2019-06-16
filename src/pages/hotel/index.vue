@@ -85,7 +85,7 @@
             <p>当前星享卡可代扣100元</p>
           </div>
           <div class="fix">
-            <van-button type="primary" size="large" @click="go()">在线预定</van-button>
+            <van-button type="primary" size="large" @click="order()">在线预定</van-button>
           </div>
         </div>
         <div class="price-item van-hairline--top">
@@ -95,7 +95,7 @@
             <p>当前星享卡可代扣100元</p>
           </div>
           <div class="fix">
-            <van-button type="primary" size="large" @click="go()">在线预定</van-button>
+            <van-button type="primary" size="large" @click="order()">在线预定</van-button>
           </div>
         </div>
       </div>
@@ -115,7 +115,7 @@
             <p>当前星享卡可代扣100元</p>
           </div>
           <div class="fix">
-            <van-button type="primary" size="large" @click="go()">在线预定</van-button>
+            <van-button type="primary" size="large" @click="order()">在线预定</van-button>
           </div>
         </div>
       </div>
@@ -137,7 +137,7 @@
             <p>当前星享卡可代扣100元</p>
           </div>
           <div class="fix">
-            <van-button type="primary" size="large" @click="go()">在线预定</van-button>
+            <van-button type="primary" size="large" @click="order()">在线预定</van-button>
           </div>
         </div>
         <div class="price-item van-hairline--top">
@@ -147,7 +147,7 @@
             <p>当前星享卡可代扣100元</p>
           </div>
           <div class="fix">
-            <van-button type="primary" size="large" @click="go()">在线预定</van-button>
+            <van-button type="primary" size="large" @click="order()">在线预定</van-button>
           </div>
         </div>
       </div>
@@ -243,22 +243,27 @@ import banner from "@/components/Banner/banner";
 import article from "@/components/Article/article";
 import footer from "@/components/Footer";
 export default {
-    data(){
-        return {
-          images: [
-            'https://img.yzcdn.cn/2.jpg',
-            'https://img.yzcdn.cn/2.jpg',
-            'https://img.yzcdn.cn/2.jpg'
-          ],
-          score:4,
-        }
-    },
-    components: {
-        "v-header": header,
-        "v-banner": banner,
-        "v-footer": footer,
-        "v-article":article
+  data(){
+      return {
+        images: [
+          'https://img.yzcdn.cn/2.jpg',
+          'https://img.yzcdn.cn/2.jpg',
+          'https://img.yzcdn.cn/2.jpg'
+        ],
+        score:4,
+      }
+  },
+  components: {
+      "v-header": header,
+      "v-banner": banner,
+      "v-footer": footer,
+      "v-article":article
+  },
+  methods:{
+    order(){
+      this.$router.push('/hotelorder');
     }
+  }
 }
 
 </script>

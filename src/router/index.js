@@ -17,8 +17,13 @@ export default new Router({
     },
     {
       path: '/hotel',
-      name: 'hotel', // 登录
+      name: 'hotel', // 酒店房间
       component: () => import('pages/hotel'),
+    },
+    {
+      path: '/hotelorder',
+      name: 'hotelorder', // 酒店下单
+      component: () => import('pages/hotelorder'),
     },
     {
       path: '/order',
