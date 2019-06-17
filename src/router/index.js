@@ -27,7 +27,7 @@ export default new Router({
     },
     {
       path: '/order',
-      name: 'order', // 登录
+      name: 'order', // 主页订单
       component: () => import('pages/order'),
     },
     { path: '*', name: '404', component: NotFound }

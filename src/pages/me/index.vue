@@ -20,6 +20,7 @@
         <div class="item"><span>0</span><p>联系人</p></div>
         <div class="item"><span>-</span><p>优惠券</p></div>
       </div>
+      <div class="banner-bg-bottom"></div>
     </div>
     <div class="hotel-broker">
       <p class="title">酒店经纪人 <i class="iconfont iconarrow-right"></i></p>
