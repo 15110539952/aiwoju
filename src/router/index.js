@@ -24,6 +24,9 @@ export default new Router({
       path: '/hotelorder',
       name: 'hotelorder', // 酒店下单
       component: () => import('pages/hotelorder'),
+      meta: {
+        isKeepLive: true
+      }
     },
     {
       path: '/order',

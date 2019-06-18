@@ -1,7 +1,13 @@
 <template>
   <div id="app">
 <!--    <transition :name="transitionName">-->
-      <router-view class="child-view"/>
+    <!--region 是否缓存当前组件-->
+    <keep-alive v-if="isKeepLive">
+      <router-view class="child-view"></router-view>
+    </keep-alive>
+    <router-view v-else class="child-view"></router-view>
+    <!--endregion-->
+<!--      <router-view class="child-view"/>-->
 <!--    </transition>-->
   </div>
 </template>
@@ -10,6 +16,11 @@
 import './assets/css/mintui-reset.css'
 export default {
   name: 'App',
+  computed:{
+    isKeepLive () {
+      return this.$route.meta.isKeepLive || false
+    },
+  },
   mounted() {
     // document.addEventListener('DOMContentLoaded', function () {
     //   var deviceWidth = document.documentElement.clientWidth

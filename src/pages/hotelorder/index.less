@@ -3,8 +3,10 @@
   padding-bottom: 120px;
 }
 #header{
-  background: transparent !important;
+  background:linear-gradient(0deg,rgba(255,165,0,1) 0%,rgba(255,184,0,1) 100%) !important;
+  //background: transparent !important;
   color: #fff !important;
+  border: 0 transparent !important;
 }
 .top-bg{
   width: 100%;
@@ -210,6 +212,119 @@
       margin-top: 15px;
       background-color: #ff8900;
       border-radius: 10px;
+    }
+  }
+}
+
+.action-room{
+  .item{
+    width: 120px;
+    height: 70px;
+    line-height: 70px;
+    border-radius: 10px;
+    border: solid 2px #ff8900;
+    margin-right: 10px !important;
+  }
+}
+.action-time,.action-room{
+  padding: 30px 40px;
+  display: flex;
+  justify-content: start;
+  flex-wrap: wrap;
+  .item{
+    font-size: 24px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    &.active{
+      color: #FF8900;
+      background:rgba(255,137,0,.1);
+    }
+  }
+}
+.action-time{
+  .item{
+    width: 200px;
+    height: 70px;
+    line-height: 70px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: solid 2px #999999;
+  }
+}
+.cosePopup{
+  margin-bottom: 100px;
+  background-color: #f8f8f8;
+}
+.coseBox{
+  width: 670px;
+  background-color: #ffffff;
+  border-radius: 10px 0px 0px 0px;
+  margin: 40px auto;
+  padding: 30px;
+  .one{
+    display: flex;
+    justify-content: space-between;
+    line-height: 40px;
+    .left{
+      font-size: 24px;
+      color: #333333;
+    }
+    .right{
+      font-size: 18px;
+      color: #ff3500;
+    }
+  }
+  .two{
+    display: flex;
+    justify-content: space-between;
+    line-height: 40px;
+    font-size: 18px;
+    color: #333333;
+  }
+  .coseList{
+    .item{
+      display: flex;
+      justify-content: space-between;
+      line-height: 40px;
+      font-size: 18px;
+      color: #333333;
+      .left{
+        span{
+          margin-right: 30px;
+        }
+      }
+    }
+  }
+}
+/deep/ .van-overlay{
+  height: calc(~"100% - 100px");
+}
+
+.peopleList{
+  .item{
+    display: flex;
+    justify-content: space-between;
+    line-height: 40px;
+    padding: 30px 40px;
+    .left{
+      font-size: 30px;
+      color: #333333;
+      img{
+      }
+      .name{
+        display: inline-block;
+        width: 120px;
+        margin-left: 15px;
+        margin-right: 60px;
+      }
+    }
+    .right{
+      font-size: 20px;
+      color: #0778af;
+      padding: 0 20px;
+      &:active{
+        background: #f2f3f5;
+      }
     }
   }
 }

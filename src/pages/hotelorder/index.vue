@@ -14,27 +14,27 @@
     </div>
 
     <div class="info-list">
-      <div class="info-item van-hairline--bottom">
+      <div class="info-item van-hairline--bottom" @click="actionRoomShow=true">
         <p class="label">房间数:</p>
-        <p class="content">1间</p>
+        <p class="content">{{actionRoomId}}间</p>
         <i class="iconfont iconarrow-right"></i>
       </div>
       <div class="info-item input-list van-hairline--bottom">
         <div class="input-box">
           <div class="info-item van-hairline--bottom">
             <p class="label">入住人:</p>
-            <input type="text" placeholder="入住人姓名">
+            <input type="text" v-model="user.name" placeholder="入住人姓名">
           </div>
           <div class="info-item">
             <p class="label">联系方式:</p>
-            <input type="text" placeholder="大陆手机号码，用于接收通知" maxlength="11">
+            <input type="text" v-model="user.phone" placeholder="大陆手机号码，用于接收通知" maxlength="11">
           </div>
         </div>
-        <img src="~assets/img/user-icon.png">
+        <img src="~assets/img/user-icon.png" @click="actionPeopleShow=true">
       </div>
-      <div class="info-item van-hairline--bottom">
+      <div class="info-item van-hairline--bottom" @click="actionTimeShow=true">
         <p class="label">预计到店:</p>
-        <p class="content"><span class="time">14:00</span>(整晚保留)</p>
+        <p class="content"><span class="time">{{timeList[actionTimeId]}}</span>(整晚保留)</p>
         <i class="iconfont iconarrow-right"></i>
       </div>
       <div class="info-item">
@@ -64,7 +64,7 @@
         <span class="text">总计</span><span class="price">￥253.00</span>
       </div>
       <div class="right">
-        <p class="info">明细</p>
+        <p class="info" @click="coseShow=!coseShow">明细</p>
         <van-button
           :loading="is_loading"
           type="warning"
@@ -72,20 +72,135 @@
         >支付</van-button>
       </div>
     </div>
+
+    <van-action-sheet v-model="actionSheetShow" :title="actionSheetTitle">
+      <div class="action-room" v-show="actionRoomShow">
+        <p class="item" :class="item===actionRoomId?'active':''" v-for="item in 10" @click="actionRoomId=item">{{item}}间</p>
+      </div>
+      <div class="action-time" v-show="actionTimeShow">
+        <p class="item" :class="index===actionTimeId?'active':''" v-for="(item,index) in timeList" @click="actionTimeId=index">{{item}}</p>
+      </div>
+
+      <div class="peopleList" v-show="actionPeopleShow">
+        <div class="item"
+             v-for="(item,index) in peopleList">
+          <div class="left" @click="actionPeopleId=index;">
+            <img src="~assets/img/select-yes.png" v-if="item.status">
+            <img v-else src="~assets/img/select-no.png">
+            <span class="name">{{item.name}}</span>
+            <span class="phone">{{item.phone}}</span>
+          </div>
+          <div class="right">编辑</div>
+        </div>
+      </div>
+    </van-action-sheet>
+    <van-action-sheet class="cosePopup"
+                      v-model="coseShow"
+                      title="费用明细">
+      <div class="coseBox">
+        <div class="one"><p class="left">在线支付</p><p class="right">￥253</p></div>
+        <div class="two"><p class="left">房费</p><p class="right">2晚1间 共 ￥376</p></div>
+        <div class="coseList">
+          <div class="item"><p class="left"><span>12月01日-12月02日</span>单早</p><p class="right">1X ￥200</p></div>
+          <div class="item"><p class="left"><span>12月01日-12月02日</span>单早</p><p class="right">1X ￥200</p></div>
+        </div>
+      </div>
+    </van-action-sheet>
+
   </div>
 </template>
 
 <script>
 import header from "@/components/Header/header";
 export default {
-    data(){
-        return {
-          is_loading:false,
-        }
+  data(){
+      return {
+        is_loading:false,
+        actionSheetTitle:'',
+        actionSheetShow:false,
+        actionRoomId:1,
+        actionTimeId:1,
+        actionPeopleId:'',
+        actionRoomShow:false, // 选择房间
+        actionTimeShow:false, // 选择时间
+        actionPeopleShow:false, // 选择联系人
+        timeList:[
+          '13:00',
+          '14:00',
+          '15:00',
+          '16:00',
+          '17:00',
+          '18:00',
+          '19:00',
+          '20:00',
+          '21:00',
+          '22:00',
+          '23:00',
+          '0点以后',
+        ],
+        user:{
+          name:'',
+          phone:''
+        },
+        peopleList:[
+          {
+            name:'吴振尧',
+            phone:'15110539952',
+            status:false,
+          },
+          {
+            name:'吴振',
+            phone:'15110539953',
+            status:false,
+          },
+        ],
+        coseShow:false,
+      }
+  },
+  watch:{
+    'actionPeopleId'(i){
+      this.peopleList.forEach((data,index)=>{
+        data.status = false;
+      })
+      this.peopleList[i].status = true;
+      this.user = this.peopleList[i];
     },
-    components: {
-        "v-header": header,
+    'actionSheetShow'(val){
+      console.log(val)
+      if(!val){
+        this.actionRoomShow = false;
+        this.actionTimeShow = false;
+        this.actionPeopleShow = false;
+      }
+    },
+    'actionRoomShow'(val){
+      this.actionSheetShow = val;
+      if(val){
+        this.actionSheetTitle = '预定数量';
+      }
+    },
+    'actionTimeShow'(val){
+      this.actionSheetShow = val;
+      if(val){
+        this.actionSheetTitle = '预定时间';
+      }
+    },
+    'actionPeopleShow'(val){
+      this.actionSheetShow = val;
+      if(val){
+        this.actionSheetTitle = '选择入住人';
+      }
     }
+  },
+  components: {
+      "v-header": header,
+  },
+  mounted(){
+
+  },
+  methods:{
+
+  }
 }
 
 </script>
