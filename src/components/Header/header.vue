@@ -10,7 +10,7 @@ export default {
   props: ["title",'img']
 };
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
 #header {
   display: flex;
   justify-content: space-between;

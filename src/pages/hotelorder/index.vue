@@ -5,7 +5,7 @@
     <div class="room-info">
       <div class="room-name">
         <p>商务大床房</p>
-        <p>房间详情<i class="iconfont iconarrow-right"></i></p>
+        <p @click="$router.push('/hotelDetail')">房间详情<i class="iconfont iconarrow-right"></i></p>
       </div>
       <p class="address">太原市-小店区学府街体育路口28号</p>
       <div class="date"><span>12月01日-12月02日</span><b></b><span>共1晚</span></div>
@@ -69,6 +69,7 @@
           :loading="is_loading"
           type="warning"
           loading-text="提交中"
+          @click="order"
         >支付</van-button>
       </div>
     </div>
@@ -166,7 +167,6 @@ export default {
       this.user = this.peopleList[i];
     },
     'actionSheetShow'(val){
-      console.log(val)
       if(!val){
         this.actionRoomShow = false;
         this.actionTimeShow = false;
@@ -199,11 +199,21 @@ export default {
 
   },
   methods:{
-
+    order(){
+      this.is_loading = true;
+      setTimeout(()=>{
+        this.is_loading = false;
+        this.$router.push('/payOrder');
+      },1000);
+    }
   }
 }
 
 </script>
 <style lang='less' scoped>
   @import 'index';
+
+  .child-view{
+    padding-top: 100px;
+  }
 </style>

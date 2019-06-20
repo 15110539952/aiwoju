@@ -1,7 +1,6 @@
 <template>
   <div>
-    <div @click="$router.push('/orderDetail')">点击跳转到订单详情</div>
-    <v-footer></v-footer>
+    <v-header title="订单详情"></v-header>
   </div>
 </template>
 
@@ -24,5 +23,4 @@ export default {
 
 </script>
 <style lang='less' scoped>
-  @import 'index';
 </style>

@@ -21,6 +21,21 @@ export default new Router({
       component: () => import('pages/hotel'),
     },
     {
+      path: '/hotelDetail',
+      name: 'hotelDetail', // 酒店详情
+      component: () => import('pages/hotelDetail'),
+    },
+    {
+      path: '/payOrder',
+      name: 'payOrder', // 订单支付
+      component: () => import('pages/payOrder'),
+    },
+    {
+      path: '/orderDetail',
+      name: 'orderDetail', // 订单详情
+      component: () => import('pages/orderDetail'),
+    },
+    {
       path: '/hotelorder',
       name: 'hotelorder', // 酒店下单
       component: () => import('pages/hotelorder'),
