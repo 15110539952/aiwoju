@@ -2,10 +2,10 @@
   <div id="app">
 <!--    <transition :name="transitionName">-->
     <!--region 是否缓存当前组件-->
-    <keep-alive v-if="isKeepLive">
-      <router-view class="child-view"></router-view>
+    <keep-alive>
+      <router-view v-if="isKeepLive" class="child-view"></router-view>
     </keep-alive>
-    <router-view v-else class="child-view"></router-view>
+    <router-view  v-if="!isKeepLive" class="child-view"></router-view>
     <!--endregion-->
 <!--      <router-view class="child-view"/>-->
 <!--    </transition>-->
@@ -18,6 +18,7 @@ export default {
   name: 'App',
   computed:{
     isKeepLive () {
+      // console.log(this.$route.meta.isKeepLive || false);
       return this.$route.meta.isKeepLive || false
     },
   },
@@ -62,7 +63,7 @@ export default {
 
 
 .child-view {
-  position: absolute;
+  position: relative;
   width:100%;
   height: 100%;
   transition: all .5s cubic-bezier(.55,0,.1,1);

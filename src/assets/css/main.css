@@ -67,6 +67,9 @@ input {
   font-size: 55px;
 }
 
+.active-bg:active{
+  background: #f2f3f5;
+}
 
 
 .iconfont:before{

@@ -114,6 +114,7 @@
 <script>
 import header from "@/components/Header/header";
 export default {
+  name:'hotelorder',
   data(){
       return {
         is_loading:false,

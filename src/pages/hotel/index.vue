@@ -243,6 +243,7 @@ import banner from "@/components/Banner/banner";
 import article from "@/components/Article/article";
 import footer from "@/components/Footer";
 export default {
+  name:'hotel',
   data(){
       return {
         images: [
@@ -269,4 +270,7 @@ export default {
 </script>
 <style lang='less' scoped>
   @import "index";
+  .child-view{
+    padding-top: 100px;
+  }
 </style>

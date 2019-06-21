@@ -11,15 +11,16 @@ import banner from "@/components/Banner/banner";
 import article from "@/components/Article/article";
 import footer from "@/components/Footer";
 export default {
-    data(){
-        return {
+  name:'order',
+  data(){
+      return {
 
-        }
-    },
-    components: {
-        "v-header": header,
-        "v-footer": footer,
-    }
+      }
+  },
+  components: {
+      "v-header": header,
+      "v-footer": footer,
+  }
 }
 
 </script>
