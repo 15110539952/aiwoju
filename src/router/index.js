@@ -3,6 +3,11 @@ import Router from 'vue-router'
 import NotFound from '@/pages/404/404.vue'
 Vue.use(Router)
 
+Router.prototype.goBack = function (back) {
+  this.isBack = true;
+  this.back(back);
+}
+
 export default new Router({
   routes: [
     {
@@ -47,6 +52,29 @@ export default new Router({
       path: '/order',
       name: 'order', // 主页订单
       component: () => import('pages/order'),
+    },
+    {
+      path: '/myorder',
+      name: 'myorder', // 主页订单
+      component: () => import('pages/myorder'),
+    },
+    {
+      path: '/setting',
+      name: 'setting', // 主页订单
+      component: () => import('pages/setting'),
+      redirect: '/setting/home',
+      children: [
+        {
+          path: 'home',
+          name: 'home', // 咨询类别
+          component: () => import('pages/setting/home')
+        },
+        {
+          path: 'user',
+          name: 'user', // 咨询类别
+          component: () => import('pages/setting/user')
+        },
+      ]
     },
     { path: '*', name: '404', component: NotFound }
   ]

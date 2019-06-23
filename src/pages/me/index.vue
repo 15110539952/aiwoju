@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="banner">
-      <i class="iconfont iconsetting"></i>
+      <i class="iconfont iconsetting" @click="$router.push('/setting')"></i>
       <div class="head-bg">
         <div class="head">
           <van-image

@@ -4,9 +4,10 @@
       <i slot="right-icon" class="iconfont iconfenxiang"></i>
     </v-header>
     <div class="top-bg"></div>
+
     <div class="pay-type-top-box">
-    <!--region 支付成功-->
-    <div class="paySuccess">
+      <!--region 支付成功-->
+      <div class="paySuccess" v-show="false">
         <div class="title">
           <p class="left">支付成功</p>
           <p class="right">确认倒计时：<span>00：29：59</span></p>
@@ -18,8 +19,54 @@
           </p></div>
         </div>
       </div>
-    <!--endregion-->
+      <!--endregion-->
+
+      <!--region 待支付-->
+      <div class="no-pay" v-show="false">
+        <div class="title">
+          <p class="left">待支付</p>
+          <p class="right">支付倒计时：：<span>00：29：59</span></p>
+        </div>
+        <div class="content">
+          <div><p class="label">取消规则：</p><p class="text-detial">入住前可免费取消</p></div>
+        </div>
+        <van-button class="to-pay" type="default" @click="">
+          去支付<span>￥</span><span class="number">456</span>
+        </van-button>
+      </div>
+      <!--endregion-->
+
+      <!--region 待评价-->
+      <div class="no-evaluate">
+        <div class="title">
+          <p class="left">待评价</p>
+          <p class="right"></p>
+        </div>
+        <div class="evaluate-btn">
+          <van-button class="repeat-order" type="default" @click="">再次预定</van-button>
+          <van-button class="to-evaluate" type="default" @click="">去评价</van-button>
+        </div>
+      </div>
+      <!--endregion-->
+
+      <!--region 已取消-->
+      <div class="order-close" v-show="false">
+        <div class="title">
+          <p class="left">已取消</p>
+          <p class="right"></p>
+        </div>
+        <div class="content">
+          <div class="close">
+            <p>退款进度</p>
+            <p>已退款</p>
+          </div>
+        </div>
+      </div>
+      <!--endregion-->
+
+
     </div>
+
     <!--region 价格模块-->
     <div class="price-list">
       <div class="item">
@@ -75,8 +122,13 @@
       </p>
     </div>
 
-    <van-button class="footer" type="default" @click="isCloseOrder= true">取消订单</van-button>
 
+
+    <!--region 取消订单-->
+    <van-button class="footer" type="default" @click="isCloseOrder= true">取消订单</van-button>
+    <!--endregion-->
+
+    <!--region  取消订单弹出框-->
     <van-popup v-model="isCloseOrder">
       <div class="is-pay">
         <p class="title-tip">取消订单</p>
@@ -91,6 +143,7 @@
         </div>
       </div>
     </van-popup>
+    <!--endregion-->
   </div>
 </template>
 
@@ -101,6 +154,7 @@ export default {
   data(){
       return {
         isCloseOrder:false,
+        orderStatus: 0,
       }
   },
   components: {

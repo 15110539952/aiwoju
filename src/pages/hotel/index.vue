@@ -173,7 +173,7 @@
     </div>
 <!--    配套设施-->
     <div class="facilities">
-      <div class="title-one">配套设施<p class="title-right">设施详情 <i class="iconfont iconarrow-right"></i></p></div>
+      <div class="title-one">配套设施<p class="title-right" @click="$router.push('/hotelDetail')">设施详情 <i class="iconfont iconarrow-right"></i></p></div>
       <div class="rule-item">
         <p class="rule-title">2018年开业</p>
         <div class="rule-content">

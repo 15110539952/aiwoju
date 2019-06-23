@@ -1,6 +1,6 @@
 <template>
   <div id="header">
-    <p class="back" @click="$router.back(-1)"><i class="iconfont iconarrow-left"></i></p>
+    <p class="back" @click="$router.goBack(-1)"><i class="iconfont iconarrow-left"></i></p>
     <div class="title">{{title}}</div>
     <slot class="right" name="right-icon"><i></i></slot>
   </div>

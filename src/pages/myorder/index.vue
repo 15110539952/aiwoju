@@ -1,27 +1,33 @@
 <template>
   <div class="order">
+    <v-header title="订单"></v-header>
     <div class="order-tab">
-      <div class="tab"
-           @click="$router.push({name:'myorder',params: {id: 1}})">待付款<span class="one" v-show="false">10</span></div>
+      <div class="tab one"
+           :class="tabId===1?'active':''"
+           @click="changeTab(1)">待付款<span class="one" v-if="false">10</span></div>
       <div class="tab two"
-           @click="$router.push({name:'myorder',params: {id: 2}})">待入住/评价<span class="two">29</span></div>
-      <div class="tab"
-           @click="$router.push({name:'myorder',params: {id: 3}})">退款单<span class="three">66</span></div>
+           :class="tabId===2?'active':''"
+           @click="changeTab(2)">待入住/评价<span class="two" v-if="">29</span></div>
+      <div class="tab three"
+           :class="tabId===3?'active':''"
+           @click="changeTab(3)">退款单<span class="three" v-if="false">66</span></div>
       <div class="tab four"
-           @click="$router.push({name:'myorder',params: {id: 0}})">全部</div>
+           :class="tabId===0?'active':''"
+           @click="changeTab(0)">全部</div>
     </div>
-    <div class="new-order-title">最新订单</div>
-
     <!--region 订单列表-->
     <v-orderList :orderList="orderList"></v-orderList>
     <!--endregion-->
-
+    <div class="month-list" v-if="tabId === 0">
+      <p class="month-item"><span>11</span>月订单</p>
+      <p class="month-item"><span>10</span>月订单</p>
+    </div>
+    <p class="hotel-tip">遇到问题请拨打客服：4008525636</p>
 
     <div class="no-order" v-show="!orderList.length">
       <img src="~assets/img/no-content.png">
       <p>您还没有订单哦，快去逛逛吧!</p>
     </div>
-    <v-footer></v-footer>
   </div>
 </template>
 
@@ -62,19 +68,24 @@ export default {
             name:'',
             status:6, // 已关闭
           },
-        ]
+        ],
+        tabId:0,
       }
   },
   components: {
       "v-header": header,
-      "v-footer": footer,
       "v-orderList": orderList,
   },
   mounted() {
-    document.querySelector('body').setAttribute('style', 'background-color:#fff')
+    this.tabId = this.$route.params.id;
+    console.log(this.tabId);
+  },
+  methods:{
+    changeTab(index){
+      this.tabId = index;
+    },
   },
   beforeDestroy() {
-    document.querySelector('body').removeAttribute('style')
   },
 }
 
@@ -82,7 +93,7 @@ export default {
 <style lang='less' scoped>
   @import 'index';
   .child-view{
-    padding-top: 100px;
+    padding-top: 190px;
   }
 
 </style>

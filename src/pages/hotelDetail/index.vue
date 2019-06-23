@@ -103,10 +103,17 @@ export default {
   components: {
       "v-header": header,
   },
+  mounted(){
+    document.documentElement.scrollTop = -240;
+  },
   methods:{
     goAnchor(selector, index) {
       this.tabId = index;
-      if(selector) document.documentElement.scrollTop = document.querySelector("."+selector).offsetTop -200;
+      if(selector){
+        // console.log(document.querySelector("."+selector).offsetTop)
+        let top = document.querySelector("."+selector).offsetTop -287;
+        document.documentElement.scrollTop = top;
+      }
     }
   }
 }

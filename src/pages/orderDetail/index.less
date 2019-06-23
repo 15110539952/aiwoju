@@ -35,8 +35,6 @@
   rgba(153, 153, 153, 0.35);
   border-radius: 20px;
   padding: 30px;
-}
-.paySuccess{
   .title{
     line-height: 58px;
     display: flex;
@@ -78,7 +76,53 @@
         color: #666;
       }
     }
+    // 已取消样式
+    .close{
+      display: flex;
+      justify-content: space-between;
+      background-color: #fff3e5;
+      border-radius: 10px;
+      font-size: 28px;
+      color: #ff3500;
+    }
   }
+  // 待评价样式
+  .evaluate-btn{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    .van-button{
+      width: 290px;
+      height: 70px;
+      line-height: 70px;
+      border-radius: 10px;
+      border: solid 1px #ff8900;
+    }
+    .repeat-order{
+      background: #dcf8ff;
+      color: #FF8900;
+    }
+    .to-evaluate{
+      background: #ff8900;
+      color: #fff;
+    }
+  }
+  .to-pay{
+    width: 100%;
+    margin-top: 14px;
+    height: 72px;
+    line-height: 72px;
+    border: 0;
+    background-color: #ff8900;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 28px;
+    &.number{
+      font-family: Oswald-Regular;
+    }
+  }
+}
+.paySuccess{
 }
 
 .price-list{
