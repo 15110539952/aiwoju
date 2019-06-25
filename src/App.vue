@@ -2,12 +2,27 @@
   <div id="app">
     <!--    <transition :name="transitionName"></transition>-->
     <!--region 是否缓存当前组件-->
-    <keep-alive>
-      <router-view v-if="isKeepLive" class="child-view"></router-view>
-    </keep-alive>
     <!--endregion-->
+
+<!--    <transition :name="transitionName">-->
+<!--      <navigation>-->
+<!--        <router-view class="child-view"></router-view>-->
+<!--      </navigation>-->
+<!--    </transition>-->
+<!--    <transition :name="transitionName">-->
+<!--      <keep-alive include = 'hotelorder'>-->
+<!--        <router-view class="child-view"></router-view>-->
+<!--      </keep-alive>-->
+<!--    </transition>-->
+
     <transition :name="transitionName">
-      <router-view  v-if="!isKeepLive" class="child-view"></router-view>
+    <keep-alive include = 'hotelorder'>
+      <router-view v-if="$route.meta.isKeepLive" class="child-view"></router-view>
+    </keep-alive>
+    </transition>
+
+    <transition :name="transitionName">
+      <router-view v-if="!$route.meta.isKeepLive" class="child-view"></router-view>
     </transition>
   </div>
 </template>
@@ -17,10 +32,10 @@ import './assets/css/mintui-reset.css'
 export default {
   name: 'App',
   computed:{
-    isKeepLive () {
-      // console.log(this.$route.meta.isKeepLive || false);
-      return this.$route.meta.isKeepLive || false
-    },
+    // isKeepLive () {
+    //   // console.log(this.$route.meta.isKeepLive || false);
+    //   return this.$route.meta.isKeepLive || false
+    // },
   },
   mounted() {
     // document.addEventListener('DOMContentLoaded', function () {
@@ -34,7 +49,7 @@ export default {
   },
   data (){
     return {
-      transitionName: 'slide-left',
+      transitionName: 'slide-right',
     }
   },
   watch:{
@@ -58,20 +73,23 @@ export default {
       this.$router.isBack = false
     },
   },
+  activated(){
+
+  },
   beforeRouteUpdate (to, from, next) {
-    // let isBack = this.$router.isBack
-    // if (isBack) {
-    //   this.transitionName = 'slide-right'
-    // } else {
-    //   this.transitionName = 'slide-left'
-    // }
-    // this.$router.isBack = false
-    // next()
+    let isBack = this.$router.isBack
+    if (isBack) {
+      this.transitionName = 'slide-right'
+    } else {
+      this.transitionName = 'slide-left'
+    }
+    this.$router.isBack = false
+    next()
   },
 }
 </script>
 
-<style>
+<style lang="less">
   @import './assets/css/main.css';
 
   #app {
@@ -104,5 +122,20 @@ export default {
   }
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
+  }
+
+
+  // 确认弹窗 样式修改vant
+  .van-dialog__footer--buttons{
+    .van-button--default{
+      .van-button__text{
+        color: #0778af;
+      }
+    }
+    .van-dialog__confirm{
+      .van-button__text{
+        color: #ff3500;
+      }
+    }
   }
 </style>

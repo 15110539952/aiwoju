@@ -197,7 +197,9 @@ export default {
       "v-header": header,
   },
   mounted(){
+    this.$nextTick(() => {
 
+    })
   },
   methods:{
     order(){
@@ -206,8 +208,8 @@ export default {
         this.is_loading = false;
         this.$router.push('/payOrder');
       },1000);
-    }
-  }
+    },
+  },
 }
 
 </script>
@@ -216,5 +218,6 @@ export default {
 
   .child-view{
     padding-top: 100px;
+    padding-bottom: 100px;
   }
 </style>

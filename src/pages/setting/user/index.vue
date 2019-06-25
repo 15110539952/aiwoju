@@ -17,19 +17,27 @@
       <div class="item">
         <p>性别</p>
         <div class="sex-type">
-          <p class="active"><img class="select-img" src="~assets/img/carcle-select-yes.png"><span>男神</span></p>
-          <p><img class="select-img" src="~assets/img/carcle-select-no.png"><span>女神</span></p>
+          <p :class="sex === 1?'active':''" @click="sex = 1">
+            <img v-if="sex === 1" class="select-img" src="~assets/img/carcle-select-yes.png">
+            <img v-else class="select-img" src="~assets/img/carcle-select-no.png">
+            <span>男神</span></p>
+          <p :class="sex === 2?'active':''" @click="sex = 2">
+            <img v-if="sex === 2" class="select-img" src="~assets/img/carcle-select-yes.png">
+            <img v-else class="select-img" src="~assets/img/carcle-select-no.png">
+            <span>女神</span></p>
         </div>
       </div>
     </div>
 
-    <van-popup class="date-popup" v-model="datePopup" position="bottom">
+    <van-popup class="date-popup" v-model="datePopup" position="right">
       <van-datetime-picker
+        title="设置生日"
         v-model="currentDate"
         type="date"
         :min-date="minDate"
         :max-date="maxDate"
         :item-height="88"
+        :visible-item-count="5"
         @cancel="datePopup=false"
         @confirm="birthdayChange"
       />
@@ -49,6 +57,7 @@ export default {
         minDate: new Date('1950-01-01'),
         maxDate: new Date(),
         birthday: '',
+        sex:1, // 1男，2女
       }
   },
   components: {
@@ -58,6 +67,7 @@ export default {
     birthdayChange(){
       this.birthday = montent(this.currentDate).format('YYYY-MM-DD');
       console.log(this.birthday)
+      this.datePopup = false; // 关闭生日选择
 
     }
   }
@@ -67,23 +77,22 @@ export default {
 <style lang='less' scoped>
   /deep/ .date-popup{
     width: 100%;
-    /*height: 100%;*/
-    height: 560px;
+    height: 100%;
+    .van-picker__columns{
+      margin-top: 200px;
+    }
+    .van-picker__cancel, .van-picker__confirm{
+      color: #ff8900;
+    }
     .van-picker{
       width: 100%;
-      bottom:0;
+      top: 0;
       position: absolute;
     }
-    /*.van-picker__columns{*/
-    /*  height: 220px !important;*/
-    /*}*/
-    /*.van-ellipsis{*/
-    /*  height: 44px !important;*/
-    /*  line-height: 44px !important;*/
-    /*}*/
-    /*.van-picker__frame{*/
-    /*  height: 44px !important;*/
-    /*}*/
+    .van-picker__title{
+      color: #666;
+      font-weight: inherit;
+    }
   }
   .sex-type{
     display: flex;
@@ -102,7 +111,7 @@ export default {
       text-align: center;
       color: #333;
       &:active{
-        background: #f2f3f5;
+        /*background: #f2f3f5;*/
       }
       &.active{
         color: #ff3500;

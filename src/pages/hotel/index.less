@@ -1,6 +1,6 @@
 
 #header{
-  background: transparent;
+  background: #fff;
 }
 .banner{
   width: 100%;
@@ -253,33 +253,38 @@
     justify-content: space-between;
     padding: 20px 0;
     .type{
+      height: 70px;
       display: flex;
       justify-content: space-between;
       flex-direction: column;
       text-align: left;
-      p:first-child{
+      .top{
         font-size: 32px;
         color: #333333;
       }
-      p:last-child{
+      .bottom{
         font-size: 24px;
         color: #999999;
       }
     }
     .price{
+      height: 70px;
       text-align: center;
       display: flex;
       justify-content: space-between;
       flex-direction: column;
-      p:first-child{
+      .top{
         font-size: 24px;
         color: #ff3500;
+        height: 50px;
+        line-height: 50px;
         span{
+          font-family: Oswald-Regular;
           font-size: 50px;
           color: #ff3500;
         }
       }
-      p:last-child{
+      .bottom{
         font-size: 20px;
         color: #999999;
       }
@@ -287,11 +292,13 @@
     .fix{
       //width: 160px;
       height: 70px;
+      //padding: 20px;
       /deep/ .van-button--primary {
         color: #fff;
         background-color: #ff8900;
         border: none;
-        color: #fff;
+        height: 70px;
+        line-height: 70px;
         font-size:28px;
         border-radius: 10px;
         padding: 0 25px;

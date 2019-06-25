@@ -15,6 +15,9 @@ import 'vant/lib/index.css'
 
 Vue.use(Vant)
 
+import Navigation from 'vue-navigation'
+Vue.use(Navigation, {router})
+
 // 酒店日期选择组件
 // import VueBetterCalendar from 'vue-better-calendar'
 // Vue.use(VueBetterCalendar)

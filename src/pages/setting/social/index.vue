@@ -1,20 +1,12 @@
 <template>
   <div class="setting">
     <div class="set-list">
-      <div class="item" @click="$router.push('/setting/user')">
-        <p>个人信息</p>
-        <p><span class="item-text"></span><i class="iconfont iconarrow-right"></i></p>
-      </div>
-      <div class="item" @click="changePhone">
-        <p>手机号</p>
-        <p><span class="item-text">12345678901</span><i class="iconfont iconarrow-right"></i></p>
-      </div>
-      <div class="item" @click="$router.push('/setting/social')">
-        <p>社交账号</p>
-        <p><span class="item-text">解绑/换绑定</span><i class="iconfont iconarrow-right"></i></p>
+      <div class="item" @click="changeSocial">
+        <p>微信</p>
+        <p><span class="item-text">绑定</span><i class="iconfont iconarrow-right"></i></p>
       </div>
     </div>
-    <van-button class="outLogin" type="primary" size="large" @click="outLogin">退出登录</van-button>
+
   </div>
 </template>
 
@@ -33,29 +25,17 @@ export default {
   },
   mounted(){},
   methods:{
-    changePhone(){
-
+    changeSocial(){
       Dialog.confirm({
         title: '确认更换手机号？',
-        message: ''
+        message: '解除绑定后将退出登录，下次登录需重新获取微信授权',
+        confirmButtonText:'解除绑定',
       }).then(() => {
         // on confirm
       }).catch(() => {
         // on cancel
       });
-    },
-    outLogin(){
-
-      Dialog.confirm({
-        title: '确认推出登录？',
-        confirmButtonText:'退出',
-        message: ''
-      }).then(() => {
-        // on confirm
-      }).catch(() => {
-        // on cancel
-      });
-    },
+    }
   }
 }
 

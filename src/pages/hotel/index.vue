@@ -79,20 +79,26 @@
           </div>
         </div>
         <div class="price-item van-hairline--top">
-          <div class="type"><p>无早</p><p>限时取消</p></div>
+          <div class="type">
+            <p class="top">含单早</p>
+            <p class="bottom">限时取消</p>
+          </div>
           <div class="price">
-            <p>￥<span>466</span></p>
-            <p>当前星享卡可代扣100元</p>
+            <p class="top">￥<span>466</span></p>
+            <p class="bottom">当前星享卡可代扣100元</p>
           </div>
           <div class="fix">
             <van-button type="primary" size="large" @click="order()">在线预定</van-button>
           </div>
         </div>
         <div class="price-item van-hairline--top">
-          <div class="type"><p>含单早</p><p>限时取消</p></div>
+          <div class="type">
+            <p class="top">含单早</p>
+            <p class="bottom">限时取消</p>
+          </div>
           <div class="price">
-            <p>￥<span>466</span></p>
-            <p>当前星享卡可代扣100元</p>
+            <p class="top">￥<span>466</span></p>
+            <p class="bottom">当前星享卡可代扣100元</p>
           </div>
           <div class="fix">
             <van-button type="primary" size="large" @click="order()">在线预定</van-button>
@@ -109,10 +115,13 @@
           </div>
         </div>
         <div class="price-item van-hairline--top">
-          <div class="type"><p>含单早</p><p>限时取消</p></div>
+          <div class="type">
+            <p class="top">含单早</p>
+            <p class="bottom">限时取消</p>
+          </div>
           <div class="price">
-            <p>￥<span>466</span></p>
-            <p>当前星享卡可代扣100元</p>
+            <p class="top">￥<span>466</span></p>
+            <p class="bottom">当前星享卡可代扣100元</p>
           </div>
           <div class="fix">
             <van-button type="primary" size="large" @click="order()">在线预定</van-button>
@@ -131,20 +140,26 @@
           </div>
         </div>
         <div class="price-item van-hairline--top">
-          <div class="type"><p>4小时</p><p>限时取消</p></div>
+          <div class="type">
+            <p class="top">含单早</p>
+            <p class="bottom">限时取消</p>
+          </div>
           <div class="price">
-            <p>￥<span>123</span></p>
-            <p>当前星享卡可代扣100元</p>
+            <p class="top">￥<span>466</span></p>
+            <p class="bottom">当前星享卡可代扣100元</p>
           </div>
           <div class="fix">
             <van-button type="primary" size="large" @click="order()">在线预定</van-button>
           </div>
         </div>
         <div class="price-item van-hairline--top">
-          <div class="type"><p>8小时</p><p>限时取消</p></div>
+          <div class="type">
+            <p class="top">含单早</p>
+            <p class="bottom">限时取消</p>
+          </div>
           <div class="price">
-            <p>￥<span>323</span></p>
-            <p>当前星享卡可代扣100元</p>
+            <p class="top">￥<span>466</span></p>
+            <p class="bottom">当前星享卡可代扣100元</p>
           </div>
           <div class="fix">
             <van-button type="primary" size="large" @click="order()">在线预定</van-button>

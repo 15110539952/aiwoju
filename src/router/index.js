@@ -9,6 +9,13 @@ Router.prototype.goBack = function (back) {
 }
 
 export default new Router({
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  },
   routes: [
     {
       path: '/',
@@ -60,19 +67,24 @@ export default new Router({
     },
     {
       path: '/setting',
-      name: 'setting', // 主页订单
+      name: 'setting', // 设置
       component: () => import('pages/setting'),
       redirect: '/setting/home',
       children: [
         {
           path: 'home',
-          name: 'home', // 咨询类别
+          name: 'set-home', // 设置
           component: () => import('pages/setting/home')
         },
         {
           path: 'user',
-          name: 'user', // 咨询类别
+          name: 'user', // 个人信息
           component: () => import('pages/setting/user')
+        },
+        {
+          path: 'social',
+          name: 'social', // 社交账号
+          component: () => import('pages/setting/social')
         },
       ]
     },
