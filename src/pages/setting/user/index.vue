@@ -1,5 +1,6 @@
 <template>
   <div class="setting">
+    <v-header title="设置"></v-header>
     <div class="set-list">
       <div class="item bg-active">
         <p>头像</p>

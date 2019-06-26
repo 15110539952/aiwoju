@@ -34,10 +34,6 @@ Vue.use(Calendar);
 //   .use(CellGroup);
 
 Vue.use(Vuex)
-Vue.config.productionTip = false
-
-
-
 const store = new Vuex.Store({
   state: {
 
@@ -47,6 +43,20 @@ const store = new Vuex.Store({
     }
   }
 })
+
+// 路由全局守卫 修改背景颜色
+router.beforeEach((to, from, next) => {
+
+  if (to.meta.background === 'white') {
+    document.querySelector('body').setAttribute('style', 'background: #ffffff')
+  } else {
+    document.querySelector('body').setAttribute('style', 'background: #f8f8f8')
+  }
+  next();
+});
+
+Vue.config.productionTip = false
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -9,6 +9,13 @@ Router.prototype.goBack = function (back) {
 }
 
 export default new Router({
+  beforeEach(to, from, next) {
+    if (to.meta.background === 'white') {
+      document.querySelector('body').setAttribute('style', 'background: #ffffff')
+    } else {
+      document.querySelector('body').setAttribute('style', 'background: #f8f8f8')
+    }
+  },
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
@@ -85,6 +92,38 @@ export default new Router({
           path: 'social',
           name: 'social', // 社交账号
           component: () => import('pages/setting/social')
+        },
+        {
+          path: 'phone',
+          name: 'set-phone', // 修改手机号
+          component: () => import('pages/setting/phone'),
+          meta:{
+            background: 'white'
+          }
+        },
+      ]
+    },
+    {
+      path: '/contacts',
+      name: 'contacts', // 联系人
+      component: () => import('pages/contacts'),
+      redirect: '/contacts/home',
+      children: [
+        {
+          path: 'home',
+          name: 'contacts-home', // 联系人列表
+          meta:{
+            background: 'white'
+          },
+          component: () => import('pages/contacts/home')
+        },
+        {
+          path: 'save',
+          name: 'contacts-save', // 新增联系人
+          meta:{
+            background: 'white'
+          },
+          component: () => import('pages/contacts/save')
         },
       ]
     },

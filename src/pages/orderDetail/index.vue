@@ -129,20 +129,70 @@
     <!--endregion-->
 
     <!--region  取消订单弹出框-->
-    <van-popup v-model="isCloseOrder">
+<!--    <van-popup v-model="isCloseOrder">-->
+<!--      <div class="is-pay">-->
+<!--        <p class="title-tip">取消订单</p>-->
+<!--        <div class="tip-content">-->
+<!--          <p>·已支付订单，取消订单将在3个工作日内原账户返还</p>-->
+<!--          <p>·未支付订单，取消后将删除订单</p>-->
+<!--        </div>-->
+<!--        <div class="btn van-hairline&#45;&#45;top">-->
+<!--          <b></b>-->
+<!--          <p class="left" @click="closeOrder(1)">取消订单</p>-->
+<!--          <p class="right" @click="closeOrder(0)">退出</p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </van-popup>-->
+
+    <van-dialog
+      v-model="isCloseOrder"
+      title="取消订单"
+      showCancelButton
+      @confirm="closeOrder"
+      @cancel="closeOrder"
+      :before-close="beforeClose"
+      :cancelButtonText="closeText"
+      :confirmButtonText="confirmText">
       <div class="is-pay">
-        <p class="title-tip">取消订单</p>
-        <div class="tip-content">
+        <div class="close-room-select" v-if="!isCloseSelect">
+          <div class="item">
+            <div class="room" @click="">
+              <p>商务大床房</p><i class="iconfont iconxuanze-duoxuan" :class="'active'"></i>
+            </div>
+            <div class="date">
+              <p>2018/12/01 - 2018/12/02    1晚</p><p>￥456</p>
+            </div>
+          </div>
+          <div class="item">
+            <div class="room" @click="">
+              <p>商务大床房</p><i class="iconfont iconxuanze-duoxuan" :class="''"></i>
+            </div>
+            <div class="date">
+              <p>2018/12/01 - 2018/12/02    1晚</p><p>￥456</p>
+            </div>
+          </div>
+          <div class="item">
+            <div class="room" @click="">
+              <p>商务大床房</p><i class="iconfont iconxuanze-duoxuan" :class="'active'"></i>
+            </div>
+            <div class="date">
+              <p>2018/12/01 - 2018/12/02    1晚</p><p>￥456</p>
+            </div>
+          </div>
+        </div>
+        <div class="confirm-select" v-else>
+          <p class="close-num">取消1间</p>
+          <div class="item">
+            <p>商务大床房    2018/12/01 - 2018/12/02    1晚</p>
+            <p>￥456</p>
+          </div>
+        </div>
+        <div class="tip-content" v-show="isCloseSelect">
           <p>·已支付订单，取消订单将在3个工作日内原账户返还</p>
           <p>·未支付订单，取消后将删除订单</p>
         </div>
-        <div class="btn van-hairline--top">
-          <b></b>
-          <p class="left" @click="closeOrder(1)">取消订单</p>
-          <p class="right" @click="closeOrder(0)">退出</p>
-        </div>
       </div>
-    </van-popup>
+    </van-dialog>
     <!--endregion-->
   </div>
 </template>
@@ -153,18 +203,53 @@ export default {
   name:'orderDetail',
   data(){
       return {
-        isCloseOrder:false,
+        isCloseOrder:false, // 弹出取消订单
+        isCloseSelect:false, // 选择好取消的订单
+        closeText:'取消',
+        confirmText: '确认选择',
         orderStatus: 0,
       }
+  },
+  watch:{
+    'isCloseOrder'(val){
+      if(!val){
+        this.isCloseSelect = false;
+        this.closeText = '取消';
+        this.confirmText = '确认选择';
+      }
+    }
   },
   components: {
       "v-header": header,
   },
   methods:{
     closeOrder(i){
+      if(!this.isCloseSelect){
+        this.closeText = '取消订单';
+        this.confirmText = '退出';
+      }
       // if(i){
       // }
-      this.isCloseOrder= false;
+      // this.isCloseOrder= false;
+    },
+    beforeClose(action, done){
+      // console.log(action)
+      // console.log(this.isCloseSelect)
+      if(!this.isCloseSelect){
+        this.isCloseSelect = true;
+        if(action==='confirm'){
+          done(false);
+        }else{
+          done();
+        }
+      }else{
+        if(action==='confirm'){
+          done()
+        }else{
+          done(false);
+        }
+
+      }
     }
   }
 }

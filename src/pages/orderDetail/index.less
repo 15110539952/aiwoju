@@ -368,9 +368,48 @@
   border-radius: 20px;
 }
 .is-pay{
-  width: 670px;
   background-color: #ffffff;
-  padding: 30px 0 0;
+  padding: 0 30px;
+  .close-room-select{
+    padding-bottom: 30px;
+    .item{
+      border-bottom: 1px solid #eee;
+      font-size: 24px;
+      line-height: 30px;
+      padding: 10px 0;
+      &>div{
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+    .iconxuanze-duoxuan{
+      &:before{
+        font-size: 33px;
+      }
+      color: #d8d8d8;
+      &.active{
+        color: #ff3500;
+      }
+    }
+    .room{
+      color: #333;
+    }
+    .date{
+      color: #666;
+    }
+  }
+  .confirm-select{
+    color: #FF0000;
+    font-size: 24px;
+    .close-num{
+      text-align: left;
+      line-height: 40px;
+    }
+    .item{
+      display: flex;
+      justify-content: space-between;
+    }
+  }
   .title-tip{
     font-size: 36px;
     color: #333333;
@@ -380,7 +419,7 @@
     font-size: 20px;
     line-height: 40px;
     color: #999999;
-    margin: 20px 30px;
+    margin: 20px 0;
   }
   .btn{
     margin: 0 30px;

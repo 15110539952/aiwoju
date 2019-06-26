@@ -17,7 +17,7 @@
       <div class="me-type">
         <div class="item"><span>0</span><p>我的积分</p></div>
         <div class="item"><span>0</span><p>我的评价</p></div>
-        <div class="item"><span>0</span><p>联系人</p></div>
+        <div class="item" @click="$router.push('/contacts/home')"><span>0</span><p>联系人</p></div>
         <div class="item"><span>-</span><p>优惠券</p></div>
       </div>
       <div class="banner-bg-bottom"></div>

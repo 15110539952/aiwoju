@@ -12,14 +12,10 @@ import header from "@/components/Header/header";
 export default {
   data(){
       return {
-
+        title:'常用联系人'
       }
   },
   computed:{
-    'title'(){
-      console.log(this.$route);
-      return this.$route.name === 'social'?'社交账号':'设置';
-    }
   },
   components: {
       "v-header": header,
@@ -31,6 +27,7 @@ export default {
 </script>
 <style lang='less' scoped>
   @import 'index';
+
   .child-view{
     padding-top: 100px;
   }

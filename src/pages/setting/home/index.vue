@@ -40,6 +40,7 @@ export default {
         message: ''
       }).then(() => {
         // on confirm
+        this.$router.push('/setting/phone');
       }).catch(() => {
         // on cancel
       });
