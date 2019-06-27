@@ -44,7 +44,7 @@
         </div>
         <div class="evaluate-btn">
           <van-button class="repeat-order" type="default" @click="">再次预定</van-button>
-          <van-button class="to-evaluate" type="default" @click="">去评价</van-button>
+          <van-button class="to-evaluate" type="default" @click="$router.push('/evaluateAdd')">去评价</van-button>
         </div>
       </div>
       <!--endregion-->

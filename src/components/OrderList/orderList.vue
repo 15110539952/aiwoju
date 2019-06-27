@@ -37,7 +37,7 @@
           <van-button class="to-pay"
                       type="default"
                       v-if="item.status === 3"
-                      @click="">去评价</van-button>
+                      @click="$router.push('/evaluateAdd')">去评价</van-button>
           <van-button class="to-close"
                       type="default"
                       v-if="item.status === 1 || item.status === 2"

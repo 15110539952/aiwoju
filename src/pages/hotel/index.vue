@@ -201,7 +201,7 @@
 <!--    房间评价-->
     <div class="facilities">
       <div class="title-one">
-        房间评价<p class="title-right">更多评价 <i class="iconfont iconarrow-right"></i></p>
+        房间评价<p class="title-right" @click="$router.push('/evaluateList')">更多评价 <i class="iconfont iconarrow-right"></i></p>
       </div>
       <div class="facilities-score van-hairline--bottom">
         <div class="left"><span>4.0</span>分</div>

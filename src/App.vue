@@ -16,7 +16,7 @@
 <!--    </transition>-->
 
     <transition :name="transitionName">
-    <keep-alive include = 'hotelorder'>
+    <keep-alive>
       <router-view v-if="$route.meta.isKeepLive" class="child-view"></router-view>
     </keep-alive>
     </transition>

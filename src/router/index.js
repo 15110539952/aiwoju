@@ -31,7 +31,7 @@ export default new Router({
     },
     {
       path: '/me',
-      name: 'me', // 登录
+      name: 'me', // 我的
       component: () => import('pages/me'),
     },
     {
@@ -68,8 +68,24 @@ export default new Router({
       component: () => import('pages/order'),
     },
     {
+      path: '/evaluateList',
+      name: 'evaluateList', // 酒店评价列表
+      component: () => import('pages/evaluateList'),
+      meta:{
+        background:'white'
+      }
+    },
+    {
+      path: '/evaluateAdd',
+      name: 'evaluateAdd', // 填写评价
+      component: () => import('pages/evaluateAdd'),
+      meta:{
+        background:'white'
+      }
+    },
+    {
       path: '/myorder',
-      name: 'myorder', // 主页订单
+      name: 'myorder', // 订单列表
       component: () => import('pages/myorder'),
     },
     {
