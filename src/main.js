@@ -10,10 +10,10 @@ Vue.prototype.$ajax = ajax;
 // import MintUI from 'mint-ui'
 // Vue.use(MintUI)
 
-import Vant from 'vant'
+import vant from 'vant'
 import 'vant/lib/index.css'
 
-Vue.use(Vant)
+Vue.use(vant)
 
 import Navigation from 'vue-navigation'
 Vue.use(Navigation, {router})
