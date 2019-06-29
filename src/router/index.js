@@ -89,6 +89,14 @@ export default new Router({
       component: () => import('pages/myorder'),
     },
     {
+      path: '/myevaluate',
+      name: 'myevaluate', // 我的评价列表
+      component: () => import('pages/myevaluate'),
+      meta:{
+        background:'white'
+      }
+    },
+    {
       path: '/setting',
       name: 'setting', // 设置
       component: () => import('pages/setting'),
@@ -140,6 +148,25 @@ export default new Router({
             background: 'white'
           },
           component: () => import('pages/contacts/save')
+        },
+      ]
+    },
+    {
+      path: '/mehotel',
+      name: 'mehotel', // 联系人
+      component: () => import('pages/mehotel'),
+      redirect: '/contacts/home',
+      meta:{
+        background: 'white'
+      },
+      children: [
+        {
+          path: 'home',
+          name: 'mehotel-home', // 联系人列表
+          meta:{
+            background: 'white'
+          },
+          component: () => import('pages/mehotel/home')
         },
       ]
     },

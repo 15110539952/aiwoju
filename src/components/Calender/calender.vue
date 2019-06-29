@@ -2,12 +2,17 @@
   <div class="vue-calendar" data-index="0">
       <div class="vue-calendar-backdrop vue-component-calendar-backdrop-transition"></div>
       <div class="vue-calendar-content vue-component-calendar-content-transition" id="vueCalendarTemplate">
-        <div class="vue-calendar-content-title-wrapper" id="topHeight1">
-            <div class="text">请选择入离日期</div>
-            <div class="vue-component-calendar-complete-button">
-                <a href="javascript:;" @click="asureClick">完成</a>
-            </div>
+        <div id="header">
+          <p class="back" @click="$emit('closeProp')"><i class="iconfont iconarrow-left"></i></p>
+          <div class="title">选择时间</div>
+          <i></i>
         </div>
+<!--        <div class="vue-calendar-content-title-wrapper" id="topHeight1">-->
+<!--            <div class="text">请选择入离日期</div>-->
+<!--            <div class="vue-component-calendar-complete-button">-->
+<!--                <a href="javascript:;" @click="asureClick">完成</a>-->
+<!--            </div>-->
+<!--        </div>-->
         <div class="week-bar" id="topHeight2">
             <ul>
               <li class="weekend">日</li>
@@ -47,6 +52,7 @@
               </div>
           </div>
         </div>
+        <van-button class="select-date" type="primary" size="large" @click="asureClick">确认</van-button>
       </div>
       <div class="vue-component-tip-helper-common vue-component-tip-helper-above vue-component-tip-slide-up-transition" style="display: none; visibility: hidden;">
           <div class="vue-component-tip-bar-above vue-component-tip-bar-common vue-component-tip-slide-up-transition" style="display: none; margin-left: 0px; margin-right: 0px;"> </div>
@@ -61,11 +67,15 @@
 <script>
   import _moment from 'moment'
   import BScroll from 'better-scroll'
+  import header from "@/components/Header/header";
 
   const formatZh = 'YYYY年MM月DD日'
   const formatEn = 'YYYY-MM-DD'
   export default {
     name: 'Calender',
+    components: {
+      "v-header": header,
+    },
     props: {
       date: {
         type: Date, // 当前日期
@@ -228,6 +238,47 @@
 </script>
 <style lang="less">
   /*@import 'src/style/common'*/
+  .select-date{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    line-height: 100px;
+    border: 0;
+    background: #FF8900;
+    color: #fff;
+  }
+  #header {
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    color: #333;
+    font-size: 36px;
+    position: fixed;
+    top:0;
+    left: 0;
+    width: 100%;
+    z-index: 9;
+    background: #fff;
+    .iconfont:before{
+      font-size: 36px;
+    }
+    i{
+      font-size: 36px;
+      display: inline-block;
+      width: 100px;
+    }
+    .title {
+      line-height: 100px;
+      //@include border-1px(#ccc);
+    }
+  }
+
+
+
   .vue-calendar-backdrop{
     position: absolute;
     width: 100%;
@@ -247,6 +298,7 @@
     overflow: hidden;
     z-index: 1000;
     font-size: 30px;
+    padding-top: 100px;
   }
     .vue-calendar-content-title-wrapper:after{
       content: "";
@@ -407,7 +459,7 @@
           height: 100px!important;
           line-height: 100px!important;
           color: #fff;
-          background: #2eb6a8;
+          background: #ff8900;
           border-bottom: none;
           border-radius: 0 .06rem .06rem 0;
           i:after{
@@ -431,8 +483,9 @@
           }
         }
         li.selected-line{
-          background: #e0f4f2;
-          color: #333;
+          background: #ff8900;
+          /*background: #e0f4f2;*/
+          color: #fff;
           height: 100px!important;
           line-height: 100px!important;
         }

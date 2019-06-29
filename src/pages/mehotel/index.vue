@@ -1,0 +1,39 @@
+<template>
+  <div class="mehotel">
+    <v-header :title="title"></v-header>
+
+
+
+    <router-view/>
+  </div>
+</template>
+
+<script>
+import header from "@/components/Header/header";
+import banner from "@/components/Banner/banner";
+import article from "@/components/Article/article";
+import footer from "@/components/Footer";
+export default {
+  data(){
+      return {
+
+      }
+  },
+  computed:{
+    'title'(){
+      console.log(this.$route);
+      return '酒店经纪人';
+    }
+  },
+  components: {
+    "v-header": header,
+  },
+}
+
+</script>
+<style lang='less' scoped>
+  @import 'index';
+  .child-view{
+    padding-top: 100px;
+  }
+</style>

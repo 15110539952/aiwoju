@@ -71,10 +71,11 @@
       <div class="right">每七日一轮</div>
     </div>
     <v-footer></v-footer>
-    <van-popup v-model="showCalendar" position="bottom" style="height:100%">
+    <van-popup v-model="showCalendar" position="right" style="height:100%;width:100%;">
       <calender
         :date="nowDate"
         :monthNumber="4"
+        @closeProp="showCalendar=false"
         v-on:asureEvent="asureClick"
         :onlyOne="roomType === 1 ? false : true"
         :isShowDatePicker="isShowDatePicker"
