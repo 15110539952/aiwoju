@@ -153,7 +153,7 @@ export default new Router({
     },
     {
       path: '/mehotel',
-      name: 'mehotel', // 联系人
+      name: 'mehotel', // 酒店经纪人
       component: () => import('pages/mehotel'),
       redirect: '/contacts/home',
       meta:{
@@ -162,11 +162,66 @@ export default new Router({
       children: [
         {
           path: 'home',
-          name: 'mehotel-home', // 联系人列表
+          name: 'mehotel-home', // 酒店经纪人home
           meta:{
-            background: 'white'
+            background: 'white',
+            title:'酒店经纪人'
           },
           component: () => import('pages/mehotel/home')
+        },
+        {
+          path: 'cashdetail',
+          name: 'cashdetail', // 提现明细
+          meta:{
+            background: 'white',
+            title:'提现明细'
+          },
+          component: () => import('pages/mehotel/cashdetail')
+        },
+        {
+          path: 'distributionlist',
+          name: 'distributionlist', // 分销收入
+          meta:{
+            background: 'white',
+            title:'分销收入'
+          },
+          component: () => import('pages/mehotel/distributionlist')
+        },
+        {
+          path: 'cashorder',
+          name: 'cashorder', // 分销订单
+          meta:{
+            background: 'white',
+            title:'分销订单'
+          },
+          component: () => import('pages/mehotel/cashorder')
+        },
+        {
+          path: 'cashqrcode',
+          name: 'cashqrcode', // 分销二维码
+          meta:{
+            background: 'white',
+            title:'分销二维码'
+          },
+          component: () => import('pages/mehotel/cashqrcode')
+        },
+        {
+          path: 'cashwithdrawal',
+          name: 'cashwithdrawal', // 提现
+          meta:{
+            background: 'white',
+            title:'提现'
+          },
+          component: () => import('pages/mehotel/cashwithdrawal')
+        },
+        {
+          path: 'recordingtime',
+          name: 'recordingtime', // 记录时间
+          meta:{
+            background: 'white',
+            title:'记录时间'
+          },
+          component: () => import('pages/mehotel/recordingtime')
         },
       ]
     },

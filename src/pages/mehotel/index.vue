@@ -2,8 +2,6 @@
   <div class="mehotel">
     <v-header :title="title"></v-header>
 
-
-
     <router-view/>
   </div>
 </template>
@@ -22,7 +20,7 @@ export default {
   computed:{
     'title'(){
       console.log(this.$route);
-      return '酒店经纪人';
+      return this.$route.meta.title || '酒店经纪人';
     }
   },
   components: {
