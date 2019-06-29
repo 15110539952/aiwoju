@@ -98,14 +98,24 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     height: 100%;
+    position: relative;
   }
 
 
   .child-view {
-    position: relative;
+    position: absolute;
     width:100%;
     min-height: 100%;
     transition: all .5s cubic-bezier(.55,0,.1,1);
+    /*width: 100%;*/
+    /*height:100%;*/
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*bottom: 0;*/
+    /*margin: 0 auto;*/
+    /*overflow-y: auto;*/
+    /*overflow-x: hidden;*/
+    /*-webkit-overflow-scrolling: touch;*/
   }
   .slide-left-enter, .slide-right-leave-active {
     opacity: 0;
