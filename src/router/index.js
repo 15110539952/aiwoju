@@ -3,19 +3,17 @@ import Router from 'vue-router'
 import NotFound from '@/pages/404/404.vue'
 Vue.use(Router)
 
+
 Router.prototype.goBack = function (back) {
   this.isBack = true;
-  this.back(back);
+  if (window.history.length > 1) {
+    this.back(back);
+  } else {
+    this.push('/')
+  }
 }
 
 export default new Router({
-  beforeEach(to, from, next) {
-    if (to.meta.background === 'white') {
-      document.querySelector('body').setAttribute('style', 'background: #ffffff')
-    } else {
-      document.querySelector('body').setAttribute('style', 'background: #f8f8f8')
-    }
-  },
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
@@ -63,6 +61,14 @@ export default new Router({
       }
     },
     {
+      path: '/map',
+      name: 'map', // 地图
+      component: () => import('pages/map'),
+      meta:{
+        background:'white'
+      }
+    },
+    {
       path: '/order',
       name: 'order', // 主页订单
       component: () => import('pages/order'),
@@ -105,17 +111,26 @@ export default new Router({
         {
           path: 'home',
           name: 'set-home', // 设置
-          component: () => import('pages/setting/home')
+          component: () => import('pages/setting/home'),
+          meta:{
+            background: 'white'
+          },
         },
         {
           path: 'user',
           name: 'user', // 个人信息
-          component: () => import('pages/setting/user')
+          component: () => import('pages/setting/user'),
+          meta:{
+            background: 'white'
+          },
         },
         {
           path: 'social',
           name: 'social', // 社交账号
-          component: () => import('pages/setting/social')
+          component: () => import('pages/setting/social'),
+          meta:{
+            background: 'white'
+          },
         },
         {
           path: 'phone',

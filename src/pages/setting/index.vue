@@ -17,7 +17,6 @@ export default {
   },
   computed:{
     'title'(){
-      console.log(this.$route);
       return this.$route.name === 'social'?'社交账号':'设置';
     }
   },

@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div class="address-block">
+    <div class="address-block" @click="$router.push('/map')">
       <div class="left">
         <div class="name-block">
           <p class="name text-ellipsis">太原市-小店区学府街体育路口28号</p>

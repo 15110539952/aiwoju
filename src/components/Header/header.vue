@@ -1,13 +1,18 @@
 <template>
   <div id="header">
-    <p class="back" @click="$router.goBack(-1)"><i class="iconfont iconarrow-left"></i></p>
+    <p class="back" @click="back"><i class="iconfont iconarrow-left"></i></p>
     <div class="title">{{title}}</div>
     <slot class="right" name="right-icon"><i></i></slot>
   </div>
 </template>
 <script>
 export default {
-  props: ["title",'img']
+  props: ["title",'img'],
+  methods:{
+    back(){
+      this.$router.goBack(-1);
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

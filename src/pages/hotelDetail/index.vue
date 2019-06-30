@@ -109,6 +109,9 @@ export default {
   methods:{
     goAnchor(selector, index) {
       this.tabId = index;
+      if(index === 2){
+        this.$router.push('/map');
+      }
       if(selector){
         // console.log(document.querySelector("."+selector).offsetTop)
         let top = document.querySelector("."+selector).offsetTop -287;

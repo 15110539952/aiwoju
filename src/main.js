@@ -46,7 +46,6 @@ const store = new Vuex.Store({
 
 // 路由全局守卫 修改背景颜色
 router.beforeEach((to, from, next) => {
-
   if (to.meta.background === 'white') {
     document.querySelector('body').setAttribute('style', 'background: #ffffff')
   } else {

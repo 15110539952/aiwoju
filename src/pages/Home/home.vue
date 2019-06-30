@@ -36,7 +36,8 @@
         </div>
         <img src="~assets/img/arrow-right.png" alt="">
       </div>
-      <div class="hour-home van-hairline--top">
+      <div class="hour-home van-hairline--top"
+           @click="is_hour_home=!is_hour_home">
         <img :src="is_hour_home?require('assets/img/select-yes.png'):require('assets/img/select-no.png')" alt="">
         <span>钟点房</span>
       </div>
