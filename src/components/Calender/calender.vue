@@ -52,7 +52,7 @@
               </div>
           </div>
         </div>
-        <van-button class="select-date" type="primary" size="large" @click="asureClick">确认</van-button>
+        <van-button class="select-date" size="large" @click="asureClick">确认</van-button>
       </div>
       <div class="vue-component-tip-helper-common vue-component-tip-helper-above vue-component-tip-slide-up-transition" style="display: none; visibility: hidden;">
           <div class="vue-component-tip-bar-above vue-component-tip-bar-common vue-component-tip-slide-up-transition" style="display: none; margin-left: 0px; margin-right: 0px;"> </div>
@@ -239,13 +239,14 @@
 <style lang="less">
   /*@import 'src/style/common'*/
   .select-date{
-    position: absolute;
+    position: fixed !important;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 100px;
     line-height: 100px;
     border: 0;
+    z-index: 9;
     background: #FF8900;
     color: #fff;
   }

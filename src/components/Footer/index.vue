@@ -12,6 +12,7 @@
       >
         <span>首页</span>
         <img
+          class="home"
           slot="icon"
           slot-scope="props"
           :src="props.active ? iconList[0].active : iconList[0].normal">
@@ -21,6 +22,7 @@
         to="/order">
         <span>订单</span>
         <img
+          class="order"
           slot="icon"
           slot-scope="props"
           :src="props.active ? iconList[1].active : iconList[1].normal">
@@ -30,6 +32,7 @@
         to="/me">
         <span>个人中心</span>
         <img
+          class="me"
           slot="icon"
           slot-scope="props"
           :src="props.active ? iconList[2].active : iconList[2].normal">
@@ -72,7 +75,17 @@ export default {
     bottom: 0;
   }
   img{
-    width: 56px;
-    height: 56px;
+    &.home{
+      width: 57px;
+      height: 60px;
+    }
+    &.order{
+      width: 54px;
+      height: 56px;
+    }
+    &.me{
+      width: 54px;
+      height: 56px;
+    }
   }
 </style>
