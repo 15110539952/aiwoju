@@ -247,7 +247,7 @@
     line-height: 100px;
     border: 0;
     z-index: 9;
-    background: #FF8900;
+    background: #FF8900 !important;
     color: #fff;
   }
   #header {

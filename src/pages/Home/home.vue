@@ -14,7 +14,7 @@
         </van-swipe-item>
       </van-swipe>
     </div>
-    <div class="hotel-name">山西爱蜗居青年创客公寓</div>
+    <div class="hotel-name">{{hotel.name}}</div>
     <div class="hotel-select-block">
       <div class="date-select van-hairline--top" @click="showCalendar = true;nowDate = new Date()">
         <img src="~assets/img/date-time.png" alt="">
@@ -45,10 +45,16 @@
         <van-button type="primary" size="large" @click="go()">订房间</van-button>
       </div>
     </div>
-    <div class="notice-tip">
-      <img src="~assets/img/notice.png">
-      <span>伙伴们，6月1日至6月7日限量名额半价优惠，速来抢住！！</span>
-    </div>
+<!--    <div class="notice-tip">-->
+<!--      <img src="~assets/img/notice.png">-->
+<!--      <span></span>-->
+<!--    </div>-->
+    <van-notice-bar
+      class="notice-tip"
+      :speed="80"
+      :text="notice"
+      :left-icon="require('assets/img/notice.png')"
+    />
     <div class="integral">
       <div class="left">
         <span class="big">每日积分</span>
@@ -89,7 +95,6 @@
 </template>
 
 <script>
-import article from "@/components/Article/article";
 import footer from "@/components/Footer";
 import Calender from '@/components/Calender/calender.vue'
 
@@ -102,23 +107,44 @@ var moment = require('moment');
 export default {
     data(){
         return {
-          images: [
-            'https://img.yzcdn.cn/2.jpg',
-            'https://img.yzcdn.cn/2.jpg',
-            'https://img.yzcdn.cn/2.jpg'
-          ],
+          images: [],
           dateTime:require('assets/img/date-time.png'),
           is_hour_home: false, // 钟点房选择
           showCalendar: false, // 是否现实日期选择
           nowDate: new Date(),
           roomType:1,
           isShowDatePicker:true,
+          hotel:'',
+          notice:'',
+          continuity:'',
+          all_score:'',
         }
     },
     components: {
         "v-footer": footer,
-        "v-article":article,
         "Calender":Calender
+    },
+  computed:{
+  },
+    mounted(){
+      this.$ajax.get('aixingtuan/api/index/index',null,{ load: true}).then((res)=>{
+        console.log(res);
+        this.all_score = res.data.all_score;
+        this.continuity = res.data.continuity;
+        this.notice = res.data.notice[0].title;
+        this.hotel = res.data.hotel;
+
+        this.images = this.hotel.image.split(',');
+        let index = 0;
+        setInterval(()=>{
+          this.notice = res.data.notice[index].title;
+          if(index<res.data.notice.length){
+            index++;
+          }else{
+            index = 0;
+          }
+        },150000)
+      });
     },
     methods:{
 
@@ -140,4 +166,7 @@ export default {
 </script>
 <style lang='less' scoped>
   @import "index";
+  .child-view{
+    padding-bottom: 100px;
+  }
 </style>

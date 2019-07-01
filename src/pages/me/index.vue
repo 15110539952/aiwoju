@@ -41,8 +41,6 @@
 
 <script>
 import header from "@/components/Header/header";
-import banner from "@/components/Banner/banner";
-import article from "@/components/Article/article";
 import footer from "@/components/Footer";
 export default {
     data(){
@@ -52,13 +50,14 @@ export default {
     },
     components: {
         "v-header": header,
-        "v-banner": banner,
         "v-footer": footer,
-        "v-article":article
     }
 }
 
 </script>
 <style lang='less' scoped>
   @import 'index';
+  .child-view{
+    padding-bottom: 100px;
+  }
 </style>

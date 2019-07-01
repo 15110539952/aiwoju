@@ -254,8 +254,6 @@
 
 <script>
 import header from "@/components/Header/header";
-import banner from "@/components/Banner/banner";
-import article from "@/components/Article/article";
 import footer from "@/components/Footer";
 export default {
   name:'hotel',
@@ -271,9 +269,7 @@ export default {
   },
   components: {
       "v-header": header,
-      "v-banner": banner,
       "v-footer": footer,
-      "v-article":article
   },
   methods:{
     order(){

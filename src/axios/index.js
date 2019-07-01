@@ -1,7 +1,15 @@
 import axios from 'axios'
 import qs from 'qs'
 
+import { Toast } from 'vant';
+
 const TIME_OUT = 30000 // 超时时间30秒
+
+
+// 关闭 loading
+function closeLoading () {
+  Toast.clear();
+}
 
 // 请求数据拦截处理
 axios.defaults.withCredentials = true;
@@ -15,15 +23,27 @@ axios.interceptors.request.use(config => {
 // 返回数据拦截处理
 axios.interceptors.response.use(response => {
   //code... 你的逻辑
+  closeLoading();
   return response.data //直接返回后台返回的json object
-}, error => Promise.reject(error.response))
+}, error => {
+  closeLoading();
+  Promise.reject(error.response)
+})
 
 /*
 * 封装一个私有的请求方法
 */
 
-const _request = (method, url ,data) => {
-  const headers = {}
+const _request = (method, url ,data,load,loadMsg) => {
+  // console.log(window.$globalHub.$store.getters)
+
+  Toast.loading({
+    forbidClick:true,
+    message: '加载中...'
+  });
+  const headers = {
+    token: window.$globalHub.$store.getters.token || ''
+  };
   // const baseUrl = "https://css-itg.ext.hp.com/hpwxmobile/";
   const baseUrl = "";
   const configData = {
@@ -62,18 +82,18 @@ const _request = (method, url ,data) => {
 }
 
 class Ajax {
- 
-  
-  get = (url, data = {}) => {
-    return _request('get', url, data)
+
+
+  get = (url, data = {},{load = false,loadMsg = '加载中...'}) => {
+    return _request('get', url, data, load,loadMsg)
   }
 
-  postForm = (url, data = {}) => {
-    return _request('postForm', url, data)
+  postForm = (url, data = {},{load = false,loadMsg = '加载中...'}) => {
+    return _request('postForm', url, data, load,loadMsg)
   }
 
-  postJson = (url, data = {}) => {
-    return _request('postJson', url, data)
+  postJson = (url, data = {},{load = false,loadMsg = '加载中...'}) => {
+    return _request('postJson', url, data,load,loadMsg)
   }
 
   post = this.postJson // 默认post的Content-Type是application/json

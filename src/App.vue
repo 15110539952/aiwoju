@@ -24,18 +24,31 @@
     <transition :name="transitionName">
       <router-view v-if="!$route.meta.isKeepLive" class="child-view"></router-view>
     </transition>
+
+<!--    <van-loading v-show="loading.show"-->
+<!--                 class="loading-bg"-->
+<!--                 size="100px"-->
+<!--                 text-size="50px"-->
+<!--                 type="spinner"-->
+<!--                 vertical>{{loading.msg}}</van-loading>-->
   </div>
 </template>
 
 <script>
 import './assets/css/mintui-reset.css'
+
+import { Toast } from 'vant';
+
 export default {
   name: 'App',
   computed:{
-    // isKeepLive () {
-    //   // console.log(this.$route.meta.isKeepLive || false);
-    //   return this.$route.meta.isKeepLive || false
-    // },
+    loading () {
+      return { show:true, msg: '加载中' }
+      // return this.$store.getters.loading
+    },
+    token(){
+      return this.$store.getters.token
+    }
   },
   mounted() {
     // document.addEventListener('DOMContentLoaded', function () {
@@ -46,6 +59,15 @@ export default {
     //   var deviceWidth = document.documentElement.clientWidth
     //   document.documentElement.style.fontSize = deviceWidth / 10 + 'px'
     // }
+    // console.log(window.location.href)
+    if(!this.token){
+      let token = this.$utils.getUrlKey('token');
+      if(token){
+        this.$store.dispatch('setToken', token);
+      }else{
+        window.location.href = `http://xt.aixingtuan.com/third/connect/wechat?url=${encodeURIComponent(window.location.href)}`;
+      }
+    }
   },
   data (){
     return {
@@ -90,7 +112,7 @@ export default {
 </script>
 
 <style lang="less">
-  @import './assets/css/main.css';
+  @import 'assets/css/main.css';
 
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;

@@ -10,6 +10,14 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      '/aixingtuan': {
+        target: 'http://xt.aixingtuan.com/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/aixingtuan': ''
+        }
+      },
+
     },
 
     // Various Dev Server settings

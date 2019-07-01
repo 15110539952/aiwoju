@@ -45,9 +45,6 @@
 
 <script>
 import header from "@/components/Header/header";
-import banner from "@/components/Banner/banner";
-import article from "@/components/Article/article";
-import footer from "@/components/Footer";
 export default {
   data(){
       return {
