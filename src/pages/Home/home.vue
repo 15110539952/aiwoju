@@ -3,12 +3,12 @@
 <!--      <v-header title="solr测试"></v-header>-->
     <div class="banner">
       <van-swipe :autoplay="5000" indicator-color="white">
-        <van-swipe-item v-for="(item,index) in images" :key="index">
+        <van-swipe-item v-for="(item,index) in images" :key="'img_'+index">
           <van-image
             width="100%"
             height="100%"
             fit="cover"
-            :src="item"
+            :src="url+item"
           />
 <!--          <img class="banner-img" :src="item">-->
         </van-swipe-item>
@@ -19,20 +19,20 @@
       <div class="date-select van-hairline--top" @click="showCalendar = true;nowDate = new Date()">
         <img src="~assets/img/date-time.png" alt="">
         <div class="content">
-          <p class="font55">01</p>
+          <p class="font55">{{startDateText}}</p>
           <p class="column">
-            <span><span class="font24">02</span><span class="font20">月</span></span>
+            <span><span class="font24">{{startMonthText}}</span><span class="font20">月</span></span>
             <span class="font24">周一</span>
           </p>
           <p>入住</p>
           <p>—</p>
           <p>离店</p>
-          <p class="font55">01</p>
+          <p class="font55">{{endDateText}}</p>
           <p class="column">
-            <span><span class="font24">02</span><span class="font20">月</span></span>
+            <span><span class="font24">{{endMonthText}}</span><span class="font20">月</span></span>
             <span class="font24">周一</span>
           </p>
-          <p><span class="font36">1</span><span class="font24">晚</span></p>
+          <p><span class="font36">{{day}}</span><span class="font24">晚</span></p>
         </div>
         <img src="~assets/img/arrow-right.png" alt="">
       </div>
@@ -58,21 +58,23 @@
     <div class="integral">
       <div class="left">
         <span class="big">每日积分</span>
-        <span class="small">累计255分</span>
+        <span class="small">累计{{all_score}}分</span>
       </div>
       <div class="content">
-        <div class="side">
-          <p class="integral-bg"><span>+</span><span>5</span></p>
-          <p class="bottom">第五天</p>
+        <div :class="continuity === 1?'two':'side'" @click="addScore(continuity === 1)">
+          <p class="integral-bg"><span>+</span><span>{{continuity===1?continuity:continuity===7?continuity-2:continuity-1}}</span></p>
+          <p class="bottom">第{{continuity===1?continuity:continuity===7?continuity-2:continuity-1}}天</p>
+          <p class="get" v-show="continuity === 1">点击领取</p>
         </div>
-        <div class="two">
-          <p class="integral-bg"><span>+</span><span>5</span></p>
-          <p class="bottom">第五天</p>
-          <p class="get">点击领取</p>
+        <div :class="continuity !== 1&&continuity!==7?'two':'side'" @click="addScore(continuity !== 1&&continuity!==7)">
+          <p class="integral-bg"><span>+</span><span>{{continuity===1?continuity+1:continuity===7?continuity-1:continuity}}</span></p>
+          <p class="bottom">第{{continuity===1?continuity+1:continuity===7?continuity-1:continuity}}天</p>
+          <p class="get" v-show="continuity !==1 && continuity !== 7 ">点击领取</p>
         </div>
-        <div class="side">
-          <p class="integral-bg"><span>+</span><span>5</span></p>
-          <p class="bottom">第五天</p>
+        <div :class="continuity === 7?'two':'side'" @click="addScore(continuity === 7)">
+          <p class="integral-bg"><span>+</span><span>{{continuity===7?continuity:continuity===1?continuity+2:continuity+1}}</span></p>
+          <p class="bottom">第{{continuity===7?continuity:continuity===1?continuity+2:continuity+1}}天</p>
+          <p class="get" v-show="continuity === 7">点击领取</p>
         </div>
       </div>
       <div class="right">每七日一轮</div>
@@ -90,19 +92,45 @@
 <!--      <inlineCalendar />-->
     </van-popup>
     <div></div>
-<!--    <v-article></v-article>-->
   </div>
 </template>
 
 <script>
 import footer from "@/components/Footer";
 import Calender from '@/components/Calender/calender.vue'
+import { Toast } from 'vant';
+import {commonJs}  from '@/commonJs/index.js';
+
 
 var moment = require('moment');
 // console.log(moment().format('l'));
 // console.log(moment().date());
 // console.log(moment().toArray());
 // console.log(moment().format('YYYY-MM-DD'));
+let startDate = moment().format('YYYY-MM-DD');
+
+let startMonthText = moment().month();
+let startDateText = moment().date();
+let endDate = moment().add(1, 'd');
+let endMonthText = moment(endDate).month();
+let endDateText = moment(endDate).date();
+startMonthText++;
+endMonthText++;
+
+endDate = moment(endDate).format('YYYY-MM-DD');
+
+// console.log(startDateText)
+// console.log(startMonthText)
+// console.log(endDateText)
+// console.log(endMonthText)
+
+let isten = function (num) {
+  if(num < 10){
+    num = '0'+num;
+  }
+  return num;
+}
+
 
 export default {
     data(){
@@ -112,29 +140,36 @@ export default {
           is_hour_home: false, // 钟点房选择
           showCalendar: false, // 是否现实日期选择
           nowDate: new Date(),
-          roomType:1,
+          roomType:1, // 组件中的房间类型
           isShowDatePicker:true,
           hotel:'',
           notice:'',
           continuity:'',
           all_score:'',
+          already:'',
+          url:commonJs.url,
+          startDate:startDate,
+          endDate:endDate,
+
+          startMonthText:isten(startMonthText),
+          startDateText:isten(startDateText),
+          endMonthText:isten(endMonthText),
+          endDateText:isten(endDateText),
+          day:1,
         }
     },
     components: {
         "v-footer": footer,
         "Calender":Calender
     },
-  computed:{
-  },
     mounted(){
       this.$ajax.get('aixingtuan/api/index/index',null,{ load: true}).then((res)=>{
-        console.log(res);
         this.all_score = res.data.all_score;
-        this.continuity = res.data.continuity;
+        this.continuity = res.data.continuity+=1;
         this.notice = res.data.notice[0].title;
         this.hotel = res.data.hotel;
-
-        this.images = this.hotel.image.split(',');
+        this.already = res.data.already;
+        this.images = this.hotel.image;
         let index = 0;
         setInterval(()=>{
           this.notice = res.data.notice[index].title;
@@ -147,18 +182,32 @@ export default {
       });
     },
     methods:{
-
-      asureClick (chooseDate) {
-        console.log(chooseDate)
+      // 领取积分
+      addScore(is_click){
+        console.log(is_click)
+        if(is_click&&this.already === 2){
+          this.$ajax.get('aixingtuan/api/index/score',{send_score:this.continuity},{ load: true}).then((res)=>{
+            Toast(res.msg);
+          });
+        }
+      },
+      asureClick (dateList) {
+        console.log(dateList)
         this.showCalendar = false;
-        // this.IS_SHOW_DATE_PICKER(false)
-        // this.CHECK_IN_OUT_INFO({
-        //   checkinDate: chooseDate.startDate.format,
-        //   checkoutDate: chooseDate.endDate.format
-        // })
+        this.startMonthText = dateList.startDate.format.slice(5,7);
+        this.endMonthText = dateList.endDate.format.slice(5,7);
+        this.startDateText = dateList.startDate.day;
+        this.endDateText = dateList.endDate.day;
+
+        this.startDate = dateList.startDate.format;
+        this.endDate = dateList.endDate.format;
       },
       go(){
-        this.$router.push({ path: '/hotel' });
+        console.log(this.startDate);
+        console.log(this.endDate);
+        this.$router.push({ path: '/hotel',query:{
+          is_hour_home:this.is_hour_home,startDate:this.startDate,endDate:this.endDate
+        } });
       }
     }
 }
