@@ -213,6 +213,7 @@
 import header from "@/components/Header/header";
 import footer from "@/components/Footer";
 import {commonJs}  from '@/commonJs/index.js';
+import {hotel}  from '@/api/index';
 
 var moment = require('moment');
 
@@ -255,7 +256,7 @@ export default {
     this.endMonthText = this.endDate.slice(5,7) || '';
     this.endDateText = this.endDate.slice(8,10) || '';
 
-    this.$ajax.get('/api/hotel/index',{
+    hotel({
       start_time:this.startDate,
       zhong:this.is_hour_home?1:'',
       peo_lng:0,

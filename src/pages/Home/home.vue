@@ -98,9 +98,9 @@
 <script>
 import footer from "@/components/Footer";
 import Calender from '@/components/Calender/calender.vue'
-import { Toast } from 'vant';
-import {isten,commonJs,weekDay}  from '@/commonJs/index.js';
-import axios from 'axios'
+import { Toast } from 'vant'
+import {isten,commonJs,weekDay}  from '@/commonJs/index.js'
+import {home,homeAddScore} from '@/api/index'
 
 
 var moment = require('moment');
@@ -159,7 +159,7 @@ export default {
         "Calender":Calender
     },
     mounted(){
-      this.$ajax.get('/api/index/index',null,{ load: true}).then((res)=>{
+      home().then((res)=>{
         this.all_score = res.data.all_score;
         this.continuity = res.data.continuity+=1;
         this.notice = res.data.notice[0].title;
@@ -180,8 +180,8 @@ export default {
     methods:{
       // 领取积分
       addScore(is_click){
-        if(is_click&&this.already){
-          this.$ajax.get('/api/index/score',{send_score:this.continuity},{ load: true}).then((res)=>{
+        if(is_click&&this.already===2){
+          homeAddScore({send_score:this.continuity}).then((res)=>{
             Toast(res.msg);
           });
         }
