@@ -41,11 +41,15 @@ const _request = (method, url ,data,load,loadMsg) => {
     forbidClick:true,
     message: '加载中...'
   });
+
   const headers = {
-    token: window.$globalHub.$store.getters.token || ''
+
   };
-  // const baseUrl = "https://css-itg.ext.hp.com/hpwxmobile/";
-  const baseUrl = "";
+  if(window.$globalHub){
+    // console.log(window.$globalHub.$store.getters.token);
+    headers.token = window.$globalHub.$store.getters.token || '';
+  }
+  const baseUrl = process.env.API;
   const configData = {
     url: baseUrl + url, // 请求的地址
     timeout: TIME_OUT, // 超时时间, 单位毫秒
@@ -84,15 +88,15 @@ const _request = (method, url ,data,load,loadMsg) => {
 class Ajax {
 
 
-  get = (url, data = {},{load = false,loadMsg = '加载中...'}) => {
+  get = (url, data = {},{load = false,loadMsg = '加载中...'} = {}) => {
     return _request('get', url, data, load,loadMsg)
   }
 
-  postForm = (url, data = {},{load = false,loadMsg = '加载中...'}) => {
+  postForm = (url, data = {},{load = false,loadMsg = '加载中...'} = {}) => {
     return _request('postForm', url, data, load,loadMsg)
   }
 
-  postJson = (url, data = {},{load = false,loadMsg = '加载中...'}) => {
+  postJson = (url, data = {},{load = false,loadMsg = '加载中...'} = {}) => {
     return _request('postJson', url, data,load,loadMsg)
   }
 

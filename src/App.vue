@@ -60,14 +60,23 @@ export default {
     //   document.documentElement.style.fontSize = deviceWidth / 10 + 'px'
     // }
     // console.log(window.location.href)
-    if(!this.token){
-      let token = this.$utils.getUrlKey('token');
-      if(token){
-        this.$store.dispatch('setToken', token);
-      }else{
-        window.location.href = `http://xt.aixingtuan.com/third/connect/wechat?url=${encodeURIComponent(window.location.href)}`;
-      }
-    }
+
+    console.log(this.token);
+    // if(!this.token){
+    //   let code = this.$utils.getUrlKey('code');
+    //   if(!code){
+    //     location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc4c761371120fe9b&redirect_uri='+encodeURIComponent(window.location.href)+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+    //   }else{
+    //     this.$ajax.get('api/user/third',{code:code}).then((res)=>{
+    //       console.log(res);
+    //       this.$store.dispatch('setToken', {toke:res.token,expires_in:res.expires_in});
+    //     });
+    //   }
+    // }
+
+        // window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc4c761371120fe9b&redirect_uri=${encodeURIComponent(window.location.href)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
+        // window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc4c761371120fe9b&redirect_uri=&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
+        // window.location.href = `http://xt.aixingtuan.com/third/connect/wechat?url=${encodeURIComponent(window.location.href)}`;
   },
   data (){
     return {

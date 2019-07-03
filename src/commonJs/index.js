@@ -1,6 +1,28 @@
 
 export const  commonJs = {
-  url: 'http://xt.aixingtuan.com',
+  url: 'http://xt.aixingtuan.com/',
+}
+
+export const weekDay = function (date) {
+  var week = {
+    "0": "日",
+    "1": "一",
+    "2": "二",
+    "3": "三",
+    "4": "四",
+    "5": "五",
+    "6": "六"
+  };
+  var num = new Date(date).getDay();
+  return week[num];
+}
+
+// 小于10 加0
+export const isten = function (num) {
+  if(num < 10){
+    num = '0'+num;
+  }
+  return num;
 }
 
 //

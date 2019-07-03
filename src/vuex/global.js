@@ -1,3 +1,4 @@
+// import localStorage from '../utils/localStorage'
 
 let types = {
   LOADING: 'setLoading', // 设置loading 加载动画
@@ -21,7 +22,9 @@ const state = {
 }
 const getters = {
   token: (state) => {
-    return state.token
+    let token = localStorage.getItem('token');
+    // console.log(token)
+    return token;
   },
   loading: (state) => {
     return state.loading
@@ -56,7 +59,9 @@ const mutations = {
     state.bottomTab = val
   },
   [types.SET_TOKEN] (state, val) {
-    state.token = val
+    localStorage.setItem('token',val.token || '');
+    localStorage.setItem('expires_in',new Date().getTime()+val.expires_in || '');
+    state.token = val.token || '';
   }
 }
 const actions = {

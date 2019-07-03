@@ -45,7 +45,7 @@
           <span class="date-num">{{startDateText}}</span>
           <span class="text-riyue">日</span>
         </div>
-        <p>今日</p>
+        <p>{{today === startDate ?'今日':'周'}}{{today === startDate ? '': startDate | week}}</p>
       </div>
       <div class="num-date">
         <p>1晚<b class="left"></b><b class="right"></b></p>
@@ -58,7 +58,7 @@
           <span class="date-num">{{endDateText}}</span>
           <span class="text-riyue">日</span>
         </div>
-        <p>明日</p>
+        <p>{{tomorrow === endDate ?'明日':'周'}}{{tomorrow === endDate ? '': endDate | week}}</p>
       </div>
     </div>
 
@@ -222,6 +222,8 @@ export default {
       return {
         url:commonJs.url,
         score:4,
+        today:moment().format('YYYY-MM-DD'),
+        tomorrow:moment(moment().add(1, 'd')).format('YYYY-MM-DD'),
         startDate:this.$route.query.startDate || moment().format('YYYY-MM-DD'),
         endDate:this.$route.query.endDate || moment(moment().add(1, 'd')).format('YYYY-MM-DD'),
         is_hour_home:this.$route.query.is_hour_home || false, // 是否钟点房
@@ -246,14 +248,14 @@ export default {
       "v-footer": footer,
   },
   mounted(){
-    // console.log(this.startDate)
-    // console.log(this.endDate)
+    console.log(this.startDate)
+    console.log(this.endDate)
     this.startMonthText = this.startDate.slice(5,7) || '';
     this.startDateText = this.startDate.slice(8,10) || '';
     this.endMonthText = this.endDate.slice(5,7) || '';
     this.endDateText = this.endDate.slice(8,10) || '';
 
-    this.$ajax.get('aixingtuan/api/hotel/index',{
+    this.$ajax.get('/api/hotel/index',{
       start_time:this.startDate,
       zhong:this.is_hour_home?1:'',
       peo_lng:0,

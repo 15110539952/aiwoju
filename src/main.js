@@ -7,9 +7,16 @@ import router from './router'
 import ajax from './axios'
 import 'amfe-flexible/index.js'
 Vue.prototype.$ajax = ajax;
+
 Vue.prototype.$url = {
   aixingtuan:'wx.aixingtuan.com',
+  url: 'http://xt.aixingtuan.com/',
 };
+
+
+import vueJsonp from 'vue-jsonp'
+Vue.use(vueJsonp)
+
 // import MintUI from 'mint-ui'
 // Vue.use(MintUI)
 
@@ -61,6 +68,21 @@ router.beforeEach((to, from, next) => {
   }
   next();
 });
+
+
+Vue.filter('week', function (date) {
+  let week = {
+    "0": "日",
+    "1": "一",
+    "2": "二",
+    "3": "三",
+    "4": "四",
+    "5": "五",
+    "6": "六"
+  };
+  let num = new Date(date).getDay();
+  return week[num];
+})
 
 Vue.config.productionTip = false
 

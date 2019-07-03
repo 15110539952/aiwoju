@@ -22,7 +22,7 @@
           <p class="font55">{{startDateText}}</p>
           <p class="column">
             <span><span class="font24">{{startMonthText}}</span><span class="font20">月</span></span>
-            <span class="font24">周一</span>
+            <span class="font24">周{{startDate | week}}</span>
           </p>
           <p>入住</p>
           <p>—</p>
@@ -30,7 +30,7 @@
           <p class="font55">{{endDateText}}</p>
           <p class="column">
             <span><span class="font24">{{endMonthText}}</span><span class="font20">月</span></span>
-            <span class="font24">周一</span>
+            <span class="font24">周{{endDate | week}}</span>
           </p>
           <p><span class="font36">{{day}}</span><span class="font24">晚</span></p>
         </div>
@@ -64,17 +64,17 @@
         <div :class="continuity === 1?'two':'side'" @click="addScore(continuity === 1)">
           <p class="integral-bg"><span>+</span><span>{{continuity===1?continuity:continuity===7?continuity-2:continuity-1}}</span></p>
           <p class="bottom">第{{continuity===1?continuity:continuity===7?continuity-2:continuity-1}}天</p>
-          <p class="get" v-show="continuity === 1">点击领取</p>
+          <p class="get" v-show="continuity === 1 && already === 2">点击领取</p>
         </div>
         <div :class="continuity !== 1&&continuity!==7?'two':'side'" @click="addScore(continuity !== 1&&continuity!==7)">
           <p class="integral-bg"><span>+</span><span>{{continuity===1?continuity+1:continuity===7?continuity-1:continuity}}</span></p>
           <p class="bottom">第{{continuity===1?continuity+1:continuity===7?continuity-1:continuity}}天</p>
-          <p class="get" v-show="continuity !==1 && continuity !== 7 ">点击领取</p>
+          <p class="get" v-show="continuity !==1 && continuity !== 7  && already === 2">点击领取</p>
         </div>
         <div :class="continuity === 7?'two':'side'" @click="addScore(continuity === 7)">
           <p class="integral-bg"><span>+</span><span>{{continuity===7?continuity:continuity===1?continuity+2:continuity+1}}</span></p>
           <p class="bottom">第{{continuity===7?continuity:continuity===1?continuity+2:continuity+1}}天</p>
-          <p class="get" v-show="continuity === 7">点击领取</p>
+          <p class="get" v-show="continuity === 7 && already === 2">点击领取</p>
         </div>
       </div>
       <div class="right">每七日一轮</div>
@@ -99,7 +99,8 @@
 import footer from "@/components/Footer";
 import Calender from '@/components/Calender/calender.vue'
 import { Toast } from 'vant';
-import {commonJs}  from '@/commonJs/index.js';
+import {isten,commonJs,weekDay}  from '@/commonJs/index.js';
+import axios from 'axios'
 
 
 var moment = require('moment');
@@ -124,12 +125,7 @@ endDate = moment(endDate).format('YYYY-MM-DD');
 // console.log(endDateText)
 // console.log(endMonthText)
 
-let isten = function (num) {
-  if(num < 10){
-    num = '0'+num;
-  }
-  return num;
-}
+
 
 
 export default {
@@ -146,7 +142,7 @@ export default {
           notice:'',
           continuity:'',
           all_score:'',
-          already:'',
+          already:1,
           url:commonJs.url,
           startDate:startDate,
           endDate:endDate,
@@ -163,7 +159,7 @@ export default {
         "Calender":Calender
     },
     mounted(){
-      this.$ajax.get('aixingtuan/api/index/index',null,{ load: true}).then((res)=>{
+      this.$ajax.get('/api/index/index',null,{ load: true}).then((res)=>{
         this.all_score = res.data.all_score;
         this.continuity = res.data.continuity+=1;
         this.notice = res.data.notice[0].title;
@@ -184,9 +180,8 @@ export default {
     methods:{
       // 领取积分
       addScore(is_click){
-        console.log(is_click)
-        if(is_click&&this.already === 2){
-          this.$ajax.get('aixingtuan/api/index/score',{send_score:this.continuity},{ load: true}).then((res)=>{
+        if(is_click&&this.already){
+          this.$ajax.get('/api/index/score',{send_score:this.continuity},{ load: true}).then((res)=>{
             Toast(res.msg);
           });
         }
@@ -201,6 +196,9 @@ export default {
 
         this.startDate = dateList.startDate.format;
         this.endDate = dateList.endDate.format;
+
+
+        this.day = moment(dateList.endDate.format).diff(moment(dateList.startDate.format), 'days')
       },
       go(){
         console.log(this.startDate);

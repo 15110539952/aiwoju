@@ -248,7 +248,7 @@
     border: 0;
     z-index: 9;
     background: #FF8900 !important;
-    color: #fff;
+    color: #fff !important;
   }
   #header {
     display: flex;
