@@ -142,7 +142,7 @@
         walking.search(start, end);
 
         let startIcon=new BMap.Icon(require('assets/img/map-end-icon.png'), new BMap.Size(64,94));
-        let endIcon = new BMap.Icon(require('assets/img/map-end-icon.png'), new BMap.Size(64,94));
+        let endIcon = new BMap.Icon(require('assets/img/map-start-icon.png'), new BMap.Size(64,94));
         walking.setMarkersSetCallback(function(result){
           result[0].marker.setIcon(startIcon);
           result[1].marker.setIcon(endIcon);

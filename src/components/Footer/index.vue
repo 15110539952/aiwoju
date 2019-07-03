@@ -77,7 +77,7 @@ export default {
   img{
     &.home{
       width: 57px;
-      height: 60px;
+      height: 56px;
     }
     &.order{
       width: 54px;
