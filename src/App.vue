@@ -60,7 +60,7 @@ export default {
     //   document.documentElement.style.fontSize = deviceWidth / 10 + 'px'
     // }
     // console.log(window.location.href)
-
+    this.$store.dispatch('setToken', {token:'0b8214e6-f721-4c4b-b42b-391da4418ea2',expires_in:31536000});
     console.log(this.token);
     // if(!this.token){
     //   let code = this.$utils.getUrlKey('code');

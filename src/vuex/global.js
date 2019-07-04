@@ -7,10 +7,12 @@ let types = {
   SET_DIRECTION: 'setDirection', // 页面切换动画
   SET_BOTTOM_TAB: 'setBottomTab', // 页面底部导航栏
   SET_TOKEN: 'setToken', // 缓存页面token
+  START_END_DATE: 'startendDate', // 酒店日期选择开始结束时间
 };
 
 const state = {
   token:'',
+  startendDate:{},
   loading: {
     show: false,
     msg: ''
@@ -25,6 +27,9 @@ const getters = {
     let token = localStorage.getItem('token');
     // console.log(token)
     return token;
+  },
+  startendDate: (state) => {
+    return state.startendDate
   },
   loading: (state) => {
     return state.loading
@@ -58,6 +63,9 @@ const mutations = {
   [types.SET_BOTTOM_TAB] (state, val) {
     state.bottomTab = val
   },
+  [types.START_END_DATE] (state, obj) {
+    state.startendDate = obj
+  },
   [types.SET_TOKEN] (state, val) {
     localStorage.setItem('token',val.token || '');
     localStorage.setItem('expires_in',new Date().getTime()+val.expires_in || '');
@@ -65,6 +73,10 @@ const mutations = {
   }
 }
 const actions = {
+  // 设置日期开始结束时间
+  setStartEndDate ({ commit }, val) {
+    commit(types.START_END_DATE, val)
+  },
   // 设置全局 loading
   setLoading ({ commit }, { load, msg }) {
     commit(types.LOADING, { show: load, msg: msg })

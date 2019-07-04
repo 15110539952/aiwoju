@@ -168,13 +168,15 @@ export default {
         this.images = this.hotel.image;
         let index = 0;
         setInterval(()=>{
-          this.notice = res.data.notice[index].title;
-          if(index<res.data.notice.length){
-            index++;
+          index++;
+          if(index < res.data.notice.length){
+            this.notice = res.data.notice[index].title;
           }else{
+            this.notice = res.data.notice[0].title;
             index = 0;
           }
-        },150000)
+        },5000)
+        this.$store.dispatch('setStartEndDate',{start:this.startDate,end:this.endDate});
       });
     },
     methods:{
@@ -182,6 +184,7 @@ export default {
       addScore(is_click){
         if(is_click&&this.already===2){
           homeAddScore({send_score:this.continuity}).then((res)=>{
+            this.already = 1;
             Toast(res.msg);
           });
         }
@@ -197,6 +200,7 @@ export default {
         this.startDate = dateList.startDate.format;
         this.endDate = dateList.endDate.format;
 
+        this.$store.dispatch('setStartEndDate',{start:this.startDate,end:this.endDate});
 
         this.day = moment(dateList.endDate.format).diff(moment(dateList.startDate.format), 'days')
       },
@@ -204,7 +208,7 @@ export default {
         console.log(this.startDate);
         console.log(this.endDate);
         this.$router.push({ path: '/hotel',query:{
-          is_hour_home:this.is_hour_home,startDate:this.startDate,endDate:this.endDate
+          is_hour_home:this.is_hour_home?1:0,startDate:this.startDate,endDate:this.endDate
         } });
       }
     }

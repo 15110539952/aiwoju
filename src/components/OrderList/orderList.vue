@@ -6,12 +6,12 @@
       <div @click="orderDetail(item)" class="item-bg">
         <div class="top">
           <i class="iconfont iconHOME-quyushousuo"></i>
-          <span class="room-name">商务大床房·1间</span>
-          <span class="room-price">￥456</span>
+          <span class="room-name">{{item.name}}·{{item.num}}间</span>
+          <span class="room-price">￥{{item.amount}}</span>
         </div>
         <div class="room-info">
-          <p>12月01日-12月02日 | <span>共1晚</span></p>
-          <p class="time">到店时间：14：00</p>
+          <p>{{item.predict_begin_time}}-{{item.predict_end_time}} | <span>共{{item.day_count}}晚</span></p>
+          <p class="time">到店时间：{{item.predict_coming_time}}</p>
         </div>
       </div>
       <div class="bottom">
@@ -29,7 +29,7 @@
           <span class="time" v-if="item.status === 1">00：29：59</span>
         </div>
         <div class="btn-type">
-          <div class="close-btn" v-if="item.status === 1">取消</div>
+          <div class="close-btn" v-if="item.status === 0">取消</div>
           <van-button class="to-pay"
                       type="default"
                       v-if="item.status === 0"

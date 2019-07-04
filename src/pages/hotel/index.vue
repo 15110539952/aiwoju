@@ -48,7 +48,7 @@
         <p>{{today === startDate ?'今日':'周'}}{{today === startDate ? '': startDate | week}}</p>
       </div>
       <div class="num-date">
-        <p>1晚<b class="left"></b><b class="right"></b></p>
+        <p>{{day}}晚<b class="left"></b><b class="right"></b></p>
       </div>
       <div class="end">
         <p class="text1">离店时间</p>
@@ -88,7 +88,7 @@
 <!--            <p class="bottom">当前星享卡可代扣100元</p>-->
           </div>
           <div class="fix">
-            <van-button type="primary" size="large" @click="order()" :disabled="item.room_rest_num===0">在线预定</van-button>
+            <van-button type="primary" size="large" @click="order(item.id)" :disabled="item.room_rest_num===0">在线预定</van-button>
           </div>
         </div>
       </div>
@@ -118,7 +118,7 @@
             <!--            <p class="bottom">当前星享卡可代扣100元</p>-->
           </div>
           <div class="fix">
-            <van-button type="primary" size="large" @click="order()" :disabled="item.room_rest_num===0">在线预定</van-button>
+            <van-button type="primary" size="large" @click="order(item.id)" :disabled="item.room_rest_num===0">在线预定</van-button>
           </div>
         </div>
       </div>
@@ -215,7 +215,7 @@ import footer from "@/components/Footer";
 import {commonJs}  from '@/commonJs/index.js';
 import {hotel}  from '@/api/index';
 
-var moment = require('moment');
+let moment = require('moment');
 
 export default {
   name:'hotel',
@@ -225,9 +225,9 @@ export default {
         score:4,
         today:moment().format('YYYY-MM-DD'),
         tomorrow:moment(moment().add(1, 'd')).format('YYYY-MM-DD'),
-        startDate:this.$route.query.startDate || moment().format('YYYY-MM-DD'),
-        endDate:this.$route.query.endDate || moment(moment().add(1, 'd')).format('YYYY-MM-DD'),
-        is_hour_home:this.$route.query.is_hour_home || false, // 是否钟点房
+        // startDate:this.$route.query.startDate || moment().format('YYYY-MM-DD'),
+        // endDate:this.$route.query.endDate || moment(moment().add(1, 'd')).format('YYYY-MM-DD'),
+        is_hour_home:this.$route.query.is_hour_home, // 是否钟点房
 
         hotel:'',
         hotel_room_type:'', // 正常房间
@@ -242,23 +242,34 @@ export default {
         startDateText:'', // 开始日
         endMonthText:'', // 结束月
         endDateText:'', // 结束日
+        day:'',// 共几晚
       }
   },
   components: {
       "v-header": header,
       "v-footer": footer,
   },
+  computed:{
+    'startDate'(){
+      return this.$store.getters.startendDate.start || moment().format('YYYY-MM-DD');
+    },
+    'endDate'(){
+      return this.$store.getters.startendDate.end || moment(moment().add(1, 'd')).format('YYYY-MM-DD');
+    },
+  },
   mounted(){
-    console.log(this.startDate)
-    console.log(this.endDate)
+    // console.log(this.$store.getters.startendDate)
+    // console.log(this.startDate)
+    // console.log(this.endDate)
     this.startMonthText = this.startDate.slice(5,7) || '';
     this.startDateText = this.startDate.slice(8,10) || '';
     this.endMonthText = this.endDate.slice(5,7) || '';
     this.endDateText = this.endDate.slice(8,10) || '';
+    this.day = moment(this.endDate).diff(moment(this.startDate), 'days');
 
     hotel({
       start_time:this.startDate,
-      zhong:this.is_hour_home?1:'',
+      zhong:this.is_hour_home === '1'?1:'',
       peo_lng:0,
       peo_lat:0,
     },{ load: true}).then((res)=>{
@@ -271,12 +282,12 @@ export default {
       this.zongfenText = res.data.zongfen.toFixed(1);
       this.juli = res.data.juli;
 
-      console.log(res);
     });
   },
   methods:{
-    order(){
-      this.$router.push('/hotelorder');
+    order(id){
+      console.log(id)
+      this.$router.push({path:'/hotelorder',query:{id:id}});
     }
   }
 }

@@ -57,7 +57,8 @@ export default new Router({
       name: 'hotelorder', // 酒店下单
       component: () => import('pages/hotelorder'),
       meta: {
-        isKeepLive: true
+        isKeepLive: true,
+        ifDoFresh:false,
       }
     },
     {

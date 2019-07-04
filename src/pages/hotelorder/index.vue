@@ -2,14 +2,16 @@
   <div class="hotelorder">
     <v-header title="酒店下单"></v-header>
     <div class="top-bg"></div>
-    <div class="room-info">
+    <div class="room-info" v-if="hotelorder">
       <div class="room-name">
-        <p>商务大床房</p>
+        <p>{{hotelorder.hotel_room_type.name}}</p>
         <p @click="$router.push('/hotelDetail')">房间详情<i class="iconfont iconarrow-right"></i></p>
       </div>
-      <p class="address">太原市-小店区学府街体育路口28号</p>
-      <div class="date"><span>12月01日-12月02日</span><b></b><span>共1晚</span></div>
-      <p class="room-on">大床·不含早·有wifi</p>
+      <p class="address">{{hotelorder.hotel.address}}</p>
+      <div class="date"><span>{{startDateText}}-{{endDateText}}</span><b></b><span>共{{hotelorder.night}}晚</span></div>
+      <p class="room-on">
+        <span v-for="item in hotelorder.hotel_room_type.list">{{item}}<i>·</i></span>
+      </p>
       <div class="on-tip"><i class="iconfont iconorder-jinggao"></i>入住前可免费取消</div>
     </div>
 
@@ -61,7 +63,7 @@
 
     <div class="footer-order">
       <div class="left">
-        <span class="text">总计</span><span class="price">￥253.00</span>
+        <span class="text">总计</span><span class="price">￥{{hotelorder.tot_price}}</span>
       </div>
       <div class="right">
         <p class="info" @click="coseShow=!coseShow">明细</p>
@@ -99,11 +101,14 @@
                       v-model="coseShow"
                       title="费用明细">
       <div class="coseBox">
-        <div class="one"><p class="left">在线支付</p><p class="right">￥253</p></div>
-        <div class="two"><p class="left">房费</p><p class="right">2晚1间 共 ￥376</p></div>
+        <div class="one"><p class="left">在线支付</p><p class="right">￥{{hotelorder.tot_price}}</p></div>
+        <div class="two"><p class="left">房费</p><p class="right">{{hotelorder.night}}晚{{hotelorder.num}}间 共 ￥{{hotelorder.tot_price}}</p></div>
         <div class="coseList">
-          <div class="item"><p class="left"><span>12月01日-12月02日</span>单早</p><p class="right">1X ￥200</p></div>
-          <div class="item"><p class="left"><span>12月01日-12月02日</span>单早</p><p class="right">1X ￥200</p></div>
+          <div class="item" v-for="(item,index) in hotelorder.mingxi" :key="index">
+            <p class="left"><span>{{item.day}}-{{item.day_two}}</span>{{item.breakfast}}</p>
+            <p class="right">{{item.num}} X ￥{{item.price}}</p>
+          </div>
+<!--          <div class="item"><p class="left"><span>12月01日-12月02日</span>单早</p><p class="right">1X ￥200</p></div>-->
         </div>
       </div>
     </van-action-sheet>
@@ -113,10 +118,20 @@
 
 <script>
 import header from "@/components/Header/header";
+import { Toast } from 'vant'
+import {commonJs,isten}  from '@/commonJs/index.js';
+import {hotelOrder,orderCreate} from '@/api/index'
+
+let moment = require('moment');
+
 export default {
   name:'hotelorder',
   data(){
       return {
+        startDateText:'',
+        endDateText:'',
+        hotelorder:'',
+        room_type_id:this.$route.query.id || '',
         is_loading:false,
         actionSheetTitle:'',
         actionSheetShow:false,
@@ -159,6 +174,14 @@ export default {
         coseShow:false,
       }
   },
+  computed:{
+    'startDate'(){
+      return this.$store.getters.startendDate.start || moment().format('YYYY-MM-DD');
+    },
+    'endDate'(){
+      return this.$store.getters.startendDate.end || moment(moment().add(1, 'd')).format('YYYY-MM-DD');
+    },
+  },
   watch:{
     'actionPeopleId'(i){
       this.peopleList.forEach((data,index)=>{
@@ -197,18 +220,72 @@ export default {
       "v-header": header,
   },
   mounted(){
+    this.getDetail();
     this.$nextTick(() => {
 
     })
   },
   methods:{
-    order(){
-      this.is_loading = true;
-      setTimeout(()=>{
-        this.is_loading = false;
-        this.$router.push('/payOrder');
-      },1000);
+    getDetail(){
+      // console.log(this.startDate)
+      // console.log(this.endDate)
+      // console.log(moment(this.startDate).toArray())
+      // console.log(moment(this.endDate).toArray())
+      let s = moment(this.startDate).toArray();
+      let e = moment(this.endDate).toArray();
+
+      this.startDateText = isten(s[1]+=1)+'月'+isten(s[2])+'日';
+      this.endDateText = isten(e[1]+=1)+'月'+isten(e[2])+'日';
+
+      hotelOrder({start_time: this.startDate,end_time:this.endDate,room_type_id:this.room_type_id,}).then(res=>{
+        console.log(res.data)
+        this.hotelorder = res.data;
+      });
     },
+    order(){
+      if(!this.user.name){
+        Toast('请输入入住人');
+        return;
+      }
+      if(!this.user.phone){
+        Toast('请输入入住人手机号');
+        return;
+      }
+      this.is_loading = true;
+      orderCreate({
+        room_type_id:this.room_type_id,
+        num:this.actionRoomId,
+        start_time:this.startDate,
+        end_time:this.endDate,
+        look_time:this.timeList[this.actionTimeId],
+        user_name: this.user.name,
+        user_phone: this.user.phone,
+      }).then(res=>{
+        console.log(res);
+        this.is_loading = false;
+        this.$router.push({path:'/payOrder',query:{id: res.data.data.order_id}});
+      });
+      // setTimeout(()=>{
+      // },1000);
+    },
+  },
+  activated(){
+    if(this.$route.meta.ifDoFresh){
+      //重置ifDoFresh
+      this.$route.meta.ifDoFresh = false;
+      //获取列表数据方法第一参数为是否重置搜索条件和页数
+      this.getDetail();
+      this.actionRoomId = 1;
+      this.actionTimeId = 1;
+    }else{
+
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    if(from.name === 'hotel') {
+      to.meta.ifDoFresh = true;
+    }
+    next();
   },
 }
 

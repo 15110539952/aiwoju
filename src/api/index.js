@@ -18,6 +18,43 @@ export function hotel(data) {
 }
 
 
+//酒店房间详情
+export function hotelDetail(data) {
+  return ajax.get('api/hotel/hotel_detail',data,{ load: true})
+}
+
+//酒店评论列表
+export function hotelComment(data) {
+  return ajax.get('api/hotel/hotel_comment',data,{ load: true})
+}
+
+//酒店下单信息获取
+export function hotelOrder(data) {
+  return ajax.get('api/order/payorder',data,{ load: true})
+}
+
+
+//酒店提交订单准备支付
+export function orderCreate(data) {
+  return ajax.get('api/order/create_order',data,{ load: true})
+}
+
+//订单列表
+export function orderList(data) {
+  return ajax.get('api/order/index',data,{ load: true})
+}
+
+//我的
+export function user(data) {
+  return ajax.get('api/user/index',data,{ load: true})
+}
+
+
+//个人信息显示设置
+export function modify(data) {
+  return ajax.get('api/user/modify',data,{ load: true})
+}
+
 // import Test from './test'
 //
 // export {

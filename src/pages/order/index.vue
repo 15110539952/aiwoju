@@ -13,7 +13,7 @@
     <div class="new-order-title">最新订单</div>
 
     <!--region 订单列表-->
-    <v-orderList :orderList="orderList"></v-orderList>
+    <v-orderList :orderList="orderData"></v-orderList>
     <!--endregion-->
 
 
@@ -27,8 +27,13 @@
 
 <script>
 import header from "@/components/Header/header";
-import orderList from "@/components/OrderList/orderList";
+import orderListTemplate from "@/components/OrderList/orderList";
 import footer from "@/components/Footer";
+import { Toast } from 'vant'
+import {commonJs,weekDay}  from '@/commonJs/index.js'
+import {orderList} from '@/api/index'
+
+
 export default {
   name:'order',
   data(){
@@ -62,16 +67,28 @@ export default {
             name:'',
             status:6, // 已关闭
           },
-        ]
+        ],
+        orderData:[],
+        current_page:1,
+        last_page:1,
+        totalList:'',
       }
   },
   components: {
       "v-header": header,
       "v-footer": footer,
-      "v-orderList": orderList,
+      "v-orderList": orderListTemplate,
   },
   mounted() {
     document.querySelector('body').setAttribute('style', 'background-color:#fff')
+    orderList().then(res=>{
+      console.log(res);
+      let dataList = res.data.data;
+      dataList.forEach(item=>{
+        item.status = parseInt(item.status);
+      });
+      this.orderData = dataList;
+    })
   },
   beforeDestroy() {
     document.querySelector('body').removeAttribute('style')
