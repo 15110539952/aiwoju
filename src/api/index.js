@@ -39,9 +39,19 @@ export function orderCreate(data) {
   return ajax.get('api/order/create_order',data,{ load: true})
 }
 
+//订单支付页面信息
+export function orderInfor(data) {
+  return ajax.get('api/order/order_infor',data,{ load: true})
+}
+
 //订单列表
 export function orderList(data) {
   return ajax.get('api/order/index',data,{ load: true})
+}
+
+//订单详情页面
+export function orderDetail(data) {
+  return ajax.get('api/order/detail',data,{ load: true})
 }
 
 //我的

@@ -22,7 +22,7 @@
             :item.status === 2?'待入住'
             :item.status === 3?'已结束'
             :item.status === 5?'已退款'
-            :item.status === 6?'已完结，订单已关闭':''
+            :item.status === 6?'已完结，订单已关闭':'已完结'
             }}
           </span>
           <span class="label-close" v-else>已取消</span>
@@ -33,7 +33,7 @@
           <van-button class="to-pay"
                       type="default"
                       v-if="item.status === 0"
-                      @click="">去支付</van-button>
+                      @click="$router.push({path:'/payOrder',query:{id:item.id}})">去支付</van-button>
           <van-button class="to-pay"
                       type="default"
                       v-if="item.status === 3"
@@ -63,8 +63,11 @@
       },
       methods:{
         orderDetail(item){
-          this.$router.push('/orderDetail');
+          this.$router.push({path:'/orderDetail',query:{id:item.id}});
         },
+        // payOrder(id){
+        //   this.$router.push({path:'/payOrder',query:{id:id}});
+        // },
       }
     }
 </script>

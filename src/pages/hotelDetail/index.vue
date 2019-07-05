@@ -26,7 +26,15 @@
       </div>
       <div class="list-box twoId">
         <p class="title">酒店详情</p>
-        <div class="hotel_description" v-html="hotel_infor.remark"></div>      </div>
+        <div class="room-type">
+          <p><span>装修时间：</span>{{hotel_infor.renovate_time}}年</p>
+          <p><span>开业时间：</span>{{hotel_infor.opeen_time}}年</p>
+          <p><span>楼层高度：</span>{{hotel_infor.floor_num}}</p>
+          <p><span>房间数：</span>{{hotel_infor.room_num}}</p>
+        </div>
+        <div class="hotel_description" v-html="hotel_infor.remark"></div>
+        <div class="room-content">铂涛集团位居全国酒店业前列,旗下近20个品牌,超1亿会员,门店总数超5000家.铂涛集团 诚邀您加盟实现合作共赢铂涛集团位居全国酒店业前列,旗下近20个品牌,超1亿会员</div>
+      </div>
       <div class="list-box">
         <p class="title">交通信息</p>
 
@@ -133,12 +141,6 @@ export default {
 <!--          <div class="type-list">不允许携带宠物</div>-->
 <!--        </div>-->
 
-<!--        <div class="room-type">-->
-<!--          <p><span>装修时间：</span>2018年</p>-->
-<!--          <p><span>开业时间：</span>2018年</p>-->
-<!--          <p><span>楼层高度：</span>33</p>-->
-<!--          <p><span>楼层高度：</span>2033</p>-->
-<!--        </div>-->
 <!--        <div class="room-content">铂涛集团位居全国酒店业前列,旗下近20个品牌,超1亿会员,门店总数超5000家.铂涛集团 诚邀您加盟实现合作共赢铂涛集团位居全国酒店业前列,旗下近20个品牌,超1亿会员</div>-->
 <!--        <div class="road-item">-->
 <!--          <p class="road-title">王府井地铁站</p>-->

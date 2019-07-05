@@ -2,36 +2,41 @@
   <div class="pay-order">
     <v-header title="订单支付"></v-header>
     <div class="order-detail">
-      <p class="room-name">商务大床房</p>
-      <div class="room-info"><span>大床·不含早·有wifi</span><span>12月01日-12月02日 共1晚</span></div>
+      <p class="room-name">{{orderInfor.hotel_room_type_id}}</p>
+      <div class="room-info">
+        <p class="left">
+          <span v-for="item in orderInfor.open">{{item}}<i>.</i></span>
+        </p>
+        <span>{{startDateText}}-{{endDateText}} 共{{orderInfor.day_count}}晚</span>
+      </div>
     </div>
-    <div class="time">支付剩余时间  00：29：59</div>
-    <div class="price">￥<span>253.00</span></div>
+    <div class="time">支付剩余时间  {{arrTime[0]+':'+arrTime[1]+':'+arrTime[2]}}</div>
+    <div class="price">￥<span>{{orderInfor.total_amount}}</span></div>
     <div class="room-tip">
-      <p>商务大床房·不含早·1月2日入住</p>
+      <p>{{orderInfor.hotel_room_type_id}}·{{orderInfor.breakfast}}·{{startDateText}}入住</p>
       <!--      <i class="iconfont iconarrow-right"></i>-->
     </div>
     <div class="price-type">
-      <div class="weixin van-hairline--bottom" @click="priceId = 1">
+      <div class="weixin" @click="priceId = 1">
         <p class="left">
           <i class="iconfont iconweixin"></i>
           <span>微信支付</span>
         </p>
         <i class="iconfont iconxuanze-duoxuan" :class="priceId===1?'active':''"></i>
       </div>
-      <div class="alipay" @click="priceId = 2">
-        <p class="left">
-          <i class="iconfont iconzhifubao"></i>
-          <span>支付宝支付</span>
-        </p>
-        <i class="iconfont iconxuanze-duoxuan" :class="priceId===2?'active':''"></i>
-      </div>
+<!--      <div class="alipay" @click="priceId = 2">-->
+<!--        <p class="left">-->
+<!--          <i class="iconfont iconzhifubao"></i>-->
+<!--          <span>支付宝支付</span>-->
+<!--        </p>-->
+<!--        <i class="iconfont iconxuanze-duoxuan" :class="priceId===2?'active':''"></i>-->
+<!--      </div>-->
     </div>
     <van-button type="primary" size="large" @click="pay">确认支付</van-button>
     <van-popup v-model="isPay">
       <div class="is-pay">
         <p class="title-tip">支付未完成</p>
-        <p class="price">￥<span>253.00</span></p>
+        <p class="price">￥<span>{{orderInfor.total_amount}}</span></p>
         <p class="tip-content">如已扣款，但订单未能完成请及时联系客服</p>
         <div class="btn van-hairline--top">
           <b></b>
@@ -45,15 +50,51 @@
 
 <script>
 import header from "@/components/Header/header";
+import { Toast } from 'vant'
+import {commonUrl,isten,countDown}  from '@/commonJs/index.js'
+import {orderInfor} from '@/api/index'
+let moment = require('moment');
+
 export default {
   data(){
       return {
+        id:'',
         priceId:1,
         isPay:false,
+        orderInfor:'',
+        startDateText:'',
+        endDateText:'',
+        createtime:'',
+        arrTime:['00','00','00']
       }
   },
   components: {
       "v-header": header,
+  },
+  mounted(){
+    this.id = this.$route.query.id || '';
+    console.log(this.id);
+    if(!this.id){
+      this.$router.goBack(-1);
+    }
+    orderInfor({order_id:this.id}).then(res=>{
+      if(res.code === 4002){
+        this.$router.goBack();
+        Toast('订单失效');
+      }
+      this.orderInfor = res.data;
+      let s = moment(res.data.predict_begin_time).toArray();
+      let e = moment(res.data.predict_end_time).toArray();
+      this.startDateText = isten(s[1]+=1)+'月'+isten(s[2])+'日';
+      this.endDateText = isten(e[1]+=1)+'月'+isten(e[2])+'日';
+
+      this.createtime = res.data.createtime.length === 13?res.data.createtime.length:res.data.createtime*1000;
+    })
+    setInterval(() => {
+      let endTime = this.createtime+30*60*1000;
+      let nowTime = new Date().getTime();
+      this.arrTime = countDown(endTime-nowTime);
+    },1000);
   },
   methods:{
     pay(index){
@@ -65,7 +106,7 @@ export default {
       }else{
         this.isPay = true;
       }
-    }
+    },
   }
 }
 

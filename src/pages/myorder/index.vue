@@ -16,7 +16,7 @@
            @click="changeTab(0)">全部</div>
     </div>
     <!--region 订单列表-->
-    <v-orderList :orderList="orderList"></v-orderList>
+    <v-orderList :orderList="orderData"></v-orderList>
     <!--endregion-->
     <div class="month-list" v-if="tabId === 0">
       <p class="month-item"><span>11</span>月订单</p>
@@ -33,8 +33,11 @@
 
 <script>
 import header from "@/components/Header/header";
-import orderList from "@/components/OrderList/orderList";
-import footer from "@/components/Footer";
+import orderListTemplate from "@/components/OrderList/orderList";
+import { Toast } from 'vant'
+import {commonJs,weekDay}  from '@/commonJs/index.js'
+import {orderList} from '@/api/index'
+
 export default {
   name:'order',
   data(){
@@ -70,15 +73,23 @@ export default {
           },
         ],
         tabId:0,
+        orderData:[],
       }
   },
   components: {
       "v-header": header,
-      "v-orderList": orderList,
+      "v-orderList": orderListTemplate,
   },
   mounted() {
     this.tabId = this.$route.params.id;
     console.log(this.tabId);
+    orderList().then(res=>{
+      let dataList = res.data.data;
+      dataList.forEach(item=>{
+        item.status = parseInt(item.status);
+      });
+      this.orderData = dataList;
+    })
   },
   methods:{
     changeTab(index){

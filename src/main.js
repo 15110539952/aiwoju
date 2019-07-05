@@ -52,6 +52,9 @@ Vue.use(Calendar);
 //     }
 //   }
 // })
+// 复制粘贴
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 
 // main.js中全局引入工具
 import utils from './utils/index.js'

@@ -21,7 +21,9 @@
         <p class="content">{{actionRoomId}}间</p>
         <i class="iconfont iconarrow-right"></i>
       </div>
-      <div class="info-item input-list van-hairline--bottom">
+      <div class="info-item input-list van-hairline--bottom"
+           v-for="(item,index) in actionRoomId"
+           :key="index">
         <div class="input-box">
           <div class="info-item van-hairline--bottom">
             <p class="label">入住人:</p>
@@ -39,11 +41,11 @@
         <p class="content"><span class="time">{{timeList[actionTimeId]}}</span>(整晚保留)</p>
         <i class="iconfont iconarrow-right"></i>
       </div>
-      <div class="info-item">
-        <p class="label">优惠券:</p>
-        <p class="content">节日优享20元券</p>
-        <i class="iconfont iconarrow-right"></i>
-      </div>
+<!--      <div class="info-item">-->
+<!--        <p class="label">优惠券:</p>-->
+<!--        <p class="content">节日优享20元券</p>-->
+<!--        <i class="iconfont iconarrow-right"></i>-->
+<!--      </div>-->
     </div>
 
 
@@ -63,7 +65,7 @@
 
     <div class="footer-order">
       <div class="left">
-        <span class="text">总计</span><span class="price">￥{{hotelorder.tot_price}}</span>
+        <span class="text">总计</span><span class="price">￥{{(hotelorder.night*actionRoomId*hotelorder.tot_price).toFixed(2)}}</span>
       </div>
       <div class="right">
         <p class="info" @click="coseShow=!coseShow">明细</p>
@@ -101,12 +103,12 @@
                       v-model="coseShow"
                       title="费用明细">
       <div class="coseBox">
-        <div class="one"><p class="left">在线支付</p><p class="right">￥{{hotelorder.tot_price}}</p></div>
-        <div class="two"><p class="left">房费</p><p class="right">{{hotelorder.night}}晚{{hotelorder.num}}间 共 ￥{{hotelorder.tot_price}}</p></div>
+        <div class="one"><p class="left">在线支付</p><p class="right">￥{{(hotelorder.night*actionRoomId*hotelorder.tot_price).toFixed(2)}}</p></div>
+        <div class="two"><p class="left">房费</p><p class="right">{{hotelorder.night}}晚{{actionRoomId}}间 共 ￥{{(hotelorder.night*actionRoomId*hotelorder.tot_price).toFixed(2)}}</p></div>
         <div class="coseList">
           <div class="item" v-for="(item,index) in hotelorder.mingxi" :key="index">
             <p class="left"><span>{{item.day}}-{{item.day_two}}</span>{{item.breakfast}}</p>
-            <p class="right">{{item.num}} X ￥{{item.price}}</p>
+            <p class="right">{{actionRoomId}} X ￥{{(actionRoomId*item.price).toFixed(2)}}</p>
           </div>
 <!--          <div class="item"><p class="left"><span>12月01日-12月02日</span>单早</p><p class="right">1X ￥200</p></div>-->
         </div>
@@ -155,6 +157,7 @@ export default {
           '23:00',
           '0点以后',
         ],
+        users:[{name:'',phone:''},{name:'',phone:''}],
         user:{
           name:'',
           phone:''
@@ -180,9 +183,15 @@ export default {
     },
     'endDate'(){
       return this.$store.getters.startendDate.end || moment(moment().add(1, 'd')).format('YYYY-MM-DD');
-    },
+    }
   },
   watch:{
+    // 'actionRoomId'(val){
+    //   this.users = [];
+    //   for(let i=0;i<val;i++){
+    //     this.users.push({name: '', phone: ''})
+    //   }
+    // },
     'actionPeopleId'(i){
       this.peopleList.forEach((data,index)=>{
         data.status = false;

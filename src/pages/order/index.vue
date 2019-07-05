@@ -80,9 +80,7 @@ export default {
       "v-orderList": orderListTemplate,
   },
   mounted() {
-    document.querySelector('body').setAttribute('style', 'background-color:#fff')
     orderList().then(res=>{
-      console.log(res);
       let dataList = res.data.data;
       dataList.forEach(item=>{
         item.status = parseInt(item.status);

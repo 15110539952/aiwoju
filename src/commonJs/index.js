@@ -3,6 +3,10 @@ export const  commonJs = {
   url: 'http://xt.aixingtuan.com/',
 }
 
+export const  commonUrl = {
+  url: 'http://xt.aixingtuan.com/',
+}
+
 export const weekDay = function (date) {
   var week = {
     "0": "日",
@@ -23,6 +27,37 @@ export const isten = function (num) {
     num = '0'+num;
   }
   return num;
+}
+
+export const countDown = function (time) {
+  //将传递过来的时间戳差值转化为时分形式
+  let ts = time
+  let days = parseInt(ts / (1000 * 60 * 60 * 24));
+  let hours = parseInt((ts % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  let minutes = parseInt((ts % (1000 * 60 * 60)) / (1000 * 60));
+  let seconds = parseInt((ts % (1000 * 60)) / 1000);
+  let str = `${seconds}秒`;
+
+  if(hours > 0){
+    if(hours<10){
+      hours = '0' + hours;
+    }
+    return [hours,minutes,seconds];
+  }
+  if(minutes > 0){
+    if(minutes < 10){
+      minutes = '0' + minutes;
+    }
+    return ['00',minutes,seconds]
+  }
+  if(minutes<=0){
+    return ['00','00','00']
+  }
+  return ['00','00',seconds]
+  // if(minutes > 0){
+  //   str = `${minutes}分钟${seconds}秒`
+  // }
+  // return str
 }
 
 //

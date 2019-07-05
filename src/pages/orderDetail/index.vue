@@ -69,13 +69,13 @@
 
     <!--region 价格模块-->
     <div class="price-list">
-      <div class="item">
-        <p>使用优惠券：</p>
-        <p>-￥<span>123</span></p>
-      </div>
+<!--      <div class="item">-->
+<!--        <p>使用优惠券：</p>-->
+<!--        <p>-￥<span></span></p>-->
+<!--      </div>-->
       <div class="item">
         <p>在线支付：</p>
-        <p>￥<span>456</span></p>
+        <p>￥<span>{{orderDetail.amount}}</span></p>
       </div>
     </div>
     <!--endregion-->
@@ -98,27 +98,30 @@
         </div>
       </div>
       <div class="room-info">
-        <p class="title">商务大床房·1间</p>
+        <p class="title">{{orderDetail.name}}·{{orderDetail.num}}间</p>
         <p class="room-type">
-          <span>19㎡</span>
-          <span>1.8X2m大床</span>
-          <span>2人入住</span>
-          <span>有窗</span>
+          <span v-for="item in orderDetail.itemlist">{{item}}</span>
+<!--          <span>1.8X2m大床</span>-->
+<!--          <span>2人入住</span>-->
+<!--          <span>有窗</span>-->
         </p>
-        <div class="room-time"><span>2018-12-01</span> 至 <span>2018-12-02</span> 1晚</div>
+        <div class="room-time"><span>{{orderDetail.predict_begin_time}}</span> 至 <span>{{orderDetail.predict_end_time}}</span> {{orderDetail.day_count}}晚</div>
       </div>
     </div>
 
     <div class="user-info">
-      <div class="item"><span class="label">入住人：</span><span class="content">郭晓小</span></div>
-      <div class="item"><span class="label">联系电话：</span><span class="content number">12345678901</span></div>
-      <div class="item"><span class="label">预计到店：</span><span class="content number">14：00</span></div>
+      <div class="item"><span class="label">入住人：</span><span class="content">{{orderDetail.phone}}</span></div>
+      <div class="item"><span class="label">联系电话：</span><span class="content number">{{orderDetail.oname}}</span></div>
+      <div class="item"><span class="label">预计到店：</span><span class="content number">{{orderDetail.predict_coming_time}}</span></div>
     </div>
 
     <div class="orderid">
       <p class="label">订单号：</p>
-      <p class="content"><span class="number">1812001456</span>
-        <van-button type="default">复制</van-button>
+      <p class="content"><span class="number">{{orderDetail.order_code}}</span>
+        <van-button type="default"
+                    v-clipboard:copy="orderDetail.order_code"
+                    v-clipboard:success="onCopy"
+                    v-clipboard:error="onCopy">复制</van-button>
       </p>
     </div>
 
@@ -199,6 +202,12 @@
 
 <script>
 import header from "@/components/Header/header";
+import { Toast } from 'vant'
+import {commonUrl,isten,countDown}  from '@/commonJs/index.js'
+import {orderDetail} from '@/api/index'
+
+// let moment = require('moment');
+
 export default {
   name:'orderDetail',
   data(){
@@ -208,6 +217,7 @@ export default {
         closeText:'取消',
         confirmText: '确认选择',
         orderStatus: 0,
+        orderDetail:'',
       }
   },
   watch:{
@@ -221,6 +231,17 @@ export default {
   },
   components: {
       "v-header": header,
+  },
+  mounted(){
+    this.id = this.$route.query.id || '';
+    // if(!this.id){
+    //   this.$router.goBack(-1);
+    // }
+    orderDetail({id: this.id}).then(res=>{
+      console.log(res);
+      this.orderDetail = res.data;
+
+    });
   },
   methods:{
     closeOrder(i){
@@ -249,6 +270,13 @@ export default {
           done(false);
         }
 
+      }
+    },
+    onCopy(e){
+      if(e.action === 'copy'){
+        Toast('复制成功');
+      }else{
+        Toast('复制失败')
       }
     }
   }

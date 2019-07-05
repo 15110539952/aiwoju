@@ -94,6 +94,9 @@ export default new Router({
       path: '/myorder',
       name: 'myorder', // 订单列表
       component: () => import('pages/myorder'),
+      meta:{
+        background:'white'
+      }
     },
     {
       path: '/myevaluate',

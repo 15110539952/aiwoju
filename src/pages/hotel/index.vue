@@ -110,7 +110,7 @@
              v-for="(room,room_index) in item.list"
              :key="'roomlist_'+room_index">
           <div class="type">
-            <p class="top"></p>
+            <p class="top">{{room.hour}}小时</p>
             <p class="bottom">限时取消</p>
           </div>
           <div class="price">

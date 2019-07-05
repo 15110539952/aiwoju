@@ -185,6 +185,7 @@ export default {
         if(is_click&&this.already===2){
           homeAddScore({send_score:this.continuity}).then((res)=>{
             this.already = 1;
+            this.all_score = this.all_score + this.continuity;
             Toast(res.msg);
           });
         }
