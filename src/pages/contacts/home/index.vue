@@ -1,11 +1,11 @@
 <template>
   <div class="contacts">
     <div class="contacts-list">
-      <div class="contact-item" v-for="(item,index) in 6">
+      <div class="contact-item" v-for="(item,index) in checkinList">
         <div class="name-phone">
-          <span class="name">吴振尧</span><span>15821641647</span>
+          <span class="name">{{item.name}}</span><span>{{item.phone}}</span>
         </div>
-        <p class="edit"  @click="$router.push({name:'contacts-save',params: {name: 'edit'}})">编辑</p>
+        <p class="edit"  @click="$router.push({name:'contacts-save',params: {name: 'edit',id:item.id}})">编辑</p>
       </div>
     </div>
     <div class="footer">
@@ -17,17 +17,24 @@
 <script>
 import header from "@/components/Header/header";
 import { Dialog } from 'vant';
+import { Toast } from 'vant'
+import {commonJs}  from '@/commonJs/index.js';
+import {checkinList}  from '@/api/index';
 
 export default {
   data(){
       return {
-
+        checkinList:''
       }
   },
   components: {
       "v-header": header,
   },
-  mounted(){},
+  mounted(){
+    checkinList().then(res=>{
+      this.checkinList = res.data;
+    });
+  },
   methods:{
     changePhone(){
 

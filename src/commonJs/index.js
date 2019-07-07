@@ -1,3 +1,4 @@
+let moment = require('moment');
 
 export const  commonJs = {
   url: 'http://xt.aixingtuan.com/',
@@ -7,6 +8,15 @@ export const  commonUrl = {
   url: 'http://xt.aixingtuan.com/',
 }
 
+// 时间戳日期转换
+export const strDate = function(date){
+  if(date.length<13){
+    date*=1000;
+  }
+  return moment(date).format('YYYY-MM-DD');
+}
+
+//星期
 export const weekDay = function (date) {
   var week = {
     "0": "日",
@@ -59,6 +69,7 @@ export const countDown = function (time) {
   // }
   // return str
 }
+
 
 //
 // moment.locale('zh-cn', {

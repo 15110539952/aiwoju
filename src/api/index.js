@@ -60,9 +60,44 @@ export function user(data) {
 }
 
 
-//个人信息显示设置
+//注册成为酒店经纪人接口
+export function registerAgent(data) {
+  return ajax.get('api/user/register_agent',data,{ load: true})
+}
+
+//个人信息显示
 export function modify(data) {
   return ajax.get('api/user/modify',data,{ load: true})
+}
+
+//个人信息提交设置
+export function modifySubmit(data) {
+  return ajax.post('api/user/modify',data,{ load: true})
+}
+
+//入住人列表
+export function checkinList(data) {
+  return ajax.get('api/user/index_checkin',data,{ load: true})
+}
+
+//编辑入住人--显示
+export function checkinEdit(data) {
+  return ajax.get('api/user/edit_checkin',data,{ load: true})
+}
+
+//编辑入住人--更新
+export function checkinEditUpdate(data) {
+  return ajax.post(`api/user/edit_checkin/id/${data.id}`,data,{ load: true})
+}
+
+//编辑入住人--删除
+export function checkinDelete(data) {
+  return ajax.get(`api/user/del_checkin/`,data,{ load: true})
+}
+
+//编辑入住人--增加
+export function checkinAdd(data) {
+  return ajax.get(`api/user/add_checkin/`,data,{ load: true})
 }
 
 // import Test from './test'

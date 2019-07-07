@@ -199,8 +199,7 @@
                 width="100%"
                 height="100%"
                 fit="cover"
-                :src="url+img"
-              />
+                :src="url+img"><template v-slot:error>加载失败</template></van-image>
             </div>
           </div>
         </div>
@@ -227,7 +226,7 @@ export default {
         tomorrow:moment(moment().add(1, 'd')).format('YYYY-MM-DD'),
         // startDate:this.$route.query.startDate || moment().format('YYYY-MM-DD'),
         // endDate:this.$route.query.endDate || moment(moment().add(1, 'd')).format('YYYY-MM-DD'),
-        is_hour_home:this.$route.query.is_hour_home, // 是否钟点房
+        // is_hour_home:this.$route.query.is_hour_home, // 是否钟点房
 
         hotel:'',
         hotel_room_type:'', // 正常房间
@@ -258,6 +257,8 @@ export default {
     },
   },
   mounted(){
+    let zhong = parseInt(this.$route.query.is_hour_home);
+    console.log(zhong);
     // console.log(this.$store.getters.startendDate)
     // console.log(this.startDate)
     // console.log(this.endDate)
@@ -269,7 +270,7 @@ export default {
 
     hotel({
       start_time:this.startDate,
-      zhong:this.is_hour_home === '1'?1:'',
+      zhong:zhong?1:'',
       peo_lng:0,
       peo_lat:0,
     },{ load: true}).then((res)=>{

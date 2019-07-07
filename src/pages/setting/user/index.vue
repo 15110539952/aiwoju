@@ -8,7 +8,7 @@
         width="100%"
         height="100%"
         fit="cover"
-        :src="require('assets/img/dear.png')"
+        :src="modify.avatar"
       /></span><i class="iconfont iconarrow-right"></i></p>
       </div>
       <div class="item bg-active" @click="datePopup = true">
@@ -18,12 +18,12 @@
       <div class="item">
         <p>性别</p>
         <div class="sex-type">
-          <p :class="sex === 1?'active':''" @click="sex = 1">
-            <img v-if="sex === 1" class="select-img" src="~assets/img/carcle-select-yes.png">
+          <p :class="gender === 1?'active':''" @click="bindSex(1)">
+            <img v-if="gender === 1" class="select-img" src="~assets/img/carcle-select-yes.png">
             <img v-else class="select-img" src="~assets/img/carcle-select-no.png">
             <span>男神</span></p>
-          <p :class="sex === 2?'active':''" @click="sex = 2">
-            <img v-if="sex === 2" class="select-img" src="~assets/img/carcle-select-yes.png">
+          <p :class="gender === 2?'active':''" @click="bindSex(2)">
+            <img v-if="gender === 2" class="select-img" src="~assets/img/carcle-select-yes.png">
             <img v-else class="select-img" src="~assets/img/carcle-select-no.png">
             <span>女神</span></p>
         </div>
@@ -40,7 +40,7 @@
         :item-height="88"
         :visible-item-count="5"
         @cancel="datePopup=false"
-        @confirm="birthdayChange"
+        @confirm="birthdayConfirm"
         :formatter="formatter"
       />
     </van-popup>
@@ -50,6 +50,9 @@
 <script>
 import header from "@/components/Header/header";
 import montent from 'moment'
+import { Toast } from 'vant'
+import {commonUrl}  from '@/commonJs/index.js'
+import {modify,modifySubmit} from '@/api/index'
 
 export default {
   data(){
@@ -59,17 +62,34 @@ export default {
         minDate: new Date('1950-01-01'),
         maxDate: new Date(),
         birthday: '',
-        sex:1, // 1男，2女
+        gender:0, // 1男，2女
+        modify:'',
       }
   },
   components: {
       "v-header": header,
   },
+  mounted(){
+    modify().then(res=> {
+      this.modify = res.data;
+      this.birthday = res.data.birthday;
+      this.gender = res.data.gender;
+    });
+  },
   methods:{
-    birthdayChange(){
+    birthdayConfirm(){
       this.birthday = montent(this.currentDate).format('YYYY-MM-DD');
       console.log(this.birthday)
       this.datePopup = false; // 关闭生日选择
+      modifySubmit({birthday:this.birthday}).then(res=> {
+        Toast(res.msg);
+      });
+    },
+    bindSex(i){
+      this.gender = i;
+      modifySubmit({gender:this.gender}).then(res=> {
+        Toast(res.msg);
+      });
     },
     formatter(type, value) {
       if (type === 'year') {

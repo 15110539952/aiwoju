@@ -226,6 +226,8 @@ export default {
     orderDetail({id: this.id}).then(res=>{
       console.log(res);
       this.orderDetail = res.data;
+      this.orderDetail.predict_begin_time = commonUrl.strDate(res.data.predict_begin_time);
+      this.orderDetail.predict_end_time = commonUrl.strDate(res.data.predict_end_time);
       this.sub_order = res.data.sub_order;
       this.sub_order.forEach(item=>{
         item.active = false;

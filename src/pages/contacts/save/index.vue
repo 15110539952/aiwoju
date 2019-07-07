@@ -33,6 +33,9 @@
 <script>
 import header from "@/components/Header/header";
 import { Dialog } from 'vant';
+import { Toast } from 'vant'
+import {commonJs}  from '@/commonJs/index.js';
+import {checkinEdit,checkinEditUpdate,checkinDelete,checkinAdd}  from '@/api/index';
 
 export default {
   data(){
@@ -40,6 +43,7 @@ export default {
         name:'',
         phone:'',
         type: 'add',
+        id:'',
       }
   },
   components: {
@@ -48,9 +52,48 @@ export default {
   mounted(){
     this.type = this.$route.params.name || 'add';
     console.log(this.type);
+    this.id = this.$route.params.id || '';
+    if(this.type === 'edit'){
+      checkinEdit({id: this.id}).then(res=>{
+        this.name = res.data.name || '';
+        this.phone = res.data.phone || ''
+      });
+    }
   },
   methods:{
     save(){
+      if(!this.name){
+        Toast('请输入联系人姓名');
+        return;
+      }
+      if(!this.phone){
+        Toast('请输入联系人手机号');
+        return;
+      }
+      let data = {
+        name:this.name,
+        phone:this.phone,
+        id:this.id
+      };
+      if(this.type === 'add'){
+        checkinAdd(data).then(res=>{
+          if(res.code === 2000){
+            Toast('保存成功');
+            this.$router.goBack();
+          }else{
+            Toast(res.msg);
+          }
+        });
+      }else{
+        checkinEditUpdate(data).then(res=>{
+          if(res.code === 2000){
+            Toast('修改成功');
+            this.$router.goBack();
+          }else{
+            Toast(res.msg);
+          }
+        });
+      }
 
     },
     deleted(){
@@ -60,7 +103,14 @@ export default {
         message: ''
       }).then(() => {
         // on confirm
-        this.$router.goBack(-1)
+        checkinDelete({id:this.id}).then(res=>{
+          if(res.code === 2000){
+            Toast('删除成功');
+            this.$router.goBack();
+          }else{
+            Toast(res.msg);
+          }
+        });
       }).catch(() => {
         // on cancel
       });
