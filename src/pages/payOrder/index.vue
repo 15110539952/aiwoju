@@ -100,7 +100,7 @@ export default {
     pay(index){
       if(index === '1'){
         this.isPay = false;
-        this.$router.push('/orderDetail');
+        this.$router.push({path:'/orderDetail',query:{id:this.id}});
       }else if(index === '2'){
         this.isPay = false;
       }else{

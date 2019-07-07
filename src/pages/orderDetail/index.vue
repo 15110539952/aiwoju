@@ -188,7 +188,7 @@
 import header from "@/components/Header/header";
 import { Toast } from 'vant'
 import {commonUrl,isten,countDown}  from '@/commonJs/index.js'
-import {orderDetail} from '@/api/index'
+import {orderDetail,orderCancel} from '@/api/index'
 
 // let moment = require('moment');
 
@@ -244,6 +244,11 @@ export default {
         this.close_orderIds[index] = '';
       }
       console.log(this.close_orderIds);
+      return;
+      let close_orderIdsStr = this.close_orderIds.join(',');
+      // orderCancel({ids:this.close_orderIdsStr}).then(res=>{
+      //   console.log(res.data);
+      // })
     },
     closeOrder(i){
       if(!this.isCloseSelect){

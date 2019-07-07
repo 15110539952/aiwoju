@@ -4,13 +4,13 @@
     <div class="order-tab">
       <div class="tab one"
            :class="tabId===1?'active':''"
-           @click="changeTab(1)">待付款<span class="one" v-if="false">10</span></div>
+           @click="changeTab(1)">待付款<span class="one" v-if="wait_pay>0">{{wait_pay}}</span></div>
       <div class="tab two"
            :class="tabId===2?'active':''"
-           @click="changeTab(2)">待入住/评价<span class="two" v-if="">29</span></div>
+           @click="changeTab(2)">待入住/评价<span class="two" v-if="wait_live>0">{{wait_live}}</span></div>
       <div class="tab three"
            :class="tabId===3?'active':''"
-           @click="changeTab(3)">退款单<span class="three" v-if="false">66</span></div>
+           @click="changeTab(3)">退款单<span class="three" v-if="wait_refund>0">{{wait_refund}}</span></div>
       <div class="tab four"
            :class="tabId===0?'active':''"
            @click="changeTab(0)">全部</div>
@@ -74,6 +74,9 @@ export default {
         ],
         tabId:0,
         orderData:[],
+        wait_pay:'',
+        wait_live:'',
+        wait_refund:'',
       }
   },
   components: {
@@ -81,20 +84,27 @@ export default {
       "v-orderList": orderListTemplate,
   },
   mounted() {
-    this.tabId = this.$route.params.id;
-    console.log(this.tabId);
-    orderList().then(res=>{
-      let dataList = res.data.data;
-      dataList.forEach(item=>{
-        item.status = parseInt(item.status);
-      });
-      this.orderData = dataList;
-    })
+    this.tabId = this.$route.params.id || 0;
+    this.getOrderList(this.tabId===0?'99':this.tabId);
   },
   methods:{
     changeTab(index){
       this.tabId = index;
+      this.getOrderList(index===0?'99':index);
     },
+    getOrderList(id){
+      orderList({status:id}).then(res=>{
+        this.wait_pay = res.data.wait_pay;
+        this.wait_live = res.data.wait_live;
+        this.wait_refund = res.data.wait_refund;
+        let dataList = res.data.data;
+        dataList.forEach(item=>{
+          item.status = parseInt(item.status);
+        });
+        this.orderData = dataList;
+      })
+    },
+
   },
   beforeDestroy() {
   },

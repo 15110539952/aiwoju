@@ -54,6 +54,11 @@ export function orderDetail(data) {
   return ajax.get('api/order/detail',data,{ load: true})
 }
 
+//取消订单
+export function orderCancel(data) {
+  return ajax.get('api/order/cancel',data,{ load: true})
+}
+
 //我的
 export function user(data) {
   return ajax.get('api/user/index',data,{ load: true})
@@ -97,7 +102,7 @@ export function checkinDelete(data) {
 
 //编辑入住人--增加
 export function checkinAdd(data) {
-  return ajax.get(`api/user/add_checkin/`,data,{ load: true})
+  return ajax.post(`api/user/add_checkin/`,data,{ load: true})
 }
 
 // import Test from './test'

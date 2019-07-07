@@ -34,7 +34,7 @@
 import header from "@/components/Header/header";
 import { Dialog } from 'vant';
 import { Toast } from 'vant'
-import {commonJs}  from '@/commonJs/index.js';
+import {commonJs,isPhone}  from '@/commonJs/index.js';
 import {checkinEdit,checkinEditUpdate,checkinDelete,checkinAdd}  from '@/api/index';
 
 export default {
@@ -66,8 +66,8 @@ export default {
         Toast('请输入联系人姓名');
         return;
       }
-      if(!this.phone){
-        Toast('请输入联系人手机号');
+      if(!isPhone(this.phone)){
+        Toast('手机号格式不正确');
         return;
       }
       let data = {

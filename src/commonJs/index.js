@@ -8,6 +8,13 @@ export const  commonUrl = {
   url: 'http://xt.aixingtuan.com/',
 }
 
+//判断手机号是否正确
+export const isPhone = function(phone){
+  if(!(/^1[13456789]\d{9}$/.test(phone))){
+    return false;
+  }
+  return true;
+}
 // 时间戳日期转换
 export const strDate = function(date){
   if(date.length<13){

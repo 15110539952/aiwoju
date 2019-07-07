@@ -2,11 +2,11 @@
   <div class="order">
     <div class="order-tab">
       <div class="tab"
-           @click="$router.push({name:'myorder',params: {id: 1}})">待付款<span class="one" v-show="false">10</span></div>
+           @click="$router.push({name:'myorder',params: {id: 1}})">待付款<span class="one" v-if="wait_pay>0">{{wait_pay}}</span></div>
       <div class="tab two"
-           @click="$router.push({name:'myorder',params: {id: 2}})">待入住/评价<span class="two">29</span></div>
+           @click="$router.push({name:'myorder',params: {id: 2}})">待入住/评价<span class="two" v-if="wait_live>0">{{wait_live}}</span></div>
       <div class="tab"
-           @click="$router.push({name:'myorder',params: {id: 3}})">退款单<span class="three">66</span></div>
+           @click="$router.push({name:'myorder',params: {id: 3}})">退款单<span class="three" v-if="wait_refund>0">{{wait_refund}}</span></div>
       <div class="tab four"
            @click="$router.push({name:'myorder',params: {id: 0}})">全部</div>
     </div>
@@ -72,6 +72,9 @@ export default {
         current_page:1,
         last_page:1,
         totalList:'',
+        wait_pay:'',
+        wait_live:'',
+        wait_refund:'',
       }
   },
   components: {
@@ -80,7 +83,10 @@ export default {
       "v-orderList": orderListTemplate,
   },
   mounted() {
-    orderList().then(res=>{
+    orderList({status:'98'}).then(res=>{
+      this.wait_pay = res.data.wait_pay;
+      this.wait_live = res.data.wait_live;
+      this.wait_refund = res.data.wait_refund;
       let dataList = res.data.data;
       dataList.forEach(item=>{
         item.status = parseInt(item.status);
