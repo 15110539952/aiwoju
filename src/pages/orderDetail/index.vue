@@ -81,7 +81,7 @@
     <!--endregion-->
     <div class="hotel-info">
       <div class="address active-bg">
-        <p>小店区学府街体育路口长治路405号9层</p><i class="iconfont iconarrow-right"></i>
+        <p>{{orderDetail.address}}</p><i class="iconfont iconarrow-right"></i>
       </div>
       <div class="hotel-tab">
         <div class="hotel-address">
@@ -158,28 +158,12 @@
       :confirmButtonText="confirmText">
       <div class="is-pay">
         <div class="close-room-select" v-if="!isCloseSelect">
-          <div class="item">
-            <div class="room" @click="">
-              <p>商务大床房</p><i class="iconfont iconxuanze-duoxuan" :class="'active'"></i>
+          <div class="item" v-for="(item,index) in sub_order" :key="index">
+            <div class="room" @click="closeSelect(item,index)">
+              <p>{{item.type_name}}</p><i class="iconfont iconxuanze-duoxuan" :class="item.active&&item.status<2&&item.status===10?'active':''"></i>
             </div>
             <div class="date">
-              <p>2018/12/01 - 2018/12/02    1晚</p><p>￥456</p>
-            </div>
-          </div>
-          <div class="item">
-            <div class="room" @click="">
-              <p>商务大床房</p><i class="iconfont iconxuanze-duoxuan" :class="''"></i>
-            </div>
-            <div class="date">
-              <p>2018/12/01 - 2018/12/02    1晚</p><p>￥456</p>
-            </div>
-          </div>
-          <div class="item">
-            <div class="room" @click="">
-              <p>商务大床房</p><i class="iconfont iconxuanze-duoxuan" :class="'active'"></i>
-            </div>
-            <div class="date">
-              <p>2018/12/01 - 2018/12/02    1晚</p><p>￥456</p>
+              <p>{{item.begin}} - {{item.end}}    {{orderDetail.day_count}}晚</p><p>￥{{item.price}}</p>
             </div>
           </div>
         </div>
@@ -218,6 +202,8 @@ export default {
         confirmText: '确认选择',
         orderStatus: 0,
         orderDetail:'',
+        sub_order:[],
+        close_orderIds:[]
       }
   },
   watch:{
@@ -234,21 +220,35 @@ export default {
   },
   mounted(){
     this.id = this.$route.query.id || '';
-    // if(!this.id){
-    //   this.$router.goBack(-1);
-    // }
+    if(!this.id){
+      this.$router.goBack(-1);
+    }
     orderDetail({id: this.id}).then(res=>{
       console.log(res);
       this.orderDetail = res.data;
-
+      this.sub_order = res.data.sub_order;
+      this.sub_order.forEach(item=>{
+        item.active = false;
+      });
     });
   },
   methods:{
+    closeSelect(item,index){
+      item.active = !item.active;
+      this.$set(this.sub_order,index,item) ;
+      if(item.active){
+        this.close_orderIds[index] = item.id;
+      }else{
+        this.close_orderIds[index] = '';
+      }
+      console.log(this.close_orderIds);
+    },
     closeOrder(i){
       if(!this.isCloseSelect){
         this.closeText = '取消订单';
         this.confirmText = '退出';
       }
+      console.log(i)
       // if(i){
       // }
       // this.isCloseOrder= false;

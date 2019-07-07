@@ -15,13 +15,13 @@
 <!--      </keep-alive>-->
 <!--    </transition>-->
 
-    <transition :name="transitionName">
+    <transition :name="transitionFade">
     <keep-alive>
       <router-view v-if="$route.meta.isKeepLive" class="child-view"></router-view>
     </keep-alive>
     </transition>
 
-    <transition :name="transitionName">
+    <transition :name="transitionFade">
       <router-view v-if="!$route.meta.isKeepLive" class="child-view"></router-view>
     </transition>
 
@@ -80,7 +80,8 @@ export default {
   },
   data (){
     return {
-      transitionName: 'slide-right',
+      transitionFade: 'fade',
+      // transitionName: 'slide-right',
     }
   },
   watch:{

@@ -175,7 +175,7 @@ export default {
             this.notice = res.data.notice[0].title;
             index = 0;
           }
-        },5000)
+        },8000)
         this.$store.dispatch('setStartEndDate',{start:this.startDate,end:this.endDate});
       });
     },
