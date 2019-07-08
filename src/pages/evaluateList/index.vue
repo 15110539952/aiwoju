@@ -4,7 +4,7 @@
     <div class="fixed-top">
       <div class="evaluate-top">
         <div class="left">
-          <p class="score"><span class="num">{{hotelComment.hotel_score}}.0</span><span class="text">分</span><span>{{hotelComment.hotel_ti}}</span></p>
+          <p class="score"><span class="num">{{hotelComment.hotel_score}}</span><span class="text">分</span><span>{{hotelComment.hotel_ti}}</span></p>
           <p class="eva-num">当前共有{{hotelComment.comment_num}}条评论</p>
         </div>
         <div class="right">
@@ -23,6 +23,10 @@
     </div>
 
     <div class="evaluate-list" v-if="evaluateList">
+      <EasyRefresh
+        :userSelect="false"
+        :loadMore="loadMore">
+
       <div class="evaluate-item"
            :key="'eva_'+index"
            v-for="(item,index) in evaluateList">
@@ -63,6 +67,18 @@
         <p>暂无评论</p>
         <p>这么好的酒店，么人“到此一游”吗？</p>
       </div>
+
+<!--        <template v-slot:footer>-->
+<!--          <MaterialFooter/>-->
+<!--        </template>-->
+      <template v-slot:footer>
+<!--        <ClassicsFooter/>-->
+<!--        <EmptyFooter/>-->
+<!--        <BezierBounceFooter/>-->
+        <BallPulseFooter/>
+<!--        <p style="font-size: 30px;height: 80px;color: #333;">加载更多</p>-->
+      </template>
+      </EasyRefresh>
     </div>
   </div>
 </template>
@@ -97,6 +113,7 @@ export default {
       this.comment_img = res.data.comment_img;
       this.comment_stat = res.data.comment_stat;
       this.evaluateList = res.data.comment;
+      this.hotelComment.hotel_score = this.hotelComment.hotel_score.toFixed(1);
     })
   },
   methods:{
@@ -112,6 +129,21 @@ export default {
         this.evaluateList = this.comment_stat;
       }
       document.documentElement.scrollTop = 0;
+    },
+    onRefresh(done) {
+      setTimeout(() => {
+        done()
+      }, 1000)
+    },
+    loadMore(done){
+      setTimeout(() => {
+        // if (this.itemCount >= 40) {
+        //   done(true)
+        // } else {
+        //   this.itemCount += 10
+          done(false)
+        // }
+      }, 1000)
     }
   }
 }
@@ -119,7 +151,7 @@ export default {
 </script>
 <style lang='less' scoped>
   @import 'index';
-  /*.child-view{*/
-  /*  padding-top: 440px;*/
-  /*}*/
+  .child-view{
+    height: 100%;
+  }
 </style>

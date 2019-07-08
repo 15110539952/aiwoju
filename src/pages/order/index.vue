@@ -17,7 +17,7 @@
     <!--endregion-->
 
 
-    <div class="no-order" v-show="!orderList.length">
+    <div class="no-order" v-show="!orderData.length">
       <img src="~assets/img/no-content.png">
       <p>您还没有订单哦，快去逛逛吧!</p>
     </div>

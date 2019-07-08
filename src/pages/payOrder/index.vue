@@ -2,10 +2,11 @@
   <div class="pay-order">
     <v-header title="订单支付"></v-header>
     <div class="order-detail">
-      <p class="room-name">{{orderInfor.hotel_room_type_id}}</p>
+      <p class="room-name">{{orderInfor.hotel_room_type_name}}</p>
       <div class="room-info">
         <p class="left">
-          <span v-for="item in orderInfor.open">{{item}}<i>.</i></span>
+          <span v-for="item in orderInfor.itemlist">{{item}} <i>·</i></span>
+          <span>{{orderInfor.breakfast}}</span>
         </p>
         <span>{{startDateText}}-{{endDateText}} 共{{orderInfor.day_count}}晚</span>
       </div>
@@ -49,10 +50,11 @@
 </template>
 
 <script>
+import wx from 'weixin-jsapi'
 import header from "@/components/Header/header";
 import { Toast } from 'vant'
 import {commonUrl,isten,countDown}  from '@/commonJs/index.js'
-import {orderInfor} from '@/api/index'
+import {orderInfor,getSign,payOrder} from '@/api/index'
 let moment = require('moment');
 
 export default {
@@ -65,15 +67,30 @@ export default {
         startDateText:'',
         endDateText:'',
         createtime:'',
-        arrTime:['00','00','00']
+        arrTime:['00','00','00'],
+        wxSign:'',
       }
   },
   components: {
       "v-header": header,
   },
+  created(){
+    getSign().then(res=>{
+      let data = res.data;
+      this.wxSign = data;
+      wx.config({
+        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: data.appId, // 必填，公众号的唯一标识
+        timestamp: data.timestamp, // 必填，生成签名的时间戳
+        nonceStr: data.nonceStr, // 必填，生成签名的随机串
+        signature: data.signature,// 必填，签名，见附录1
+        jsApiList: ['chooseWXPay']
+      });
+    });
+  },
   mounted(){
     this.id = this.$route.query.id || '';
-    console.log(this.id);
+    // console.log(this.id);
     if(!this.id){
       this.$router.goBack(-1);
     }
@@ -101,11 +118,41 @@ export default {
       if(index === '1'){
         this.isPay = false;
         this.$router.push({path:'/orderDetail',query:{id:this.id}});
+        return;
       }else if(index === '2'){
         this.isPay = false;
+        return;
       }else{
         this.isPay = true;
       }
+      payOrder({amount:this.orderInfor.total_amount,id:this.id}).then(res=>{
+        console.log(res);
+        if(res.code === 2000){
+          let data = res.data;
+          wx.ready(()=>{
+            wx.chooseWXPay({
+              timestamp: data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+              nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
+              package: data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+              signType: data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+              paySign: data.paySign, // 支付签名
+              success: (res)=> {
+// 支付成功后的回调函数
+                console.log('succ',res)
+                this.$router.push({path:'/orderDetail',query:{id:this.id}});
+              },
+              fail:(res)=>{
+                console.log('fail',res)
+
+              },
+              complete:(res)=>{
+                console.log('complete',res)
+              }
+            });
+          });
+
+        }
+      });
     },
   }
 }

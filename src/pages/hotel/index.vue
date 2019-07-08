@@ -161,7 +161,7 @@
         房间评价<p class="title-right" @click="$router.push('/evaluateList')">更多评价 <i class="iconfont iconarrow-right"></i></p>
       </div>
       <div class="facilities-score van-hairline--bottom">
-        <div class="left"><span>{{zongfen}}.0</span>分</div>
+        <div class="left"><span>{{zongfenText}}</span>分</div>
         <div class="right">
           <p>{{comment_num}}条评价</p>
           <p>
@@ -258,7 +258,7 @@ export default {
   },
   mounted(){
     let zhong = parseInt(this.$route.query.is_hour_home);
-    console.log(zhong);
+    // console.log(zhong);
     // console.log(this.$store.getters.startendDate)
     // console.log(this.startDate)
     // console.log(this.endDate)
@@ -279,7 +279,7 @@ export default {
       this.hotel_room_type2 = res.data.hotel_room_type2;
       this.comment = res.data.comment;
       this.comment_num = res.data.comment_num;
-      this.zongfen = res.data.zongfen;
+      this.zongfen = Math.round(res.data.zongfen);
       this.zongfenText = res.data.zongfen.toFixed(1);
       this.juli = res.data.juli;
 

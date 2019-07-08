@@ -151,8 +151,8 @@
       v-model="isCloseOrder"
       title="取消订单"
       showCancelButton
-      @confirm="closeOrder"
-      @cancel="closeOrder"
+      @confirm="closeOrder(1)"
+      @cancel="closeOrder(0)"
       :before-close="beforeClose"
       :cancelButtonText="closeText"
       :confirmButtonText="confirmText">
@@ -160,7 +160,7 @@
         <div class="close-room-select" v-if="!isCloseSelect">
           <div class="item" v-for="(item,index) in sub_order" :key="index">
             <div class="room" @click="closeSelect(item,index)">
-              <p>{{item.type_name}}</p><i class="iconfont iconxuanze-duoxuan" :class="item.active&&item.status<2&&item.status===10?'active':''"></i>
+              <p>{{item.type_name}}</p><i class="iconfont iconxuanze-duoxuan" :class="item.active?'active':''"></i>
             </div>
             <div class="date">
               <p>{{item.begin}} - {{item.end}}    {{orderDetail.day_count}}晚</p><p>￥{{item.price}}</p>
@@ -168,10 +168,10 @@
           </div>
         </div>
         <div class="confirm-select" v-else>
-          <p class="close-num">取消1间</p>
-          <div class="item">
-            <p>商务大床房    2018/12/01 - 2018/12/02    1晚</p>
-            <p>￥456</p>
+          <p class="close-num">取消{{close_order.length}}间</p>
+          <div class="item" v-for="(item,index) in close_order" :key="'close_order_'+index">
+            <p>{{item.type_name}}    {{item.begin}} - {{item.end}}    {{orderDetail.day_count}}晚</p>
+            <p>￥{{item.price}}</p>
           </div>
         </div>
         <div class="tip-content" v-show="isCloseSelect">
@@ -187,7 +187,7 @@
 <script>
 import header from "@/components/Header/header";
 import { Toast } from 'vant'
-import {commonUrl,isten,countDown}  from '@/commonJs/index.js'
+import {commonUrl,strDate,countDown}  from '@/commonJs/index.js'
 import {orderDetail,orderCancel} from '@/api/index'
 
 // let moment = require('moment');
@@ -202,8 +202,9 @@ export default {
         confirmText: '确认选择',
         orderStatus: 0,
         orderDetail:'',
-        sub_order:[],
-        close_orderIds:[]
+        sub_order:[], // 可以取消的子订单列表
+        close_order:[], // 选择好要取消的子订单列表
+        close_orderIds:[] // 选择好要取消的子订单id
       }
   },
   watch:{
@@ -223,49 +224,47 @@ export default {
     if(!this.id){
       this.$router.goBack(-1);
     }
-    orderDetail({id: this.id}).then(res=>{
-      console.log(res);
-      this.orderDetail = res.data;
-      this.orderDetail.predict_begin_time = commonUrl.strDate(res.data.predict_begin_time);
-      this.orderDetail.predict_end_time = commonUrl.strDate(res.data.predict_end_time);
-      this.sub_order = res.data.sub_order;
-      this.sub_order.forEach(item=>{
-        item.active = false;
-      });
-    });
+    this.getDetail();
   },
   methods:{
+    getDetail(){
+      orderDetail({id: this.id}).then(res=>{
+        this.orderDetail = res.data;
+        this.orderDetail.predict_begin_time = strDate(res.data.predict_begin_time);
+        this.orderDetail.predict_end_time = strDate(res.data.predict_end_time);
+        this.sub_order = res.data.sub_order.filter(res=>res.status<2);
+        this.sub_order.forEach(item=>{
+          item.active = false;
+        });
+      });
+    },
     closeSelect(item,index){
       item.active = !item.active;
       this.$set(this.sub_order,index,item) ;
-      if(item.active){
-        this.close_orderIds[index] = item.id;
-      }else{
-        this.close_orderIds[index] = '';
-      }
-      console.log(this.close_orderIds);
-      return;
-      let close_orderIdsStr = this.close_orderIds.join(',');
-      // orderCancel({ids:this.close_orderIdsStr}).then(res=>{
-      //   console.log(res.data);
-      // })
     },
     closeOrder(i){
-      if(!this.isCloseSelect){
-        this.closeText = '取消订单';
-        this.confirmText = '退出';
+      // 点击取消订单
+      if(i&&!this.isCloseSelect){
+        this.close_order = this.sub_order.filter(res=>res.active);
+        this.close_orderIds = [];
+        this.close_order.forEach(item=>{
+          this.close_orderIds.push(item.id);
+        });
       }
-      console.log(i)
-      // if(i){
-      // }
-      // this.isCloseOrder= false;
     },
     beforeClose(action, done){
       // console.log(action)
-      // console.log(this.isCloseSelect)
       if(!this.isCloseSelect){
-        this.isCloseSelect = true;
         if(action==='confirm'){
+          if(this.sub_order.filter(res=>res.active).length<1){
+            Toast('请选择需要取消的房间');
+            done(false);
+            return;
+          };
+          Toast.clear();
+          this.isCloseSelect = true;
+          this.closeText = '取消订单';
+          this.confirmText = '退出';
           done(false);
         }else{
           done();
@@ -274,7 +273,12 @@ export default {
         if(action==='confirm'){
           done()
         }else{
-          done(false);
+          orderCancel({ids:this.close_orderIds.join(',')}).then(res=>{
+            console.log(res.data);
+            Toast(res.msg);
+            this.getDetail();
+          });
+          done();
         }
 
       }
@@ -295,5 +299,6 @@ export default {
 
   .child-view{
     padding-top: 100px;
+    /*padding-bottom: 100px;*/
   }
 </style>

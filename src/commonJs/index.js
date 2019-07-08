@@ -17,7 +17,7 @@ export const isPhone = function(phone){
 }
 // 时间戳日期转换
 export const strDate = function(date){
-  if(date.length<13){
+  if(date.toString().length<13){
     date*=1000;
   }
   return moment(date).format('YYYY-MM-DD');

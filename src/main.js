@@ -13,6 +13,10 @@ Vue.prototype.$url = {
   url: 'http://xt.aixingtuan.com/',
 };
 
+// 上拉加载下拉刷新
+import EasyRefresh from 'vue-easyrefresh'
+Vue.use(EasyRefresh)
+
 
 import vueJsonp from 'vue-jsonp'
 Vue.use(vueJsonp)

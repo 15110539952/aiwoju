@@ -32,8 +32,8 @@
           <p><span>楼层高度：</span>{{hotel_infor.floor_num}}</p>
           <p><span>房间数：</span>{{hotel_infor.room_num}}</p>
         </div>
-        <div class="hotel_description" v-html="hotel_infor.remark"></div>
-        <div class="room-content">铂涛集团位居全国酒店业前列,旗下近20个品牌,超1亿会员,门店总数超5000家.铂涛集团 诚邀您加盟实现合作共赢铂涛集团位居全国酒店业前列,旗下近20个品牌,超1亿会员</div>
+<!--        <div class="hotel_description" v-html="hotel_infor.remark"></div>-->
+        <div class="room-content">{{hotel_infor.introduce}}</div>
       </div>
       <div class="list-box">
         <p class="title">交通信息</p>

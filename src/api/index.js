@@ -2,9 +2,20 @@ import ajax from '../axios'
 // import axios from 'axios';
 import qs from 'qs'
 
+// 获取微信jssdk签名
+export function getSign(data) {
+  return ajax.get('api/user/getSign',data,{ load: true})
+}
+
+// 微信发起支付
+export function payOrder(data) {
+  return ajax.post('api/order/order_pay',data,{ load: true})
+}
+
+
 // 首页详情
 export function home(data) {
-  return ajax.get('api/index/index',null,{ load: true})
+  return ajax.get('api/index/index',data,{ load: true})
 }
 
 //首页领取积分
