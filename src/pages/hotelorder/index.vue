@@ -267,6 +267,7 @@ export default {
       this.startDateText = isten(s[1]+=1)+'月'+isten(s[2])+'日';
       this.endDateText = isten(e[1]+=1)+'月'+isten(e[2])+'日';
 
+      console.log(this.room_type_id)
       hotelOrder({start_time: this.startDate,end_time:this.endDate,room_type_id:this.room_type_id,}).then(res=>{
         console.log(res.data)
         this.hotelorder = res.data;
@@ -299,7 +300,7 @@ export default {
         user_phone: phoneStr,
         price:this.total
       }).then(res=>{
-        console.log(res);
+        // console.log(res);
         this.is_loading = false;
         this.$router.push({path:'/payOrder',query:{id: res.data.data.order_id}});
       });
@@ -322,6 +323,7 @@ export default {
     }
   },
   activated(){
+    this.room_type_id = this.$route.query.id;
     if(this.$route.meta.ifDoFresh){
       //重置ifDoFresh
       this.$route.meta.ifDoFresh = false;

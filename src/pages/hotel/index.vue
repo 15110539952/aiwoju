@@ -277,10 +277,10 @@ export default {
       this.hotel = res.data.hotel[0];
       this.hotel_room_type = res.data.hotel_room_type;
       this.hotel_room_type2 = res.data.hotel_room_type2;
-      this.comment = res.data.comment;
-      this.comment_num = res.data.comment_num;
-      this.zongfen = Math.round(res.data.zongfen);
-      this.zongfenText = res.data.zongfen.toFixed(1);
+      // this.comment = res.data.comment;
+      this.comment_num = res.data.comment.total;
+      this.zongfen = Math.round(res.data.zongfen.score);
+      this.zongfenText = this.zongfen.toFixed(1);
       this.juli = res.data.juli;
 
     });
