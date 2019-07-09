@@ -302,7 +302,7 @@ export default {
       }).then(res=>{
         // console.log(res);
         this.is_loading = false;
-        this.$router.push({path:'/payOrder',query:{id: res.data.data.order_id}});
+        this.$router.replace({path:'/payOrder',query:{id: res.data.data.order_id}});
       });
       // setTimeout(()=>{
       // },1000);

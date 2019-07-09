@@ -23,6 +23,10 @@ export const strDate = function(date){
   return moment(date).format('YYYY-MM-DD');
 }
 
+// 转换几位小数字
+export const toFixedChange = function (data,num=1) {
+  return data.toFixed(num);
+}
 //星期
 export const weekDay = function (date) {
   var week = {

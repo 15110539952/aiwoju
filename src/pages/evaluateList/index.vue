@@ -4,27 +4,29 @@
     <div class="fixed-top">
       <div class="evaluate-top">
         <div class="left">
-          <p class="score"><span class="num">{{hotelComment.hotel_score}}</span><span class="text">分</span><span>{{hotelComment.hotel_ti}}</span></p>
-          <p class="eva-num">当前共有{{hotelComment.comment_num}}条评论</p>
+          <p class="score"><span class="num">{{score.score}}</span><span class="text">分</span><span>{{}}</span></p>
+          <p class="eva-num">当前共有{{total}}条评论</p>
         </div>
         <div class="right">
-          <div class="room-info"><p class="label">设施配套</p><p class="score">{{hotelComment.score_facilities}}.0分</p></div>
-          <div class="room-info"><p class="label">卫生状况</p><p class="score">{{hotelComment.score_sanitation}}.0分</p></div>
-          <div class="room-info"><p class="label">服务态度</p><p class="score">{{hotelComment.score_service}}.0分</p></div>
-          <div class="room-info"><p class="label">地理位置</p><p class="score">{{hotelComment.score_location}}.0分</p></div>
+          <div class="room-info"><p class="label">设施配套</p><p class="score">{{score.score_facilities}}.0分</p></div>
+          <div class="room-info"><p class="label">卫生状况</p><p class="score">{{score.score_sanitation}}.0分</p></div>
+          <div class="room-info"><p class="label">服务态度</p><p class="score">{{score.score_service}}.0分</p></div>
+          <div class="room-info"><p class="label">地理位置</p><p class="score">{{score.score_location}}.0分</p></div>
         </div>
       </div>
       <p class="bg20"></p>
       <div class="evaluate-tab van-hairline--bottom">
         <p class="tab" @click="tabChange(0)" :class="tabIndex===0?'active':''">全部</p>
-        <p class="tab" @click="tabChange(1)" :class="tabIndex===1?'active':''">有图({{hotelComment.comment_img_num}})</p>
-        <p class="tab" @click="tabChange(2)" :class="tabIndex===2?'active':''">差评({{hotelComment.comment_stat_num}})</p>
+        <p class="tab" @click="tabChange(1)" :class="tabIndex===1?'active':''">有图({{num_img}})</p>
+        <p class="tab" @click="tabChange(2)" :class="tabIndex===2?'active':''">差评({{num_sta}})</p>
       </div>
     </div>
 
     <div class="evaluate-list" v-if="evaluateList">
       <EasyRefresh
+        ref="easyRefresh"
         :userSelect="false"
+        :autoLoad="false"
         :loadMore="loadMore">
 
       <div class="evaluate-item"
@@ -68,15 +70,8 @@
         <p>这么好的酒店，么人“到此一游”吗？</p>
       </div>
 
-<!--        <template v-slot:footer>-->
-<!--          <MaterialFooter/>-->
-<!--        </template>-->
       <template v-slot:footer>
-<!--        <ClassicsFooter/>-->
-<!--        <EmptyFooter/>-->
-<!--        <BezierBounceFooter/>-->
         <BallPulseFooter/>
-<!--        <p style="font-size: 30px;height: 80px;color: #333;">加载更多</p>-->
       </template>
       </EasyRefresh>
     </div>
@@ -86,7 +81,7 @@
 <script>
 import header from "@/components/Header/header";
 import { Toast } from 'vant'
-import {commonJs}  from '@/commonJs/index.js';
+import {commonJs,toFixedChange}  from '@/commonJs/index.js';
 import {hotelComment} from '@/api/index'
 
 export default {
@@ -94,11 +89,15 @@ export default {
       return {
         commonJs:commonJs,
         tabIndex: 0,
-        hotelComment:'',
-        comment:[],
-        comment_img:[],
-        comment_stat:[],
+        total:'',
+        score:'',
+        num_sta:'',
+        num_img:'',
         evaluateList:null,
+
+        current_page:1,
+        last_page:1,
+        title:1,
       }
   },
   computed:{
@@ -108,43 +107,57 @@ export default {
   },
   mounted(){
     hotelComment().then(res=>{
-      this.hotelComment = res.data;
-      this.comment = res.data.comment;
-      this.comment_img = res.data.comment_img;
-      this.comment_stat = res.data.comment_stat;
-      this.evaluateList = res.data.comment;
-      this.hotelComment.hotel_score = this.hotelComment.hotel_score.toFixed(1);
+      this.score = res.data.score;
+      this.score.score = toFixedChange(this.score.score);
+      this.num_img = res.data.comment.num_img;
+      this.num_sta = res.data.comment.num_sta;
+      this.total = res.data.comment.total;
+      this.evaluateList = res.data.comment.data;
+      this.last_page = res.data.comment.last_page;
+      this.current_page += 1;
     })
   },
   methods:{
     tabChange(index){
       this.tabIndex = index;
       if(index === 0){
-        this.evaluateList = this.comment;
+        this.title = 1;
       }
       if(index === 1){
-        this.evaluateList = this.comment_img;
+        this.title = 3
       }
       if(index === 2){
-        this.evaluateList = this.comment_stat;
+        this.title = 2
       }
+      // console.log(this.$refs.easyRefresh.getContainer());
+      this.$refs.easyRefresh.scrollTo(0,0);
+      // this.evaluateList = [];
+      hotelComment({page:1,title:this.title}).then(res=>{
+        this.evaluateList = res.data.comment.data;
+        this.current_page += 1;
+        this.last_page = res.data.comment.last_page;
+        this.current_page += 1;
+      })
       document.documentElement.scrollTop = 0;
     },
-    onRefresh(done) {
-      setTimeout(() => {
-        done()
-      }, 1000)
-    },
     loadMore(done){
-      setTimeout(() => {
-        // if (this.itemCount >= 40) {
-        //   done(true)
-        // } else {
-        //   this.itemCount += 10
-          done(false)
-        // }
-      }, 1000)
-    }
+      if(this.current_page>this.last_page){
+        done(true);
+        return;
+      }
+      hotelComment({page:this.current_page,title:this.title}).then(res=>{
+        // console.log(res);
+        this.evaluateList = this.evaluateList.concat(res.data.comment.data);
+        this.last_page = res.data.comment.last_page;
+        if(this.current_page<this.last_page){
+          this.current_page += 1;
+          done(false);
+        }else{
+          Toast('没有更多了')
+          done(true);
+        }
+      })
+    },
   }
 }
 

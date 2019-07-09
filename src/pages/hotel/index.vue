@@ -1,5 +1,8 @@
 <template>
   <div>
+    <EasyRefresh
+      :userSelect="false"
+      :loadMore="loadMore">
     <v-header title="酒店"></v-header>
     <div class="banner">
       <van-swipe :autoplay="5000" indicator-color="white">
@@ -163,7 +166,7 @@
       <div class="facilities-score van-hairline--bottom">
         <div class="left"><span>{{zongfenText}}</span>分</div>
         <div class="right">
-          <p>{{comment_num}}条评价</p>
+          <p>{{total}}条评价</p>
           <p>
             <i class="iconfont iconpinglun2"
                v-for="(item,index) in zongfen"
@@ -205,12 +208,18 @@
         </div>
       </div>
     </div>
+
+    <template v-slot:footer>
+      <BallPulseFooter/>
+    </template>
+    </EasyRefresh>
   </div>
 </template>
 
 <script>
 import header from "@/components/Header/header";
 import footer from "@/components/Footer";
+import { Toast } from 'vant'
 import {commonJs}  from '@/commonJs/index.js';
 import {hotel}  from '@/api/index';
 
@@ -234,14 +243,19 @@ export default {
         juli:'', // 距离酒店
         zongfen:'', // 酒店评分总分
         zongfenText:'', // 评分5.0
-        comment_num:'', // 评价总条数
-        comment:'', // 评价列表
+        comment:[], // 评价列表
 
         startMonthText:'', // 开始月
         startDateText:'', // 开始日
         endMonthText:'', // 结束月
         endDateText:'', // 结束日
         day:'',// 共几晚
+
+        total:'', // 评价总条数
+        last_page:'', // 最后页码
+        current_page:1, // 当前第几页
+        per_page:'', // 每页几条
+
       }
   },
   components: {
@@ -273,22 +287,42 @@ export default {
       zhong:zhong?1:'',
       peo_lng:0,
       peo_lat:0,
+      page:1
     },{ load: true}).then((res)=>{
       this.hotel = res.data.hotel[0];
       this.hotel_room_type = res.data.hotel_room_type;
       this.hotel_room_type2 = res.data.hotel_room_type2;
       // this.comment = res.data.comment;
-      this.comment_num = res.data.comment.total;
+      this.total = res.data.comment.total;
       this.zongfen = Math.round(res.data.zongfen.score);
       this.zongfenText = this.zongfen.toFixed(1);
       this.juli = res.data.juli;
-
+      this.last_page = res.data.comment.last_page;
+      this.comment = res.data.comment.data;
+      this.current_page +=1 ;
     });
   },
   methods:{
     order(id){
       console.log(id)
       this.$router.push({path:'/hotelorder',query:{id:id}});
+    },
+    loadMore(done){
+      if(this.current_page>this.last_page){
+        done(true);
+        return;
+      }
+      hotel({page:this.current_page}).then(res=>{
+        // console.log(res);
+        this.comment = this.comment.concat(res.data.comment.data);
+        if(this.current_page<this.last_page){
+          this.current_page += 1;
+          done(false);
+        }else{
+          Toast('没有更多了')
+          done(true);
+        }
+      })
     }
   }
 }
@@ -297,6 +331,7 @@ export default {
 <style lang='less' scoped>
   @import "index";
   .child-view{
-    padding-top: 100px;
+    height: 100%;
+    /*padding-top: 100px;*/
   }
 </style>

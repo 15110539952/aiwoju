@@ -139,7 +139,7 @@ export default {
               success: (res)=> {
 // 支付成功后的回调函数
                 console.log('succ',res)
-                this.$router.push({path:'/orderDetail',query:{id:this.id}});
+                this.$router.replace({path:'/orderDetail',query:{id:this.id}});
               },
               fail:(res)=>{
                 console.log('fail',res)
