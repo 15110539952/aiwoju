@@ -100,7 +100,7 @@ import footer from "@/components/Footer";
 import Calender from '@/components/Calender/calender.vue'
 import { Toast } from 'vant'
 import {isten,commonJs,weekDay}  from '@/commonJs/index.js'
-import {home,homeAddScore} from '@/api/index'
+import {home,homeAddScore,timeLimit} from '@/api/index'
 
 
 var moment = require('moment');
@@ -152,6 +152,7 @@ export default {
           endMonthText:isten(endMonthText),
           endDateText:isten(endDateText),
           day:1,
+          timelimit:'',
         }
     },
     components: {
@@ -177,6 +178,9 @@ export default {
           }
         },8000)
         this.$store.dispatch('setStartEndDate',{start:this.startDate,end:this.endDate});
+      });
+      timeLimit().then(res=>{
+        this.timeLimit = res.data.timelimit;
       });
     },
     methods:{

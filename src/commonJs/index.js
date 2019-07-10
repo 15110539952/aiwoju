@@ -23,6 +23,17 @@ export const strDate = function(date){
   return moment(date).format('YYYY-MM-DD');
 }
 
+// 时间戳转换几月几日
+export const strMonDate = function(date){
+  if(date.toString().length<13){
+    date*=1000;
+  }
+  let m = moment(date).toArray()[1]+1;
+  let d = moment(date).toArray()[2];
+
+  return isten(m)+'月'+isten(d)+'日';
+}
+
 // 转换几位小数字
 export const toFixedChange = function (data,num=1) {
   return data.toFixed(num);

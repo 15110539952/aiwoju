@@ -95,7 +95,7 @@ export default {
       this.$router.goBack(-1);
     }
     orderInfor({order_id:this.id}).then(res=>{
-      if(res.code === 4002){
+      if(res.code === 4000){
         this.$router.goBack();
         Toast('订单失效');
       }

@@ -16,33 +16,34 @@
       </div>
       <div class="bottom">
         <div class="status">
-          <span class="label" v-if="item.status !== 4">
+          <span class="label" v-if="item.status !== 6 || item.status !== 7">
             {{item.status === 0?'待支付'
             :item.status === 1?'待确认'
             :item.status === 2?'待入住'
-            :item.status === 3?'已结束'
-            :item.status === 5?'已退款'
-            :item.status === 6?'已完结，订单已关闭':'已完结'
+            :item.status === 3?'已入住'
+            :item.status === 4?'待评价'
+            :item.status === 5?'已完成'
+            :item.status === 8?'已退款':'已完成'
             }}
           </span>
-          <span class="label-close" v-else>已取消</span>
+          <span class="label-close" v-else  @click="orderDetail(item)">已取消</span>
           <span class="time" v-if="item.status === 1">00：29：59</span>
         </div>
         <div class="btn-type">
-          <div class="close-btn" v-if="item.status === 0">取消</div>
+          <div class="close-btn" v-if="item.status === 0" @click="orderDetail(item)">取消</div>
           <van-button class="to-pay"
                       type="default"
                       v-if="item.status === 0"
                       @click="$router.push({path:'/payOrder',query:{id:item.id}})">去支付</van-button>
           <van-button class="to-pay"
                       type="default"
-                      v-if="item.status === 3"
-                      @click="$router.push('/evaluateAdd')">去评价</van-button>
+                      v-if="item.status === 4"
+                      @click="$router.push({path:'/evaluateAdd',query:{id:item.id}})">去评价</van-button>
           <van-button class="to-close"
                       type="default"
                       v-if="item.status === 1 || item.status === 2"
-                      @click="">取消</van-button>
-          <span class="refund" v-if="item.status === 4">退款中</span>
+                      @click="orderDetail(item)">取消</van-button>
+          <span class="refund" v-if="item.status === 6">退款中</span>
         </div>
       </div>
     </div>
@@ -74,7 +75,7 @@
 
 <style lang="less" scoped>
   .order-list{
-    padding: 0 40px;
+    padding: 0 40px 20px;
   }
   .order-item{
     background-color: #ffffff;

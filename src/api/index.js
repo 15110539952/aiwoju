@@ -13,6 +13,10 @@ export function payOrder(data) {
 }
 
 
+// 订房时长限制
+export function timeLimit(data) {
+  return ajax.get('api/index/timelimit',data,{ load: true})
+}
 // 首页详情
 export function home(data) {
   return ajax.get('api/index/index',data,{ load: true})
@@ -70,9 +74,30 @@ export function orderCancel(data) {
   return ajax.get('api/order/cancel',data,{ load: true})
 }
 
+//评价订单信息显示
+export function orderComment(data) {
+  return ajax.get('api/order/comment',data,{ load: true})
+}
+
+//评价订单信息提交
+export function orderCommentPost(data) {
+  return ajax.post('api/order/comment',data,{ load: true})
+}
+
 //我的
 export function user(data) {
   return ajax.get('api/user/index',data,{ load: true})
+}
+
+
+//我的评价列表
+export function myComment(data) {
+  return ajax.get('api/user/my_comment',data,{ load: true})
+}
+
+//我的评价详情
+export function myCommentDetail(data) {
+  return ajax.post('api/user/my_comment_detail',data,{ load: true})
 }
 
 

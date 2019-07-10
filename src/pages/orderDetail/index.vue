@@ -7,7 +7,7 @@
 
     <div class="pay-type-top-box">
       <!--region 支付成功-->
-      <div class="paySuccess" v-show="false">
+      <div class="paySuccess" v-if="orderDetail.status === 2">
         <div class="title">
           <p class="left">支付成功</p>
           <p class="right">确认倒计时：<span>00：29：59</span></p>
@@ -19,10 +19,16 @@
           </p></div>
         </div>
       </div>
-      <!--endregion-->
 
+      <div class="title" v-if="orderDetail.status === 3">
+        <p class="left">待入住</p>
+      </div>
+      <div class="title" v-if="orderDetail.status === 5">
+        <p class="left">已完成</p>
+      </div>
+      <!--endregion-->
       <!--region 待支付-->
-      <div class="no-pay" v-show="false">
+      <div class="no-pay" v-if="orderDetail.status === 0">
         <div class="title">
           <p class="left">待支付</p>
           <p class="right">支付倒计时：：<span>00：29：59</span></p>
@@ -30,29 +36,41 @@
         <div class="content">
           <div><p class="label">取消规则：</p><p class="text-detial">入住前可免费取消</p></div>
         </div>
-        <van-button class="to-pay" type="default" @click="">
+        <van-button class="to-pay" type="default" @click="$router.push({path:'/payOrder',query:{id:orderDetail.id}})">
           去支付<span>￥</span><span class="number">456</span>
         </van-button>
       </div>
       <!--endregion-->
-
       <!--region 待评价-->
-      <div class="no-evaluate">
+      <div class="no-evaluate" v-if="orderDetail.status === 4">
         <div class="title">
           <p class="left">待评价</p>
           <p class="right"></p>
         </div>
         <div class="evaluate-btn">
-          <van-button class="repeat-order" type="default" @click="">再次预定</van-button>
-          <van-button class="to-evaluate" type="default" @click="$router.push('/evaluateAdd')">去评价</van-button>
+          <van-button class="repeat-order" type="default" @click="$router.push('/')">再次预定</van-button>
+          <van-button class="to-evaluate" type="default" @click="$router.push({path:'/evaluateAdd',query:{id:orderDetail.id}})">去评价</van-button>
         </div>
       </div>
       <!--endregion-->
-
       <!--region 已取消-->
-      <div class="order-close" v-show="false">
+      <div class="order-close" v-if="orderDetail.status === 6 || orderDetail.status === 7">
         <div class="title">
           <p class="left">已取消</p>
+          <p class="right"></p>
+        </div>
+        <div class="content" v-if="orderDetail.status === 6">
+          <div class="close">
+            <p>退款进度</p>
+            <p>退款中</p>
+          </div>
+        </div>
+      </div>
+      <!--endregion-->
+      <!--region 已退款-->
+      <div class="order-close" v-if="orderDetail.status === 8">
+        <div class="title">
+          <p class="left">已退款</p>
           <p class="right"></p>
         </div>
         <div class="content">
@@ -83,19 +101,19 @@
       <div class="address active-bg">
         <p>{{orderDetail.address}}</p><i class="iconfont iconarrow-right"></i>
       </div>
-      <div class="hotel-tab">
+      <div class="hotel-tab" @click="$router.push({path:'/map',query:{lat:orderDetail.lat,lng:orderDetail.lng}})">
         <div class="hotel-address">
           <i class="iconfont iconorder-weizhi"></i>
           <p>地图定位</p>
         </div>
-        <div class="hotel-set">
+        <div class="hotel-set" @click="$router.push('hotelDetail')">
           <i class="iconfont iconorder-shebei"></i>
           <p>设施配置</p>
         </div>
-        <div class="hotel-tel">
+        <a class="hotel-tel" :href="'tel:'+orderDetail.telphone">
           <i class="iconfont iconorder-dianhua"></i>
           <p>酒店前台</p>
-        </div>
+        </a>
       </div>
       <div class="room-info">
         <p class="title">{{orderDetail.name}}·{{orderDetail.num}}间</p>
@@ -110,8 +128,10 @@
     </div>
 
     <div class="user-info">
-      <div class="item"><span class="label">入住人：</span><span class="content">{{orderDetail.phone}}</span></div>
-      <div class="item"><span class="label">联系电话：</span><span class="content number">{{orderDetail.oname}}</span></div>
+      <div class="user-list" v-for="item in orderDetail.contant">
+        <div class="item"><span class="label">入住人：</span><span class="content">{{item.checkname}}</span></div>
+        <div class="item"><span class="label">联系电话：</span><span class="content number">{{item.phone}}</span></div>
+      </div>
       <div class="item"><span class="label">预计到店：</span><span class="content number">{{orderDetail.predict_coming_time}}</span></div>
     </div>
 
@@ -128,7 +148,7 @@
 
 
     <!--region 取消订单-->
-    <van-button class="footer" type="default" @click="isCloseOrder= true">取消订单</van-button>
+    <van-button v-if="orderDetail.status<3" class="footer" type="default" @click="isCloseOrder= true">取消订单</van-button>
     <!--endregion-->
 
     <!--region  取消订单弹出框-->
@@ -200,7 +220,6 @@ export default {
         isCloseSelect:false, // 选择好取消的订单
         closeText:'取消',
         confirmText: '确认选择',
-        orderStatus: 0,
         orderDetail:'',
         sub_order:[], // 可以取消的子订单列表
         close_order:[], // 选择好要取消的子订单列表
@@ -230,6 +249,7 @@ export default {
     getDetail(){
       orderDetail({id: this.id}).then(res=>{
         this.orderDetail = res.data;
+        this.orderDetail.status = parseInt(this.orderDetail.status) || 4;
         this.orderDetail.predict_begin_time = strDate(res.data.predict_begin_time);
         this.orderDetail.predict_end_time = strDate(res.data.predict_end_time);
         this.sub_order = res.data.sub_order.filter(res=>res.status<2);
@@ -274,9 +294,11 @@ export default {
           done()
         }else{
           orderCancel({ids:this.close_orderIds.join(',')}).then(res=>{
-            console.log(res.data);
+            // console.log(res.data);
             Toast(res.msg);
-            this.getDetail();
+            if(res.code === 2000){
+              this.getDetail();
+            }
           });
           done();
         }

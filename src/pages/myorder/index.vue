@@ -15,19 +15,32 @@
            :class="tabId===0?'active':''"
            @click="changeTab(0)">全部</div>
     </div>
+
+    <EasyRefresh
+      ref="easyRefresh"
+      :userSelect="false"
+      :autoLoad="false"
+      :animationDuration="200"
+      :loadMore="loadMore">
     <!--region 订单列表-->
     <v-orderList :orderList="orderData"></v-orderList>
     <!--endregion-->
-    <div class="month-list" v-if="tabId === 0">
-      <p class="month-item"><span>11</span>月订单</p>
-      <p class="month-item"><span>10</span>月订单</p>
-    </div>
+<!--    <div class="month-list" v-if="tabId === 0">-->
+<!--      <p class="month-item"><span>11</span>月订单</p>-->
+<!--      <p class="month-item"><span>10</span>月订单</p>-->
+<!--    </div>-->
     <p class="hotel-tip">遇到问题请拨打客服：4008525636</p>
 
     <div class="no-order" v-show="!orderList.length">
       <img src="~assets/img/no-content.png">
       <p>您还没有订单哦，快去逛逛吧!</p>
     </div>
+
+
+    <template v-slot:footer>
+      <BallPulseFooter :height="140"/>
+    </template>
+    </EasyRefresh>
   </div>
 </template>
 
@@ -77,6 +90,9 @@ export default {
         wait_pay:'',
         wait_live:'',
         wait_refund:'',
+
+        last_page:'', // 最后页码
+        current_page:1, // 当前第几页
       }
   },
   components: {
@@ -84,19 +100,30 @@ export default {
       "v-orderList": orderListTemplate,
   },
   mounted() {
-    this.tabId = this.$route.params.id || 0;
-    this.getOrderList(this.tabId===0?'99':this.tabId);
+    // this.tabId = this.$route.params.id || 0;
+    this.tabId = parseInt(sessionStorage.getItem('orderTabId')) || 0;
+    console.log(this.tabId);
+    this.getOrderList();
   },
   methods:{
     changeTab(index){
       this.tabId = index;
-      this.getOrderList(index===0?'99':index);
+      sessionStorage.setItem('orderTabId',index);
+
+      // this.orderData = [];
+      this.$refs.easyRefresh.scrollTo(0,0);
+      this.current_page = 1;
+      this.getOrderList();
     },
-    getOrderList(id){
-      orderList({status:id}).then(res=>{
+    getOrderList(){
+      orderList({status: this.tabId===0?'99':this.tabId,page:this.current_page}).then(res=>{
         this.wait_pay = res.data.wait_pay;
         this.wait_live = res.data.wait_live;
         this.wait_refund = res.data.wait_refund;
+
+        this.last_page = res.data.last_page;
+        this.current_page += 1;
+
         let dataList = res.data.data;
         dataList.forEach(item=>{
           item.status = parseInt(item.status);
@@ -104,7 +131,27 @@ export default {
         this.orderData = dataList;
       })
     },
-
+    loadMore(done){
+      if(this.current_page>this.last_page){
+        Toast('没有更多了')
+        done(false);
+        return;
+      }
+      orderList({status: this.tabId===0?'99':this.tabId,page:this.current_page}).then(res=>{
+        this.last_page = res.data.last_page;
+        let dataList = res.data.data;
+        dataList.forEach(item=>{
+          item.status = parseInt(item.status);
+        });
+        this.orderData = this.orderData.concat(dataList);
+        if(this.current_page<=this.last_page){
+          this.current_page += 1;
+          done(false);
+        }else{
+          done(false);
+        }
+      })
+    },
   },
   beforeDestroy() {
   },
@@ -114,6 +161,7 @@ export default {
 <style lang='less' scoped>
   @import 'index';
   .child-view{
+    height: 100%;
     padding-top: 190px;
   }
 

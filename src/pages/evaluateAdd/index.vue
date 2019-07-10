@@ -3,17 +3,17 @@
     <v-header title="评价"></v-header>
     <div class="room-info">
       <div class="room">
-        <p class="name">商务大床房</p>
-        <p class="to-detail" @click="$router.push('/orderDetail')">
+        <p class="name">{{orderCommentDetail.name}}</p>
+        <p class="to-detail" @click="$router.push('/hotelDetail')">
           房间详情<i class="iconfont iconarrow-right"></i>
         </p>
       </div>
-      <p class="date">12月01日-12月02日 <span>|</span> 共1晚</p>
+      <p class="date">{{orderCommentDetail.predict_begin_time}}-{{orderCommentDetail.predict_end_time}} <span>|</span> 共1晚</p>
       <p class="info">大床·不含早·有wifi</p>
-      <p class="price">￥<span>456</span></p>
+      <p class="price">￥<span>{{orderCommentDetail.amount}}</span></p>
     </div>
     <p class="pingfen">评分</p>
-    <div class="room-score"><span>4.0</span>分</div>
+    <div class="room-score"><span>{{score}}</span>分</div>
     <div class="set-score van-hairline--top">
       <p class="score-item" v-for="(scoreItem,indexS) in scoreList" :key="'setscore'+indexS">
         <span class="label">设施：</span>
@@ -28,7 +28,7 @@
     </div>
     <p class="pingfen">评分</p>
     <div class="evaluate-content">
-      <textarea class="content" placeholder="请输入你想说的话"></textarea>
+      <textarea class="content" v-model="content" placeholder="请输入你想说的话"></textarea>
     </div>
     <p class="bg20"></p>
     <p class="pingfen">照片</p>
@@ -39,25 +39,32 @@
       @delete="imgDelete"
       :preview-image="true"
       :max-count="9"
+      :max-size="1024*1024*5"
+      @oversize="oversize"
     />
     <div class="evaluate-img-box">
 <!--      <img class="img" src="assets/img/dear.png">-->
 <!--      <div class="add"></div>-->
     </div>
 
-    <van-button class="submit-img" type="primary" size="large" @click="pushImg">提交</van-button>
+    <van-button class="submit-img" type="primary" size="large" @click="submit">提交</van-button>
   </div>
 </template>
 
 <script>
 import header from "@/components/Header/header";
+import { Toast } from 'vant'
+import {commonUrl,strMonDate,countDown}  from '@/commonJs/index.js'
+import {orderComment,orderCommentPost} from '@/api/index'
+
+
 export default {
   data(){
       return {
         scoreList:[
           {
             name:'设施：',
-            score:5
+            score:0
           },
           {
             name:'服务：',
@@ -65,7 +72,7 @@ export default {
           },
           {
             name:'卫生：',
-            score:4
+            score:0
           },
           {
             name:'位置：',
@@ -73,6 +80,10 @@ export default {
           },
         ],
         fileList:[],
+        content:'',
+        orderCommentDetail:'',
+        score:'0.0',
+        id:'',
       }
   },
   computed:{
@@ -81,20 +92,66 @@ export default {
       "v-header": header,
   },
   mounted(){
+    this.id = this.$route.query.id;
+    orderComment({id:this.id}).then(res=>{
+      this.orderCommentDetail = res.data;
+      this.orderCommentDetail.predict_begin_time = strMonDate(res.data.predict_begin_time);
+      this.orderCommentDetail.predict_end_time = strMonDate(res.data.predict_end_time);
+    });
   },
   methods:{
     scoreChange(indexS,index){
       this.scoreList[indexS].score = index;
+      let score = 0;
+      this.scoreList.forEach(item=>{
+        score += item.score;
+      })
+      this.score = (score/4).toFixed(1);
     },
     afterRead(file){
       console.log(file);
-      console.log(this.fileList);
+      // console.log(this.fileList);
     },
     imgDelete(file){
       console.log(file);
     },
-    pushImg(){
-
+    oversize(res){
+      console.log(res);
+      Toast('请上传5M以内的照片');
+    },
+    submit(){
+      // console.log({
+      //   id:this.id,
+      //   content:this.content,
+      //   images:this.fileList,
+      //   score:this.score,
+      //   score_facilities:this.scoreList[0].score,
+      //   score_service:this.scoreList[1].score,
+      //   score_sanitation:this.scoreList[2].score,
+      //   score_location:this.scoreList[3].score,
+      // })
+      // return;
+      let images = [];
+      this.fileList.forEach(item=>{
+        images.push(item.content)
+      });
+      console.log(images);
+      // return;
+      orderCommentPost({
+        id:this.id,
+        content:this.content,
+        images:images,
+        score:this.score,
+        score_facilities:this.scoreList[0].score,
+        score_service:this.scoreList[1].score,
+        score_sanitation:this.scoreList[2].score,
+        score_location:this.scoreList[3].score,
+      }).then(res=>{
+        Toast(res.msg);
+        if(res.code === 2000){
+          this.$router.goBack();
+        }
+      });
     }
   }
 }

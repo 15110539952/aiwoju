@@ -4,7 +4,7 @@
     <div class="fixed-top">
       <div class="evaluate-top">
         <div class="left">
-          <p class="score"><span class="num">{{score.score}}</span><span class="text">分</span><span>{{}}</span></p>
+          <p class="score"><span class="num">{{score.score}}</span><span class="text">分</span><span>{{score.score_info}}</span></p>
           <p class="eva-num">当前共有{{total}}条评论</p>
         </div>
         <div class="right">
@@ -98,6 +98,7 @@ export default {
         current_page:1,
         last_page:1,
         title:1,
+        isRefresh:false,
       }
   },
   computed:{
@@ -129,32 +130,33 @@ export default {
       if(index === 2){
         this.title = 2
       }
-      // console.log(this.$refs.easyRefresh.getContainer());
-      this.$refs.easyRefresh.scrollTo(0,0);
       // this.evaluateList = [];
+      this.$refs.easyRefresh.scrollTo(0,0);
+      this.current_page = 1;
       hotelComment({page:1,title:this.title}).then(res=>{
         this.evaluateList = res.data.comment.data;
-        this.current_page += 1;
         this.last_page = res.data.comment.last_page;
         this.current_page += 1;
       })
       document.documentElement.scrollTop = 0;
     },
     loadMore(done){
+      console.log(this.current_page,this.last_page);
       if(this.current_page>this.last_page){
-        done(true);
+        Toast('没有更多了')
+        done(false);
         return;
       }
       hotelComment({page:this.current_page,title:this.title}).then(res=>{
         // console.log(res);
         this.evaluateList = this.evaluateList.concat(res.data.comment.data);
         this.last_page = res.data.comment.last_page;
-        if(this.current_page<this.last_page){
+        if(this.current_page<=this.last_page){
           this.current_page += 1;
           done(false);
         }else{
           Toast('没有更多了')
-          done(true);
+          done(false);
         }
       })
     },

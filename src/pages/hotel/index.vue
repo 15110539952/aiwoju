@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="hotel">
+    <v-header title="酒店"></v-header>
     <EasyRefresh
       :userSelect="false"
       :loadMore="loadMore">
-    <v-header title="酒店"></v-header>
     <div class="banner">
       <van-swipe :autoplay="5000" indicator-color="white">
         <van-swipe-item v-for="(item,index) in hotel.image" :key="'banner_'+index">
@@ -210,7 +210,7 @@
     </div>
 
     <template v-slot:footer>
-      <BallPulseFooter/>
+      <BallPulseFooter :height="140"/>
     </template>
     </EasyRefresh>
   </div>
@@ -315,7 +315,7 @@ export default {
       hotel({page:this.current_page}).then(res=>{
         // console.log(res);
         this.comment = this.comment.concat(res.data.comment.data);
-        if(this.current_page<this.last_page){
+        if(this.current_page<=this.last_page){
           this.current_page += 1;
           done(false);
         }else{
@@ -332,6 +332,6 @@ export default {
   @import "index";
   .child-view{
     height: 100%;
-    /*padding-top: 100px;*/
+    padding-top: 100px;
   }
 </style>
