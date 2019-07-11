@@ -106,6 +106,11 @@ export function myCommentDetail(data) {
   return ajax.get('api/user/my_comment_detail',data,{ load: true})
 }
 
+//我的评价详情删除评价
+export function delComment(data) {
+  return ajax.get('api/user/del_comment',data,{ load: true})
+}
+
 
 //注册成为酒店经纪人接口
 export function registerAgent(data) {

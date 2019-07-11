@@ -3,23 +3,24 @@
     <v-header title="评价详情"></v-header>
     <div class="bg20"></div>
 
-    <div class="evaluate-item">
+    <div class="evaluate-item" v-if="CommentDetail">
         <div class="head">
           <img v-if="CommentDetail.user.length>0" :src="CommentDetail.user[0].avatar">
           <p>消费后评价</p>
         </div>
         <div class="content">
           <div class="one">
-            <p>{{CommentDetail.user.length?CommentDetail.user[0].nickname:''}}</p><p>{{CommentDetail.time.hotel_room_type_id}}</p>
+            <p class="name">{{CommentDetail.user.length?CommentDetail.user[0].nickname:''}}</p>
+            <div class="score-box">
+              <i class="iconfont iconpinglun2"
+                 v-for="(item,yes_index) in parseInt(CommentDetail.score)"
+                 :key="'facilities-yes'+yes_index"></i>
+              <i class="iconfont iconshoucang_shoucang"
+                 v-for="(item,no_index) in 5-parseInt(CommentDetail.score)"
+                 :key="'facilities-no'+no_index"></i>
+            </div>
           </div>
-          <div class="score-box">
-            <i class="iconfont iconpinglun2"
-               v-for="(item,yes_index) in parseInt(CommentDetail.score)"
-               :key="'facilities-yes'+yes_index"></i>
-            <i class="iconfont iconshoucang_shoucang"
-               v-for="(item,no_index) in 5-parseInt(CommentDetail.score)"
-               :key="'facilities-no'+no_index"></i>
-          </div>
+          <div class="room-name">{{CommentDetail.time.hotel_room_type_id}}</div>
           <div class="time-block">
             <p><span>{{CommentDetail.creatime}}</span>评论</p><p><span></span></p>
           </div>
@@ -38,14 +39,16 @@
         </div>
       </div>
 
+      <div class="footer"><span @click="closeComment">删除评价</span></div>
+
   </div>
 </template>
 
 <script>
 import header from "@/components/Header/header";
-import { Toast } from 'vant'
+import { Toast,Dialog } from 'vant'
 import {commonJs,toFixedChange}  from '@/commonJs/index.js';
-import {myCommentDetail} from '@/api/index'
+import {myCommentDetail,delComment} from '@/api/index'
 
 export default {
   data(){
@@ -68,7 +71,23 @@ export default {
     })
   },
   methods:{
-
+    closeComment(){
+      Dialog.confirm({
+        title: '确认删除评论？',
+        confirmButtonText:'删除',
+        message: ''
+      }).then(() => {
+        // on confirm
+        delComment({comment_id:this.id}).then(res=>{
+          Toast(res.msg);
+          setTimeout(()=>{
+            this.$router.goBack();
+          },1000)
+        });
+      }).catch(() => {
+        // on cancel
+      });
+    },
   }
 }
 
@@ -77,6 +96,7 @@ export default {
   @import 'index';
   .child-view{
     padding-top: 100px;
+    padding-bottom: 200px;
     /*height: 100%;*/
   }
 </style>
