@@ -178,7 +178,10 @@
         </div>
       </div>
       <div class="evaluate-item" v-for="(item,comindex) in comment" :key="'com_'+comindex">
-        <div class="head" :style="'background-image: url('+item.user_id.length>0?item.user_id[0].avatar:''+')'"></div>
+<!--        <div class="head" :style="'background-image: url('+item.user_id.length>0?item.user_id[0].avatar:''+')'"></div>-->
+        <div class="head">
+          <img v-if="item.user_id.length>0" :src="item.user_id[0].avatar">
+        </div>
         <div class="content">
           <div class="one">
             <p>{{item.user_id.length>0?item.user_id[0].nickname:''}}</p><p>{{item.room_type_id}}</p>

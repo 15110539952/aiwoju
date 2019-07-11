@@ -68,7 +68,7 @@ const mutations = {
   },
   [types.SET_TOKEN] (state, val) {
     localStorage.setItem('token',val.token || '');
-    localStorage.setItem('expires_in',new Date().getTime()+val.expires_in || '');
+    localStorage.setItem('expires_in',new Date().getTime()+val.expires_in*1000 || '');
     state.token = val.token || '';
   }
 }

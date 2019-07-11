@@ -60,18 +60,28 @@ export default {
     //   document.documentElement.style.fontSize = deviceWidth / 10 + 'px'
     // }
     // console.log(window.location.href)
+    let dateTime = new Date().getTime();
+    let expires_in = localStorage.getItem('expires_in');
+    if(dateTime>parseInt(expires_in)){
+      localStorage.clear();
+      location = location;
+    }
     if(process.env.NODE_ENV === 'development'){
-      this.$store.dispatch('setToken', {token:'0b8214e6-f721-4c4b-b42b-391da4418ea2',expires_in:31536000});
+      // this.$store.dispatch('setToken', {token:'712aa988-d076-4e11-8781-104460594cde',expires_in:31536000});
+      this.$store.dispatch('setToken', {token:'7b97a4b6-ec85-44d2-8bfb-2be92d09c7e3',expires_in:31536000});
       console.log(this.token);
     }else{
       if(!this.token){
         let code = this.$utils.getUrlKey('code');
         if(!code){
-          location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc4c761371120fe9b&redirect_uri='+encodeURIComponent(window.location.href)+'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+          let invite = this.$utils.getUrlKey('invite') || '';
+          location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc4c761371120fe9b&redirect_uri='+encodeURIComponent(window.location.href)+'&response_type=code&scope=snsapi_userinfo&state=${invite}#wechat_redirect`;
         }else{
-          this.$ajax.get('api/user/third',{code:code}).then((res)=>{
+          let state = this.$utils.getUrlKey('state') || '';
+          this.$ajax.get('api/user/third',{code:code,invite:state}).then((res)=>{
             console.log(res);
             this.$store.dispatch('setToken', {token:res.data.token,expires_in:res.data.expires_in});
+            location = location;
           });
         }
       }

@@ -55,36 +55,6 @@ export default {
   name:'order',
   data(){
       return {
-        orderList:[
-          {
-            name:'',
-            status:0, // 待支付
-          },
-          {
-            name:'',
-            status:1, // 待确认
-          },
-          {
-            name:'',
-            status:2, // 待入住
-          },
-          {
-            name:'',
-            status:3, // 待评价
-          },
-          {
-            name:'',
-            status:4, // 已取消
-          },
-          {
-            name:'',
-            status:5, // 已退款
-          },
-          {
-            name:'',
-            status:6, // 已关闭
-          },
-        ],
         tabId:0,
         orderData:[],
         wait_pay:'',
@@ -153,8 +123,25 @@ export default {
       })
     },
   },
-  beforeDestroy() {
+  activated(){
+    this.room_type_id = this.$route.query.id;
+    if(this.$route.meta.ifDoFresh){
+      //重置ifDoFresh
+      this.$route.meta.ifDoFresh = false;
+      //获取列表数据方法第一参数为是否重置搜索条件和页数
+      this.$refs.easyRefresh.scrollTo(0,0);
+      this.current_page = 1;
+      this.getOrderList();
+    }else{
+
+    }
   },
+  beforeRouteEnter (to, from, next) {
+    if(from.name === 'evaluateAdd') {
+      to.meta.ifDoFresh = true;
+    }
+    next();
+  }
 }
 
 </script>

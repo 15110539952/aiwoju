@@ -9,7 +9,7 @@
       :loadMore="loadMore">
     <!--region 订单列表-->
     <div class="evaluate-list">
-      <div class="evaluate-item" v-for="(item,index) in comment">
+      <div class="evaluate-item" v-for="(item,index) in comment" @click="$router.push({path:'/myevaluateDetail',query:{id:item.id}})">
         <div class="content">
           <p class="room-name">{{item.time.hotel_room_type_id}}·{{item.time.num}}间</p>
           <p class="room-date"><span>{{item.time.actural_end_time}} 离店</span><span>{{strDate(item.creatime)}} 评论</span></p>

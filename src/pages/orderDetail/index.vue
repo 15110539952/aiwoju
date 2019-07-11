@@ -6,27 +6,6 @@
     <div class="top-bg"></div>
 
     <div class="pay-type-top-box">
-      <!--region 支付成功-->
-      <div class="paySuccess" v-if="orderDetail.status === 2">
-        <div class="title">
-          <p class="left">支付成功</p>
-          <p class="right">确认倒计时：<span>00：29：59</span></p>
-        </div>
-        <div class="content">
-          <div><p class="label">取消规则：</p><p class="text-detial">入住前可免费取消</p></div>
-          <div><p class="label">入住说明：</p><p class="text-detial">入住人携带好个人身份证酒店前台办理入住
-            不可携带宠物入住
-          </p></div>
-        </div>
-      </div>
-
-      <div class="title" v-if="orderDetail.status === 3">
-        <p class="left">待入住</p>
-      </div>
-      <div class="title" v-if="orderDetail.status === 5">
-        <p class="left">已完成</p>
-      </div>
-      <!--endregion-->
       <!--region 待支付-->
       <div class="no-pay" v-if="orderDetail.status === 0">
         <div class="title">
@@ -41,6 +20,26 @@
         </van-button>
       </div>
       <!--endregion-->
+      <!--region 支付成功-->
+      <div class="paySuccess" v-if="orderDetail.status === 1">
+        <div class="title">
+          <p class="left">支付成功</p>
+<!--          <p class="right">确认倒计时：<span>00：29：59</span></p>-->
+        </div>
+        <div class="content">
+          <div><p class="label">取消规则：</p><p class="text-detial">入住前可免费取消</p></div>
+          <div><p class="label">入住说明：</p><p class="text-detial">入住人携带好个人身份证酒店前台办理入住
+            不可携带宠物入住
+          </p></div>
+        </div>
+      </div>
+      <!--endregion-->
+      <div class="title" v-if="orderDetail.status === 2">
+        <p class="left">已入住</p>
+      </div>
+      <div class="title" v-if="orderDetail.status === 3">
+        <p class="left">待入住</p>
+      </div>
       <!--region 待评价-->
       <div class="no-evaluate" v-if="orderDetail.status === 4">
         <div class="title">
@@ -53,6 +52,9 @@
         </div>
       </div>
       <!--endregion-->
+      <div class="title" v-if="orderDetail.status === 5">
+        <p class="left">已完成</p>
+      </div>
       <!--region 已取消-->
       <div class="order-close" v-if="orderDetail.status === 6 || orderDetail.status === 7">
         <div class="title">
@@ -249,7 +251,7 @@ export default {
     getDetail(){
       orderDetail({id: this.id}).then(res=>{
         this.orderDetail = res.data;
-        this.orderDetail.status = parseInt(this.orderDetail.status) || 4;
+        this.orderDetail.status = parseInt(this.orderDetail.status);
         this.orderDetail.predict_begin_time = strDate(res.data.predict_begin_time);
         this.orderDetail.predict_end_time = strDate(res.data.predict_end_time);
         this.sub_order = res.data.sub_order.filter(res=>res.status<2);

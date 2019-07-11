@@ -91,11 +91,21 @@ export default new Router({
       }
     },
     {
+      path: '/myevaluateDetail',
+      name: 'myevaluateDetail', // 我的评价详情
+      component: () => import('pages/myevaluateDetail'),
+      meta:{
+        background:'white'
+      }
+    },
+    {
       path: '/myorder',
       name: 'myorder', // 订单列表
       component: () => import('pages/myorder'),
       meta:{
-        background:'white'
+        background:'white',
+        isKeepLive: true,
+        ifDoFresh:false
       }
     },
     {

@@ -212,6 +212,10 @@ export default {
       go(){
         console.log(this.startDate);
         console.log(this.endDate);
+        if(this.day>this.timeLimit){
+          Toast(`最多可选择${this.timeLimit}天,请重新选择`);
+          return;
+        }
         this.$router.push({ path: '/hotel',query:{
           is_hour_home:this.is_hour_home?1:0,startDate:this.startDate,endDate:this.endDate
         } });

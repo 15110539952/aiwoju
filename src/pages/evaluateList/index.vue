@@ -53,12 +53,12 @@
           <div class="detail">{{item.content}}</div>
           <div class="img-box">
             <!--            style="background-image: url('')"-->
-            <div class="evaluate-img" v-for="i in 5">
+            <div class="evaluate-img" v-for="img in item.images">
               <van-image
                 width="100%"
                 height="100%"
                 fit="cover"
-                :src="require('assets/img/dear.png')"
+                :src="commonJs.url+img"
               />
             </div>
           </div>

@@ -74,14 +74,20 @@ export function orderCancel(data) {
   return ajax.get('api/order/cancel',data,{ load: true})
 }
 
+//取消交易
+export function cancelTransaction(data) {
+  return ajax.get('api/order/cancel_transaction',data,{ load: true})
+}
+
 //评价订单信息显示
 export function orderComment(data) {
   return ajax.get('api/order/comment',data,{ load: true})
 }
 
 //评价订单信息提交
-export function orderCommentPost(data) {
-  return ajax.post('api/order/comment',data,{ load: true})
+export function orderCommentPost(data,id) {
+  console.log(data,id);
+  return ajax.postForm(`api/order/comment?id=${id}`,data,{ load: true})
 }
 
 //我的
@@ -97,7 +103,7 @@ export function myComment(data) {
 
 //我的评价详情
 export function myCommentDetail(data) {
-  return ajax.post('api/user/my_comment_detail',data,{ load: true})
+  return ajax.get('api/user/my_comment_detail',data,{ load: true})
 }
 
 

@@ -131,22 +131,37 @@ export default {
       //   score_location:this.scoreList[3].score,
       // })
       // return;
-      let images = [];
-      this.fileList.forEach(item=>{
-        images.push(item.content)
-      });
-      console.log(images);
+      // let images = [];
+      // this.fileList.forEach(item=>{
+      //   images.push(item.file);
+      // });
+      // console.log(images);
       // return;
-      orderCommentPost({
-        id:this.id,
-        content:this.content,
-        images:images,
-        score:this.score,
-        score_facilities:this.scoreList[0].score,
-        score_service:this.scoreList[1].score,
-        score_sanitation:this.scoreList[2].score,
-        score_location:this.scoreList[3].score,
-      }).then(res=>{
+
+
+      let formData = new FormData();
+
+      this.fileList.forEach((item,index)=>{
+        formData.append(`images[${index}]`, item.file)
+      });
+      formData.append('content',this.content);
+      formData.append('score',this.score);
+      formData.append('score_facilities',this.scoreList[0].score);
+      formData.append('score_service',this.scoreList[1].score);
+      formData.append('score_sanitation',this.scoreList[2].score);
+      formData.append('score_location',this.scoreList[3].score);
+
+      // {
+      //   content:this.content,
+      //   images:images,
+      //   score:this.score,
+      //   score_facilities:this.scoreList[0].score,
+      //   score_service:this.scoreList[1].score,
+      //   score_sanitation:this.scoreList[2].score,
+      //   score_location:this.scoreList[3].score,
+      // }
+
+      orderCommentPost(formData,this.id).then(res=>{
         Toast(res.msg);
         if(res.code === 2000){
           this.$router.goBack();

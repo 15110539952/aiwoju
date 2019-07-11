@@ -16,18 +16,18 @@
       </div>
       <div class="bottom">
         <div class="status">
-          <span class="label" v-if="item.status !== 6 || item.status !== 7">
+          <span class="label" v-if="item.status !== 6 && item.status !== 7">
             {{item.status === 0?'待支付'
             :item.status === 1?'待确认'
             :item.status === 2?'待入住'
             :item.status === 3?'已入住'
             :item.status === 4?'待评价'
             :item.status === 5?'已完成'
-            :item.status === 8?'已退款':'已完成'
+            :item.status === 8?'已退款':''
             }}
           </span>
-          <span class="label-close" v-else  @click="orderDetail(item)">已取消</span>
-          <span class="time" v-if="item.status === 1">00：29：59</span>
+          <span class="label-close" v-else>已取消</span>
+          <span class="time" v-if="item.status === 0">00：29：59</span>
         </div>
         <div class="btn-type">
           <div class="close-btn" v-if="item.status === 0" @click="orderDetail(item)">取消</div>
