@@ -75,7 +75,7 @@ export default {
         let code = this.$utils.getUrlKey('code');
         if(!code){
           let invite = this.$utils.getUrlKey('invite') || '';
-          location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc4c761371120fe9b&redirect_uri='+encodeURIComponent(window.location.href)+'&response_type=code&scope=snsapi_userinfo&state=${invite}#wechat_redirect`;
+          location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc4c761371120fe9b&redirect_uri=${encodeURIComponent(window.location.href)}&response_type=code&scope=snsapi_userinfo&state=${invite}#wechat_redirect`;
         }else{
           let state = this.$utils.getUrlKey('state') || '';
           this.$ajax.get('api/user/third',{code:code,invite:state}).then((res)=>{
