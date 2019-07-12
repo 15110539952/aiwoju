@@ -24,15 +24,15 @@
             <span><span class="font24">{{startMonthText}}</span><span class="font20">月</span></span>
             <span class="font24">周{{startDate | week}}</span>
           </p>
-          <p>入住</p>
+          <p class="font24 color666">入住</p>
           <p>—</p>
-          <p>离店</p>
+          <p class="font24 color666">离店</p>
           <p class="font55">{{endDateText}}</p>
           <p class="column">
             <span><span class="font24">{{endMonthText}}</span><span class="font20">月</span></span>
             <span class="font24">周{{endDate | week}}</span>
           </p>
-          <p><span class="font36">{{day}}</span><span class="font24">晚</span></p>
+          <p class="color666"><span class="font36">{{day}}</span><span class="font24">晚</span></p>
         </div>
         <img src="~assets/img/arrow-right.png" alt="">
       </div>

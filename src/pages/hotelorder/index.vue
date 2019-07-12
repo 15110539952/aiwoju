@@ -95,7 +95,11 @@
             <span class="name">{{item.name}}</span>
             <span class="phone">{{item.phone}}</span>
           </div>
-          <div class="right">编辑</div>
+          <div class="right" @click="$router.push({name:'contacts-save',params: {name: 'edit',id:item.id}})">编辑</div>
+        </div>
+        <div class="item" v-if="peopleList.length<1">
+          <div class="left">暂无入住人信息</div>
+          <div class="right" @click="$router.push({name:'contacts-save',params: {name: 'add'}})">添加</div>
         </div>
       </div>
     </van-action-sheet>
@@ -328,12 +332,14 @@ export default {
       //重置ifDoFresh
       this.$route.meta.ifDoFresh = false;
       //获取列表数据方法第一参数为是否重置搜索条件和页数
-      this.getDetail();
+      // this.getDetail();
       this.actionRoomId = 1;
       this.actionTimeId = 1;
     }else{
 
     }
+
+    this.getDetail();
   },
   beforeRouteEnter (to, from, next) {
     if(from.name === 'hotel') {

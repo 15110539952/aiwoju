@@ -54,6 +54,9 @@ input {
   white-space: nowrap;
   display: block;
 }
+.font18{
+  font-size: 18px;
+}
 .font20{
   font-size: 20px;
 }
@@ -69,7 +72,11 @@ input {
 .font55{
   font-size: 55px;
 }
-
+.bg20{
+  height: 20px;
+  background: #f8f8f8;
+  width: 100%;
+}
 .active-bg:active{
   background: #f2f3f5;
 }

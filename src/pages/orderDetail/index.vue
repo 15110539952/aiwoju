@@ -314,6 +314,12 @@ export default {
         Toast('复制失败')
       }
     }
+  },
+  beforeRouteLeave (to, from, next) { // 如果返回上一页是hotel页面 就返回两页到首页
+    if(to.name === 'hotel') {
+      this.$router.goBack(-2);
+    }
+    next();
   }
 }
 

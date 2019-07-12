@@ -47,36 +47,6 @@ export default {
   name:'order',
   data(){
       return {
-        orderList:[
-          {
-            name:'',
-            status:0, // 待支付
-          },
-          {
-            name:'',
-            status:1, // 待确认
-          },
-          {
-            name:'',
-            status:2, // 待入住
-          },
-          {
-            name:'',
-            status:3, // 待评价
-          },
-          {
-            name:'',
-            status:4, // 已取消
-          },
-          {
-            name:'',
-            status:5, // 已退款
-          },
-          {
-            name:'',
-            status:6, // 已关闭
-          },
-        ],
         orderData:[],
         totalList:'',
         wait_pay:'',

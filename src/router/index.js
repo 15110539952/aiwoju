@@ -28,9 +28,22 @@ export default new Router({
       component: () => import('pages/Home/home'),
     },
     {
+      path: '/oldme',
+      name: 'oldme', // 有分销的我的
+      component: () => import('pages/oldme'),
+    },
+    {
       path: '/me',
       name: 'me', // 我的
       component: () => import('pages/me'),
+    },
+    {
+      path: '/mycoupon',
+      name: 'mycoupon', // 领券中心 我的卡券
+      component: () => import('pages/mycoupon'),
+      meta:{
+        background:'white'
+      }
     },
     {
       path: '/hotel',

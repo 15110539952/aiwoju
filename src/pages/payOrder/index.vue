@@ -117,13 +117,13 @@ export default {
     pay(index){
       if(index === '1'){
         this.isPay = false;
-        this.$router.push({path:'/orderDetail',query:{id:this.id}});
+        this.$router.replace({path:'/orderDetail',query:{id:this.id}});
         return;
       }else if(index === '2'){
         this.isPay = false;
         return;
       }else{
-        this.isPay = true;
+        // this.isPay = true;
       }
       payOrder({amount:this.orderInfor.total_amount,id:this.id}).then(res=>{
         console.log(res);
@@ -150,6 +150,7 @@ export default {
                 });
               },
               complete:(res)=>{
+                this.isPay = true;
                 console.log('complete',res)
               }
             });
@@ -158,6 +159,12 @@ export default {
         }
       });
     },
+  },
+  beforeRouteLeave (to, from, next) { // 如果返回上一页是hotel页面 就返回两页到首页
+    if(to.name === 'hotel') {
+      this.$router.goBack(-2);
+    }
+    next();
   }
 }
 

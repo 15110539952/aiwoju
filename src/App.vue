@@ -78,10 +78,13 @@ export default {
           location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc4c761371120fe9b&redirect_uri=${encodeURIComponent(window.location.href)}&response_type=code&scope=snsapi_userinfo&state=${invite}#wechat_redirect`;
         }else{
           let state = this.$utils.getUrlKey('state') || '';
+          state = state.split('#')[0];
           this.$ajax.get('api/user/third',{code:code,invite:state}).then((res)=>{
             console.log(res);
             this.$store.dispatch('setToken', {token:res.data.token,expires_in:res.data.expires_in});
-            location = location;
+            setTimeout(()=>{
+              location = location;
+            },200);
           });
         }
       }
@@ -193,4 +196,5 @@ export default {
       }
     }
   }
+
 </style>

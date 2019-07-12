@@ -1,20 +1,17 @@
 <template>
-  <div class="order">
-    <v-header title="订单"></v-header>
+  <div class="coupon">
+    <v-header title=""></v-header>
     <div class="order-tab">
-      <div class="tab one"
-           :class="tabId===1?'active':''"
-           @click="changeTab(1)">待付款<span class="one" v-if="wait_pay>0">{{wait_pay}}</span></div>
-      <div class="tab two"
-           :class="tabId===2?'active':''"
-           @click="changeTab(2)">待入住/评价<span class="two" v-if="wait_live>0">{{wait_live}}</span></div>
-      <div class="tab three"
-           :class="tabId===3?'active':''"
-           @click="changeTab(3)">退款单<span class="three" v-if="wait_refund>0">{{wait_refund}}</span></div>
-      <div class="tab four"
+      <div class="tab"
            :class="tabId===0?'active':''"
-           @click="changeTab(0)">全部</div>
+           @click="changeTab(0)">领券中心
+      </div>
+      <div class="tab"
+           :class="tabId===1?'active':''"
+           @click="changeTab(1)">我的卡券
+      </div>
     </div>
+    <p class="bg20"></p>
 
     <EasyRefresh
       ref="easyRefresh"
@@ -22,20 +19,57 @@
       :autoLoad="false"
       :animationDuration="200"
       :loadMore="loadMore">
-    <!--region 订单列表-->
-    <v-orderList :orderList="orderData"></v-orderList>
-    <!--endregion-->
-<!--    <div class="month-list" v-if="tabId === 0">-->
-<!--      <p class="month-item"><span>11</span>月订单</p>-->
-<!--      <p class="month-item"><span>10</span>月订单</p>-->
-<!--    </div>-->
-    <p class="hotel-tip">遇到问题请拨打客服：4008525636</p>
 
-    <div class="no-order" v-show="!orderData.length">
-      <img src="~assets/img/no-content.png">
-      <p>您还没有订单哦，快去逛逛吧!</p>
-    </div>
+      <div class="coupon-list">
+        <div class="coupon-item">
+          <div class="left" :style="'background-image: url('+require('assets/img/blue.png')+')'">
+            <div class="djq"><span>代</span><span>金</span><span>券</span></div>
+            <div class="content">
+              <div class="price"><span>50</span>￥</div>
+              <p class="coupon">满500元使用</p>
+              <p class="date">有效期至：2019/7/10 - 7/20</p>
+            </div>
+          </div>
+<!--          <div class="left" :style="`background-image: url(${})`"></div>-->
+          <div class="right">
+            <p class="active">{{tabId ===1?'去使用':'点击领取'}}</p>
+          </div>
+        </div>
+        <div class="coupon-item">
+          <div class="left" :style="'background-image: url('+require('assets/img/pink.png')+')'">
+            <div class="djq"><span>代</span><span>金</span><span>券</span></div>
+            <div class="content">
 
+              <div class="price"><span>9.5</span>折</div>
+<!--              <p class="coupon">满500元使用</p>-->
+              <p class="date">有效期至：2019/7/10 - 7/20</p>
+            </div>
+          </div>
+<!--          <div class="left" :style="`background-image: url(${})`"></div>-->
+          <div class="right">
+            <p class="active">{{tabId ===1?'去使用':'点击领取'}}</p>
+          </div>
+        </div>
+        <div class="coupon-item">
+          <div class="left" :style="'background-image: url('+require('assets/img/gray.png')+')'">
+            <div class="djq"><span>代</span><span>金</span><span>券</span></div>
+            <div class="content">
+              <div class="price"><span>9.5</span>折</div>
+              <p class="coupon">满500元使用</p>
+              <p class="date">有效期至：2019/7/10 - 7/20</p>
+            </div>
+          </div>
+<!--          <div class="left" :style="`background-image: url(${})`"></div>-->
+          <div class="right">
+            <p class="">{{tabId ===1?'已使用':'点击领取'}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="no-order" v-show="couponList.length<1">
+<!--        <img src="~assets/img/no-content.png">-->
+<!--        <p>您还没有订单哦，快去逛逛吧!</p>-->
+      </div>
 
     <template v-slot:footer>
       <BallPulseFooter :height="140"/>
@@ -46,7 +80,6 @@
 
 <script>
 import header from "@/components/Header/header";
-import orderListTemplate from "@/components/OrderList/orderList";
 import { Toast } from 'vant'
 import {commonJs,weekDay}  from '@/commonJs/index.js'
 import {orderList} from '@/api/index'
@@ -56,7 +89,7 @@ export default {
   data(){
       return {
         tabId:0,
-        orderData:[],
+        couponList:[],
         wait_pay:'',
         wait_live:'',
         wait_refund:'',
@@ -67,13 +100,11 @@ export default {
   },
   components: {
       "v-header": header,
-      "v-orderList": orderListTemplate,
   },
   mounted() {
-    // this.tabId = this.$route.params.id || 0;
-    this.tabId = parseInt(sessionStorage.getItem('orderTabId')) || 0;
+    this.tabId = parseInt(this.$route.query.id) || 0;
     console.log(this.tabId);
-    this.getOrderList();
+    // this.getOrderList();
   },
   methods:{
     changeTab(index){
@@ -83,7 +114,7 @@ export default {
       // this.orderData = [];
       this.$refs.easyRefresh.scrollTo(0,0);
       this.current_page = 1;
-      this.getOrderList();
+      // this.getOrderList();
     },
     getOrderList(){
       orderList({status: this.tabId===0?'99':this.tabId,page:this.current_page}).then(res=>{
