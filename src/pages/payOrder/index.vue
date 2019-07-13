@@ -95,9 +95,11 @@ export default {
       this.$router.goBack(-1);
     }
     orderInfor({order_id:this.id}).then(res=>{
-      if(res.code === 4000){
-        this.$router.goBack();
-        Toast('订单失效');
+      if(res.code !== 2000){
+        Toast(res.msg);
+        setTimeout(()=>{
+          this.$router.goBack();
+        },1500);
       }
       this.orderInfor = res.data;
       let s = moment(res.data.predict_begin_time).toArray();
@@ -106,7 +108,7 @@ export default {
       this.endDateText = isten(e[1]+=1)+'月'+isten(e[2])+'日';
 
       this.createtime = res.data.createtime.length === 13?res.data.createtime.length:res.data.createtime*1000;
-    })
+    });
     setInterval(() => {
       let endTime = this.createtime+30*60*1000;
       let nowTime = new Date().getTime();

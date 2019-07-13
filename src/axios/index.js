@@ -23,6 +23,9 @@ axios.interceptors.request.use(config => {
 // 返回数据拦截处理
 axios.interceptors.response.use(response => {
   //code... 你的逻辑
+  if(response.data.code === 401){
+    location = location;
+  }
   closeLoading();
   return response.data //直接返回后台返回的json object
 }, error => {

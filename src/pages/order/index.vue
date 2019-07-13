@@ -39,7 +39,7 @@ import header from "@/components/Header/header";
 import orderListTemplate from "@/components/OrderList/orderList";
 import footer from "@/components/Footer";
 import { Toast } from 'vant'
-import {commonJs,weekDay}  from '@/commonJs/index.js'
+import {commonJs,weekDay,countDown}  from '@/commonJs/index.js'
 import {orderList} from '@/api/index'
 
 

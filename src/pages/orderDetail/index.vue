@@ -10,7 +10,7 @@
       <div class="no-pay" v-if="orderDetail.status === 0">
         <div class="title">
           <p class="left">待支付</p>
-          <p class="right">支付倒计时：：<span>00：29：59</span></p>
+          <p class="right">支付倒计时：<span>{{arrTime[0]}}：{{arrTime[1]}}：{{arrTime[2]}}</span></p>
         </div>
         <div class="content">
           <div><p class="label">取消规则：</p><p class="text-detial">入住前可免费取消</p></div>
@@ -223,6 +223,7 @@ export default {
         closeText:'取消',
         confirmText: '确认选择',
         orderDetail:'',
+        arrTime:['--','--','--'],
         sub_order:[], // 可以取消的子订单列表
         close_order:[], // 选择好要取消的子订单列表
         close_orderIds:[] // 选择好要取消的子订单id
@@ -258,7 +259,15 @@ export default {
         this.sub_order.forEach(item=>{
           item.active = false;
         });
+
+        let createtime = this.orderDetail.createtime.length === 13?this.orderDetail.createtime.length:this.orderDetail.createtime*1000;
+        setInterval(() => {
+          let endTime = createtime+30*60*1000;
+          let nowTime = new Date().getTime();
+          this.arrTime = countDown(endTime-nowTime);
+        },1000);
       });
+
     },
     closeSelect(item,index){
       item.active = !item.active;

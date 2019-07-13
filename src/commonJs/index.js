@@ -70,22 +70,26 @@ export const countDown = function (time) {
   let seconds = parseInt((ts % (1000 * 60)) / 1000);
   let str = `${seconds}秒`;
 
+  if(seconds<10){
+    seconds = '0'+seconds;
+  }
+  if(minutes < 10){
+    minutes = '0' + minutes;
+  }
+  if(hours<10){
+    hours = '0' + hours;
+  }
+
   if(hours > 0){
-    if(hours<10){
-      hours = '0' + hours;
-    }
     return [hours,minutes,seconds];
   }
   if(minutes > 0){
-    if(minutes < 10){
-      minutes = '0' + minutes;
-    }
     return ['00',minutes,seconds]
   }
-  if(minutes<=0){
-    return ['00','00','00']
+  if(seconds > 0){
+    return ['00','00',seconds]
   }
-  return ['00','00',seconds]
+  return ['00','00','00']
   // if(minutes > 0){
   //   str = `${minutes}分钟${seconds}秒`
   // }

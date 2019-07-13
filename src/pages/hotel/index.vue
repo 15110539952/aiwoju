@@ -213,6 +213,7 @@
     </div>
 
     <template v-slot:footer>
+<!--      <ClassicsFooter/>-->
       <BallPulseFooter :height="140"/>
     </template>
     </EasyRefresh>

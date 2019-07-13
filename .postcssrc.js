@@ -3,8 +3,12 @@
 
 module.exports = ({ file }) => {
   let isVant = file && file.dirname && file.dirname.indexOf("vant") > -1;
-  let rootValue = isVant ? 37.5 : 75; // 判断条件 请自行调整
-
+  // let isEasyrefresh = file && file.dirname && file.dirname.indexOf("vue") > -1;
+  let rootValue = 75;
+  // 判断条件 请自行调整
+  if(isVant){
+    rootValue = 37.5;
+  }
   return {
     "plugins": {
       "postcss-import": {},

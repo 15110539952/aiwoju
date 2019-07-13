@@ -27,7 +27,7 @@
             }}
           </span>
           <span class="label-close" v-else>已取消</span>
-          <span class="time" v-if="item.status === 0">00：29：59</span>
+          <span class="time" v-if="item.status === 0">{{item.strTime}}</span>
         </div>
         <div class="btn-type">
           <div class="close-btn" v-if="item.status === 0" @click="orderDetail(item)">取消</div>
@@ -51,6 +51,8 @@
 </template>
 
 <script>
+  import {commonJs,weekDay,countDown}  from '@/commonJs/index.js'
+
     export default {
       name: "orderList",
       props:['orderList'],
@@ -61,6 +63,19 @@
       },
       mounted(){
         // console.log(this.orderList);
+        setInterval(() => {
+          this.orderList.forEach(item=>{
+            let nowTime = new Date().getTime();
+            if(parseInt(item.status) === 0){
+              let createtime = item.createtime.length === 13?item.createtime.length:item.createtime*1000;
+              let endTime = item.createtime*1000+30*60*1000;
+              let arrTime = countDown(endTime-nowTime);
+              let strTime = `${arrTime[0]}：${arrTime[1]}：${arrTime[2]}`;
+              item.strTime = strTime;
+              this.$set(item,strTime,strTime);
+            }
+          });
+        },1000);
       },
       methods:{
         orderDetail(item){

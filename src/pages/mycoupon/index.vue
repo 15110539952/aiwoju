@@ -11,7 +11,6 @@
            @click="changeTab(1)">我的卡券
       </div>
     </div>
-    <p class="bg20"></p>
 
     <EasyRefresh
       ref="easyRefresh"
@@ -19,6 +18,7 @@
       :autoLoad="false"
       :animationDuration="200"
       :loadMore="loadMore">
+      <p class="bg20"></p>
 
       <div class="coupon-list">
         <div class="coupon-item">

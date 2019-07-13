@@ -146,14 +146,16 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     height: 100%;
-    position: relative;
+    position: fixed;
+    width: 100%;
   }
 
 
   .child-view {
     position: absolute;
     width:100%;
-    min-height: 100%;
+    height: 100%;
+    overflow-y: auto;
     transition: all .5s cubic-bezier(.55,0,.1,1);
     /*width: 100%;*/
     /*height:100%;*/
