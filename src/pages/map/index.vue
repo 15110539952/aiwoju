@@ -75,8 +75,8 @@
             console.log(res);
             this.lat = res.latitude; // 纬度，浮点数，范围为90 ~ -90
             this.lng = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-            // var speed = res.speed; // 速度，以米/每秒计
-            // var accuracy = res.accuracy; // 位置精度
+            // let speed = res.speed; // 速度，以米/每秒计
+            // let accuracy = res.accuracy; // 位置精度
             this.car();
           },
           fail:(res)=>{
@@ -96,7 +96,7 @@
     },
     methods:{
       init() {
-        // var map = new qq.maps.Map(document.getElementById("container"), {
+        // let map = new qq.maps.Map(document.getElementById("container"), {
         //   // 地图的中心地理坐标。
         //   center: new qq.maps.LatLng(39.916527,116.397128)
         // });
@@ -104,15 +104,15 @@
         this.map = new BMap.Map("container");
         this.map.centerAndZoom(new BMap.Point(this.hotel_lng, this.hotel_lat), 16);
 
-        var pt = new BMap.Point(this.hotel_lng, this.hotel_lat);
+        let pt = new BMap.Point(this.hotel_lng, this.hotel_lat);
         let dianIcon = new BMap.Icon(require('assets/img/map-end-icon.png'), new BMap.Size(64,94));
-        var marker2 = new BMap.Marker(pt,{icon:dianIcon});  // 创建标注
+        let marker2 = new BMap.Marker(pt,{icon:dianIcon});  // 创建标注
         this.map.addOverlay(marker2);
 
-        // var geolocation = new BMap.Geolocation();
+        // let geolocation = new BMap.Geolocation();
         // geolocation.getCurrentPosition((r)=>{
         //   if(this.getStatus() == BMAP_STATUS_SUCCESS){
-        //     var mk = new BMap.Marker(r.point);
+        //     let mk = new BMap.Marker(r.point);
         //     map.addOverlay(mk);
         //     map.panTo(r.point);
         //     this.lng = r.point.lng;
@@ -126,17 +126,17 @@
       },
       car(){
         this.mapType = 0;
-        let map = new BMap.Map("container");
-        map.centerAndZoom(new BMap.Point(this.hotel_lng, this.hotel_lat), 14);
+        // let map = new BMap.Map("container");
+        // map.centerAndZoom(new BMap.Point(this.hotel_lng, this.hotel_lat), 14);
 
-        // var start = "天安门";
-        // var end = "百度大厦";
+        // let start = "天安门";
+        // let end = "百度大厦";
         // this.map.clearOverlays();
 
-        var driving = new BMap.DrivingRoute(map,
+        let driving = new BMap.DrivingRoute(this.map,
           {
             renderOptions: {
-              map: map,
+              map: this.map,
               // panel : "results",
               autoViewport: true
             },
@@ -147,11 +147,11 @@
 
         // console.log(this.hotel_lng,this.hotel_lat,this.lng,this.lat);
 
-        var start = new BMap.Point(this.lng, this.lat);
-        var end = new BMap.Point(this.hotel_lng, this.hotel_lat);
+        let start = new BMap.Point(this.lng, this.lat);
+        let end = new BMap.Point(this.hotel_lng, this.hotel_lat);
         driving.search(start, end);
 
-        let startIcon=new BMap.Icon(require('assets/img/map-end-icon.png'), new BMap.Size(64,94));
+        let startIcon=new BMap.Icon(require('assets/img/map-start-icon.png'), new BMap.Size(64,94));
         let endIcon = new BMap.Icon(require('assets/img/map-end-icon.png'), new BMap.Size(64,94));
         driving.setMarkersSetCallback(function(result){
           result[0].marker.setIcon(startIcon);
@@ -160,19 +160,19 @@
       },
       ride(){
         this.mapType = 1;
-        let map = new BMap.Map("container");
-        map.centerAndZoom(new BMap.Point(this.hotel_lng, this.hotel_lat), 16);
-        var riding = new BMap.RidingRoute(this.map, {
+        // let map = new BMap.Map("container");
+        // map.centerAndZoom(new BMap.Point(this.hotel_lng, this.hotel_lat), 16);
+        let riding = new BMap.RidingRoute(this.map, {
           renderOptions: {
             map: this.map,
             autoViewport: true
           }
         })
-        var start = new BMap.Point(this.lng, this.lat);
-        var end = new BMap.Point(this.hotel_lng, this.hotel_lat);
+        let start = new BMap.Point(this.lng, this.lat);
+        let end = new BMap.Point(this.hotel_lng, this.hotel_lat);
         riding.search(start, end);
 
-        let startIcon=new BMap.Icon(require('assets/img/map-end-icon.png'), new BMap.Size(64,94));
+        let startIcon=new BMap.Icon(require('assets/img/map-start-icon.png'), new BMap.Size(64,94));
         let endIcon = new BMap.Icon(require('assets/img/map-end-icon.png'), new BMap.Size(64,94));
         riding.setMarkersSetCallback(function(result){
           result[0].marker.setIcon(startIcon);
@@ -181,20 +181,20 @@
       },
       walk(){
         this.mapType = 2;
-        let map = new BMap.Map("container");
-        map.centerAndZoom(new BMap.Point(this.hotel_lng, this.hotel_lat), 16);
-        var walking = new BMap.WalkingRoute(this.map, {
+        // let map = new BMap.Map("container");
+        // map.centerAndZoom(new BMap.Point(this.hotel_lng, this.hotel_lat), 16);
+        let walking = new BMap.WalkingRoute(this.map, {
           renderOptions: {
             map: this.map,
             autoViewport: true
           }
         });
-        var start = new BMap.Point(this.lng, this.lat);
-        var end = new BMap.Point(this.hotel_lng, this.hotel_lat);
+        let start = new BMap.Point(this.lng, this.lat);
+        let end = new BMap.Point(this.hotel_lng, this.hotel_lat);
         walking.search(start, end);
 
-        let startIcon=new BMap.Icon(require('assets/img/map-end-icon.png'), new BMap.Size(64,94));
-        let endIcon = new BMap.Icon(require('assets/img/map-start-icon.png'), new BMap.Size(64,94));
+        let startIcon=new BMap.Icon(require('assets/img/map-start-icon.png'), new BMap.Size(64,94));
+        let endIcon = new BMap.Icon(require('assets/img/map-end-icon.png'), new BMap.Size(64,94));
         walking.setMarkersSetCallback(function(result){
           result[0].marker.setIcon(startIcon);
           result[1].marker.setIcon(endIcon);
