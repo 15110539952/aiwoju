@@ -64,7 +64,7 @@ export default {
     let expires_in = localStorage.getItem('expires_in');
     if(dateTime>parseInt(expires_in)){
       localStorage.clear();
-      location = location;
+      location.reload();
     }
     if(process.env.NODE_ENV === 'development'){
       // this.$store.dispatch('setToken', {token:'712aa988-d076-4e11-8781-104460594cde',expires_in:31536000});
@@ -83,7 +83,7 @@ export default {
             console.log(res);
             this.$store.dispatch('setToken', {token:res.data.token,expires_in:res.data.expires_in});
             setTimeout(()=>{
-              location = location;
+              location.reload();
             },200);
           });
         }

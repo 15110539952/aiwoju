@@ -25,7 +25,7 @@ axios.interceptors.response.use(response => {
   //code... 你的逻辑
   if(response.data.code === 401){
     localStorage.clear();
-    location = location;
+    location.reload();
   }
   closeLoading();
   return response.data //直接返回后台返回的json object
