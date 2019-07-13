@@ -125,6 +125,10 @@
         // },{enableHighAccuracy: true});
       },
       car(){
+        Toast.loading({
+          duration: 2000,
+          message: '加载中...'
+        });
         this.mapType = 0;
         // let map = new BMap.Map("container");
         // map.centerAndZoom(new BMap.Point(this.hotel_lng, this.hotel_lat), 14);
@@ -159,6 +163,10 @@
         })
       },
       ride(){
+        Toast.loading({
+          duration: 2000,
+          message: '加载中...'
+        });
         this.mapType = 1;
         // let map = new BMap.Map("container");
         // map.centerAndZoom(new BMap.Point(this.hotel_lng, this.hotel_lat), 16);
@@ -180,6 +188,10 @@
         })
       },
       walk(){
+        Toast.loading({
+          duration: 2000,
+          message: '加载中...'
+        });
         this.mapType = 2;
         // let map = new BMap.Map("container");
         // map.centerAndZoom(new BMap.Point(this.hotel_lng, this.hotel_lat), 16);
@@ -207,7 +219,7 @@
             longitude: this.hotel_lng || 0, // 经度，浮点数，范围为180 ~ -180。
             name: this.hotel_name, // 位置名
             address: this.hotel_address, // 地址详情说明
-            scale: 1, // 地图缩放级别,整形值,范围从1~28。默认为最大
+            scale: 26, // 地图缩放级别,整形值,范围从1~28。默认为最大
             infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
           });
         });
