@@ -1,6 +1,13 @@
 <template>
   <div class="coupon">
-    <v-header title=""></v-header>
+    <v-header title="">
+      <van-button v-if="iscoupon===1"
+                  class="no-coupon-btn"
+                  slot="right-icon"
+                  type="default"
+                  @click="noCoupon"
+                  size="small">不使用优惠券</van-button>
+    </v-header>
     <div class="order-tab">
       <div class="tab"
            :class="tabId===0?'active':''"
@@ -11,70 +18,96 @@
            @click="changeTab(1)">我的卡券
       </div>
     </div>
+    <p class="bg20"></p>
 
-    <EasyRefresh
-      ref="easyRefresh"
-      :userSelect="false"
-      :autoLoad="false"
-      :animationDuration="200"
-      :loadMore="loadMore">
-      <p class="bg20"></p>
+<!--    <EasyRefresh-->
+<!--      ref="easyRefresh"-->
+<!--      :userSelect="false"-->
+<!--      :autoLoad="false"-->
+<!--      :animationDuration="200"-->
+<!--      :loadMore="loadMore">-->
 
-      <div class="coupon-list">
-        <div class="coupon-item">
-          <div class="left" :style="'background-image: url('+require('assets/img/blue.png')+')'">
+      <div class="coupon-list" v-if="tabId === 1">
+        <div class="coupon-item" v-for="(item,index) in couponList" :key="index">
+          <div class="left" :style="'background-image: url('+require('assets/img/'+(item.imgbg || 'blue')+'.png')+')'">
+            <!--          <div class="left" :style="'background-image: url('+require('assets/img/blue.png')+')'">-->
             <div class="djq"><span>代</span><span>金</span><span>券</span></div>
             <div class="content">
-              <div class="price"><span>50</span>￥</div>
-              <p class="coupon">满500元使用</p>
-              <p class="date">有效期至：2019/7/10 - 7/20</p>
+              <div class="price" v-if="item.isDz"><span>{{item.discount}}</span>折</div>
+              <div class="price" v-else><span>{{item.jian}}</span>￥</div>
+
+              <p class="coupon" v-if="!item.isDz">满{{item.man}}元使用</p>
+              <p class="date">有效期至：{{item.begin_time}} - {{item.end_time}}</p>
+            </div>
+          </div>
+          <!--          <div class="left" :style="`background-image: url(${})`"></div>-->
+          <div class="right">
+            <p :class="item.status ===2?'':'active'"
+               @click="toHome(item)">{{item.status ===2?'已过期':item.status === 1?'已使用':'去使用'}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="coupon-list" v-if="tabId === 0">
+        <div class="coupon-item" v-for="(item,index) in couponList" :key="index">
+          <div class="left" :style="'background-image: url('+require('assets/img/'+(item.imgbg || 'blue')+'.png')+')'">
+<!--          <div class="left" :style="'background-image: url('+require('assets/img/blue.png')+')'">-->
+            <div class="djq"><span>代</span><span>金</span><span>券</span></div>
+            <div class="content">
+              <div class="price" v-if="item.isDz"><span>{{item.discount}}</span>折</div>
+              <div class="price" v-else><span>{{item.jian}}</span>￥</div>
+
+              <p class="coupon" v-if="!item.isDz">满{{item.man}}元使用</p>
+              <p class="date">有效期至：{{item.begin_time}} - {{item.end_time}}</p>
             </div>
           </div>
 <!--          <div class="left" :style="`background-image: url(${})`"></div>-->
           <div class="right">
-            <p class="active">{{tabId ===1?'去使用':'点击领取'}}</p>
+            <p :class="item.status ===2?'':'active'"
+               @click="getCoupon(item.id)">{{item.status ===2?'已领取':'点击领取'}}</p>
           </div>
         </div>
-        <div class="coupon-item">
-          <div class="left" :style="'background-image: url('+require('assets/img/pink.png')+')'">
-            <div class="djq"><span>代</span><span>金</span><span>券</span></div>
-            <div class="content">
+        <!--region 注释的代码-->
+<!--        <div class="coupon-item">-->
+<!--          <div class="left" :style="'background-image: url('+require('assets/img/pink.png')+')'">-->
+<!--            <div class="djq"><span>代</span><span>金</span><span>券</span></div>-->
+<!--            <div class="content">-->
 
-              <div class="price"><span>9.5</span>折</div>
+<!--              <div class="price"><span>9.5</span>折</div>-->
+<!--&lt;!&ndash;              <p class="coupon">满500元使用</p>&ndash;&gt;-->
+<!--              <p class="date">有效期至：2019/7/10 - 7/20</p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--&lt;!&ndash;          <div class="left" :style="`background-image: url(${})`"></div>&ndash;&gt;-->
+<!--          <div class="right">-->
+<!--            <p class="active">{{tabId ===1?'去使用':'点击领取'}}</p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="coupon-item">-->
+<!--          <div class="left" :style="'background-image: url('+require('assets/img/gray.png')+')'">-->
+<!--            <div class="djq"><span>代</span><span>金</span><span>券</span></div>-->
+<!--            <div class="content">-->
+<!--              <div class="price"><span>9.5</span>折</div>-->
 <!--              <p class="coupon">满500元使用</p>-->
-              <p class="date">有效期至：2019/7/10 - 7/20</p>
-            </div>
-          </div>
-<!--          <div class="left" :style="`background-image: url(${})`"></div>-->
-          <div class="right">
-            <p class="active">{{tabId ===1?'去使用':'点击领取'}}</p>
-          </div>
-        </div>
-        <div class="coupon-item">
-          <div class="left" :style="'background-image: url('+require('assets/img/gray.png')+')'">
-            <div class="djq"><span>代</span><span>金</span><span>券</span></div>
-            <div class="content">
-              <div class="price"><span>9.5</span>折</div>
-              <p class="coupon">满500元使用</p>
-              <p class="date">有效期至：2019/7/10 - 7/20</p>
-            </div>
-          </div>
-<!--          <div class="left" :style="`background-image: url(${})`"></div>-->
-          <div class="right">
-            <p class="">{{tabId ===1?'已使用':'点击领取'}}</p>
-          </div>
-        </div>
+<!--              <p class="date">有效期至：2019/7/10 - 7/20</p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="right">-->
+<!--            <p class="">{{tabId ===1?'已使用':'点击领取'}}</p>-->
+<!--          </div>-->
+<!--        </div>-->
+      <!--endregion-->
       </div>
 
       <div class="no-order" v-show="couponList.length<1">
-<!--        <img src="~assets/img/no-content.png">-->
-<!--        <p>您还没有订单哦，快去逛逛吧!</p>-->
+        <img src="~assets/img/no-content.png">
+        <p>暂无优惠券</p>
       </div>
 
-    <template v-slot:footer>
-      <BallPulseFooter :height="140"/>
-    </template>
-    </EasyRefresh>
+<!--    <template v-slot:footer>-->
+<!--      <BallPulseFooter :height="140"/>-->
+<!--    </template>-->
+<!--    </EasyRefresh>-->
   </div>
 </template>
 
@@ -82,7 +115,7 @@
 import header from "@/components/Header/header";
 import { Toast } from 'vant'
 import {commonJs,weekDay}  from '@/commonJs/index.js'
-import {orderList} from '@/api/index'
+import {getCoupon,myCoupon,couponList} from '@/api/index'
 
 export default {
   name:'order',
@@ -90,9 +123,7 @@ export default {
       return {
         tabId:0,
         couponList:[],
-        wait_pay:'',
-        wait_live:'',
-        wait_refund:'',
+        iscoupon: 0, // 是否选择优惠券
 
         last_page:'', // 最后页码
         current_page:1, // 当前第几页
@@ -103,18 +134,87 @@ export default {
   },
   mounted() {
     this.tabId = parseInt(this.$route.query.id) || 0;
+    this.iscoupon = this.$route.query.iscoupon || 0;
     console.log(this.tabId);
-    // this.getOrderList();
+    this.getCouponList();
   },
   methods:{
+    getCouponList(){
+      if(this.tabId === 1){
+        myCoupon().then(res=>{
+          let couponList = res.data;
+          couponList.map(item=>{
+            // console.log(parseFloat(item.discount));
+            // console.log(parseFloat(item.discount) === 1.00);
+            if(1.00 === parseFloat(item.discount)){
+              item.isDz = false;
+              item.imgbg = 'pink';
+            }else{
+              item.discount = (item.discount*10).toFixed(1);
+              item.isDz = true;
+              item.imgbg = 'blue';
+            }
+            if(item.status === 2){
+              item.imgbg = 'gray';
+            }
+          });
+          // console.log(couponList);
+          this.couponList = couponList;
+        });
+      }else {
+        couponList().then(res=>{
+          // console.log(res);
+          let couponList = res.data;
+          couponList.map(item=>{
+            // console.log(parseFloat(item.discount));
+            // console.log(parseFloat(item.discount) === 1.00);
+            if(1.00 === parseFloat(item.discount)){
+              item.isDz = false;
+              item.imgbg = 'pink';
+            }else{
+              item.discount = (item.discount*10).toFixed(1);
+              item.isDz = true;
+              item.imgbg = 'blue';
+            }
+            if(item.status === 2){
+              item.imgbg = 'gray';
+            }
+          });
+          // console.log(couponList);
+          this.couponList = couponList;
+        });
+      }
+    },
+    // 领取优惠券
+    getCoupon(id){
+      getCoupon({you_id:id}).then(res=>{
+        this.getCouponList();
+        setTimeout(()=>{
+          Toast(res.msg);
+        },2000);
+      });
+    },
     changeTab(index){
       this.tabId = index;
-      sessionStorage.setItem('orderTabId',index);
+      this.getCouponList();
 
-      // this.orderData = [];
-      this.$refs.easyRefresh.scrollTo(0,0);
-      this.current_page = 1;
+      // this.$refs.easyRefresh.scrollTo(0,0);
+      // this.current_page = 1;
       // this.getOrderList();
+    },
+    toHome(item){
+      if(this.iscoupon === 1){
+        this.$store.dispatch('setCoupon', item);
+        this.$router.goBack();
+        return;
+      }
+      if(item.status===0){
+        this.$router.push('/');
+      }
+    },
+    noCoupon(){ // 不使用优惠券
+      this.$store.dispatch('setCoupon', '');
+      this.$router.goBack();
     },
     getOrderList(){
       orderList({status: this.tabId===0?'99':this.tabId,page:this.current_page}).then(res=>{

@@ -69,6 +69,7 @@ export default {
         createtime:'',
         arrTime:['00','00','00'],
         wxSign:'',
+        isGoOrderDetail:false, // 判断是否从订单详情进入的
       }
   },
   components: {
@@ -119,6 +120,10 @@ export default {
     pay(index){
       if(index === '1'){
         this.isPay = false;
+        if(this.$route.query.isdetail === 1){
+          this.$router.goBack();
+          return;
+        }
         this.$router.replace({path:'/orderDetail',query:{id:this.id}});
         return;
       }else if(index === '2'){
@@ -163,8 +168,9 @@ export default {
     },
   },
   beforeRouteLeave (to, from, next) { // 如果返回上一页是hotel页面 就返回两页到首页
+    console.log(from)
     if(to.name === 'hotel') {
-      this.$router.goBack(-2);
+      this.$router.goBack(-1);
     }
     next();
   }

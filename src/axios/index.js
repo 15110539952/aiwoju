@@ -24,6 +24,7 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(response => {
   //code... 你的逻辑
   if(response.data.code === 401){
+    localStorage.clear();
     location = location;
   }
   closeLoading();

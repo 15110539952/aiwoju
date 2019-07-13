@@ -95,6 +95,20 @@ export function user(data) {
   return ajax.get('api/user/index',data,{ load: true})
 }
 
+//点击领取优惠券
+export function getCoupon(data) {
+  return ajax.get('api/coupon/receive',data,{ load: true})
+}
+
+//我的优惠券
+export function myCoupon(data) {
+  return ajax.get('api/coupon/personal',data,{ load: true})
+}
+
+//优惠券中心列表
+export function couponList(data) {
+  return ajax.get('api/coupon/index',data,{ load: true})
+}
 
 //我的评价列表
 export function myComment(data) {

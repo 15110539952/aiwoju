@@ -41,11 +41,11 @@
         <p class="content"><span class="time">{{timeList[actionTimeId]}}</span>(整晚保留)</p>
         <i class="iconfont iconarrow-right"></i>
       </div>
-<!--      <div class="info-item">-->
-<!--        <p class="label">优惠券:</p>-->
-<!--        <p class="content">节日优享20元券</p>-->
-<!--        <i class="iconfont iconarrow-right"></i>-->
-<!--      </div>-->
+      <div class="info-item" @click="$router.push({path:'/mycoupon',query:{id:1,iscoupon:1}})">
+        <p class="label">优惠券:</p>
+        <p class="content">{{coupon?coupon.name:'未使用优惠券'}}</p>
+        <i class="iconfont iconarrow-right"></i>
+      </div>
     </div>
 
 
@@ -178,16 +178,19 @@ export default {
     },
     'endDate'(){
       return this.$store.getters.startendDate.end || moment(moment().add(1, 'd')).format('YYYY-MM-DD');
+    },
+    'coupon'(){
+      // console.log('coupon');
+      return this.$store.getters.coupon || '';
     }
   },
   watch:{
+    'coupon'(){
+      // console.log('couponWatch');
+      this.calcTotal();
+    },
     'actionRoomId'(val,oldVal){
-      let total = 0;
-      this.hotelorder.mingxi.forEach(item=>{
-        total+=item.price*this.actionRoomId;
-      });
-      this.total = total;
-      // console.log(this.total);
+      this.calcTotal();
       let count = val - oldVal;
       if(val>oldVal){
         for(let i=1;i<=count;i++){
@@ -198,7 +201,6 @@ export default {
         this.users = this.users.slice(0,val);
         // console.log(this.users)
       }
-
     },
     // 选择入住人改变同时改变对应的值
     'actionPeopleId'(i){
@@ -244,6 +246,7 @@ export default {
       "v-header": header,
   },
   mounted(){
+    this.$store.dispatch('setCoupon', ''); // 重置优惠券
     this.getDetail();
     this.$nextTick(() => {
 
@@ -271,13 +274,32 @@ export default {
       this.startDateText = isten(s[1]+=1)+'月'+isten(s[2])+'日';
       this.endDateText = isten(e[1]+=1)+'月'+isten(e[2])+'日';
 
-      console.log(this.room_type_id)
+      // console.log(this.room_type_id)
       hotelOrder({start_time: this.startDate,end_time:this.endDate,room_type_id:this.room_type_id,}).then(res=>{
-        console.log(res.data)
+        // console.log(res.data)
         this.hotelorder = res.data;
         this.peopleList = res.data.user;
-        this.total = (this.hotelorder.night*this.actionRoomId*this.hotelorder.tot_price).toFixed(2);
+        this.calcTotal();
+        // this.total = (this.actionRoomId*this.hotelorder.tot_price).toFixed(2);
       });
+    },
+    calcTotal(){ // 计算总价
+      let total = 0;
+      let coupon = this.coupon;
+      if(this.hotelorder){
+        this.hotelorder.mingxi.forEach(item=>{
+          total+=item.price*this.actionRoomId;
+        });
+        if(coupon){
+          if(coupon.isDz){
+            console.log(parseFloat(coupon.discount/10));
+            total*=parseFloat(coupon.discount/10);
+          }else{
+            total-=coupon.jian;
+          }
+        }
+        this.total = total.toFixed(2);
+      }
     },
     order(){
       // console.log(this.users)
@@ -302,7 +324,8 @@ export default {
         look_time:this.timeList[this.actionTimeId],
         user_name: nameStr,
         user_phone: phoneStr,
-        price:this.total
+        price:this.total,
+        you_id: this.coupon?this.coupon.id:'',
       }).then(res=>{
         // console.log(res);
         this.is_loading = false;
@@ -338,7 +361,7 @@ export default {
     }else{
 
     }
-
+    // console.log(this.coupon);
     this.getDetail();
   },
   beforeRouteEnter (to, from, next) {

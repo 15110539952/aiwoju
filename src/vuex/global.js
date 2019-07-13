@@ -7,6 +7,7 @@ let types = {
   SET_DIRECTION: 'setDirection', // 页面切换动画
   SET_BOTTOM_TAB: 'setBottomTab', // 页面底部导航栏
   SET_TOKEN: 'setToken', // 缓存页面token
+  SET_COUPON: 'setCoupon', // 缓存优惠券信息
   START_END_DATE: 'startendDate', // 酒店日期选择开始结束时间
 };
 
@@ -20,7 +21,8 @@ const state = {
   showMask: false, // 全局遮罩
   direction: 'forward', // 页面切换动画
   currPath: '', // 当前路由
-  bottomTab: false // 是否有底部导航栏
+  bottomTab: false, // 是否有底部导航栏
+  coupon:'', // 优惠券信息
 }
 const getters = {
   token: (state) => {
@@ -45,6 +47,9 @@ const getters = {
   },
   bottomTab: (state) => {
     return state.bottomTab
+  },
+  coupon: (state) => {
+    return state.coupon
   }
 }
 const mutations = {
@@ -65,6 +70,9 @@ const mutations = {
   },
   [types.START_END_DATE] (state, obj) {
     state.startendDate = obj
+  },
+  [types.SET_COUPON] (state, obj) {
+    state.coupon = obj
   },
   [types.SET_TOKEN] (state, val) {
     localStorage.setItem('token',val.token || '');
@@ -100,6 +108,10 @@ const actions = {
   // 设置Token
   setToken ({ commit }, val) {
     commit(types.SET_TOKEN, val)
+  },
+  // 设置优惠券coupon
+  setCoupon ({ commit }, val) {
+    commit(types.SET_COUPON, val)
   }
 }
 export default {

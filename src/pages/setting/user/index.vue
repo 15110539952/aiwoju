@@ -1,9 +1,9 @@
 <template>
-  <div class="setting">
-    <v-header title="设置"></v-header>
+  <div class="setting-user">
+<!--    <v-header title="设置"></v-header>-->
     <div class="set-list">
       <div class="item bg-active">
-        <p>头像</p>
+        <p class="label">头像</p>
         <p><span class="head"><van-image
         width="100%"
         height="100%"
@@ -12,11 +12,11 @@
       /></span><i class="iconfont iconarrow-right"></i></p>
       </div>
       <div class="item bg-active" @click="datePopup = true">
-        <p>生日</p>
+        <p class="label">生日</p>
         <p><span class="item-text">{{birthday}}</span><i class="iconfont iconarrow-right"></i></p>
       </div>
       <div class="item">
-        <p>性别</p>
+        <p class="label">性别</p>
         <div class="sex-type">
           <p :class="gender === 1?'active':''" @click="bindSex(1)">
             <img v-if="gender === 1" class="select-img" src="~assets/img/carcle-select-yes.png">
@@ -169,6 +169,10 @@ export default {
       border-bottom: 1px solid #eee;
       display: flex;
       justify-content: space-between;
+      .label{
+        text-align: left;
+        width: 200px;
+      }
       &.bg-active:active{
         background: #f2f3f5;
       }

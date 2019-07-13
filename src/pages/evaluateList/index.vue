@@ -25,11 +25,13 @@
     <div class="evaluate-list" v-if="evaluateList">
       <EasyRefresh
         ref="easyRefresh"
+        :onRefresh="(done)=>{done()}"
         :userSelect="false"
         :autoLoad="false"
         :loadMore="loadMore">
+        <template v-slot:header><EmptyHeader></EmptyHeader></template>
 
-      <div class="evaluate-item"
+        <div class="evaluate-item"
            :key="'eva_'+index"
            v-for="(item,index) in evaluateList">
         <div class="head">
@@ -138,13 +140,14 @@ export default {
         this.last_page = res.data.comment.last_page;
         this.current_page += 1;
       })
+      this.$refs.easyRefresh.callRefresh();
       document.documentElement.scrollTop = 0;
     },
     loadMore(done){
       console.log(this.current_page,this.last_page);
       if(this.current_page>this.last_page){
         Toast('没有更多了')
-        done(false);
+        done(true);
         return;
       }
       hotelComment({page:this.current_page,title:this.title}).then(res=>{

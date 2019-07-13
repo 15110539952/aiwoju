@@ -7,7 +7,7 @@ Vue.use(Router)
 Router.prototype.goBack = function (back) {
   this.isBack = true;
   if (window.history.length > 1) {
-    this.back(back);
+    this.go(back||-1);
   } else {
     this.push('/')
   }

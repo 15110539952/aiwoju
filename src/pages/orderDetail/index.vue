@@ -15,7 +15,7 @@
         <div class="content">
           <div><p class="label">取消规则：</p><p class="text-detial">入住前可免费取消</p></div>
         </div>
-        <van-button class="to-pay" type="default" @click="$router.push({path:'/payOrder',query:{id:orderDetail.id}})">
+        <van-button class="to-pay" type="default" @click="$router.push({path:'/payOrder',query:{id:orderDetail.id,isdetail:1}})">
           去支付<span>￥</span><span class="number">456</span>
         </van-button>
       </div>

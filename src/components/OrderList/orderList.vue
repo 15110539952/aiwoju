@@ -27,7 +27,7 @@
             }}
           </span>
           <span class="label-close" v-else>已取消</span>
-          <span class="time" v-if="item.status === 0">{{item.strTime}}</span>
+          <span class="time" v-if="item.status === 0 && item.strTime">{{item.strTime}}</span>
         </div>
         <div class="btn-type">
           <div class="close-btn" v-if="item.status === 0" @click="orderDetail(item)">取消</div>

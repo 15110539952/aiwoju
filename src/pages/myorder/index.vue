@@ -18,10 +18,12 @@
 
     <EasyRefresh
       ref="easyRefresh"
+      :onRefresh="(done)=>{done()}"
       :userSelect="false"
       :autoLoad="false"
       :animationDuration="200"
       :loadMore="loadMore">
+      <template v-slot:header><EmptyHeader></EmptyHeader></template>
     <!--region 订单列表-->
     <v-orderList :orderList="orderData"></v-orderList>
     <!--endregion-->
@@ -84,6 +86,7 @@ export default {
       this.$refs.easyRefresh.scrollTo(0,0);
       this.current_page = 1;
       this.getOrderList();
+      this.$refs.easyRefresh.callRefresh();
     },
     getOrderList(){
       orderList({status: this.tabId===0?'99':this.tabId,page:this.current_page}).then(res=>{
@@ -104,7 +107,7 @@ export default {
     loadMore(done){
       if(this.current_page>this.last_page){
         Toast('没有更多了')
-        done(false);
+        done(true);
         return;
       }
       orderList({status: this.tabId===0?'99':this.tabId,page:this.current_page}).then(res=>{
