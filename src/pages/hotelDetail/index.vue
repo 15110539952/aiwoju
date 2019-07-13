@@ -4,7 +4,9 @@
     <div class="tab-box">
       <p @click="goAnchor('oneId',0)" :class="tabId===0?'active':''" class="tab-title">设施详情 <b></b></p>
       <p @click="goAnchor('twoId',1)" :class="tabId===1?'active':''" class="tab-title">酒店介绍 <b></b></p>
-      <p @click="goAnchor('',2)" :class="tabId===2?'active':''" class="tab-title">交通信息 <b></b></p>
+      <p @click="$router.push({path:'/map',query:{lng:hotel_infor.lng,lat:hotel_infor.lat,name:hotel_infor.name,address:hotel_infor.address}})"
+         :class="tabId===2?'active':''"
+         class="tab-title">交通信息 <b></b></p>
     </div>
     <div class="content">
       <div class="list-box oneId" v-if="peitao">
@@ -22,7 +24,7 @@
       </div>
       <div class="list-box guize">
         <p class="title">订房必读</p>
-        <div class="item hotel_description" v-html="hotel_infor.description"></div>
+<!--        <div class="item hotel_description" v-html="hotel_infor.description"></div>-->
       </div>
       <div class="list-box twoId">
         <p class="title">酒店详情</p>
@@ -33,12 +35,12 @@
           <p><span>房间数：</span>{{hotel_infor.room_num}}</p>
         </div>
 <!--        <div class="hotel_description" v-html="hotel_infor.remark"></div>-->
-        <div class="room-content">{{hotel_infor.introduce}}</div>
+        <div class="room-content" style="font-size: 0.28rem;" v-if="hotel_infor">{{hotel_infor.introduce}}</div>
       </div>
       <div class="list-box">
         <p class="title">交通信息</p>
 
-        <div class="hotel_description" v-html="hotel_infor.traffic"></div>
+        <div class="hotel_description" style="font-size: 0.3rem;" v-html="hotel_infor.traffic"></div>
 
       </div>
     </div>
@@ -92,61 +94,3 @@ export default {
     padding-top: 100px;
   }
 </style>
-
-
-<!--        <div class="item">-->
-<!--          <p class="item-title"><i class="iconfont iconpeizhi_wangluo"></i>网络</p>-->
-<!--          <div class="type-list">-->
-<!--            <div class="label">免费WIFI</div>-->
-<!--            <div class="label">美容美发</div>-->
-<!--            <div class="label">室内游泳池</div>-->
-<!--            <div class="label">24小时前台服务</div>-->
-<!--            <div class="label">西式餐厅</div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="item">-->
-<!--          <p class="item-title"><i class="iconfont iconpeizhi_wangluo"></i>网络</p>-->
-<!--          <div class="type-list">-->
-<!--            <div class="label">免费WIFI</div>-->
-<!--            <div class="label">美容美发</div>-->
-<!--            <div class="label">免费WIFI</div>-->
-<!--            <div class="label">室内游泳池</div>-->
-<!--            <div class="label">24小时前台服务</div>-->
-<!--            <div class="label">西式餐厅</div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="item">-->
-<!--          <p class="item-title"><i class="iconfont iconpeizhi_wangluo"></i>网络</p>-->
-<!--          <div class="type-list">-->
-<!--            <div class="label">免费WIFI</div>-->
-<!--            <div class="label">美容美发</div>-->
-<!--            <div class="label">免费WIFI</div>-->
-<!--            <div class="label">室内游泳池</div>-->
-<!--            <div class="label">24小时前台服务</div>-->
-<!--            <div class="label">24小时前台服务</div>-->
-<!--            <div class="label">西式餐厅</div>-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        <div class="item">-->
-<!--          <p class="item-title">入离时间</p>-->
-<!--          <div class="type-list">不接受儿童预订</div>-->
-<!--        </div>-->
-<!--        <div class="item">-->
-<!--          <p class="item-title">儿童政策</p>-->
-<!--          <div class="type-list">不接受儿童预订</div>-->
-<!--        </div>-->
-<!--        <div class="item">-->
-<!--          <p class="item-title">宠物政策</p>-->
-<!--          <div class="type-list">不允许携带宠物</div>-->
-<!--        </div>-->
-
-<!--        <div class="room-content">铂涛集团位居全国酒店业前列,旗下近20个品牌,超1亿会员,门店总数超5000家.铂涛集团 诚邀您加盟实现合作共赢铂涛集团位居全国酒店业前列,旗下近20个品牌,超1亿会员</div>-->
-<!--        <div class="road-item">-->
-<!--          <p class="road-title">王府井地铁站</p>-->
-<!--          <p class="road-detail">相距124米，步行约12分钟</p>-->
-<!--        </div>-->
-<!--        <div class="road-item">-->
-<!--          <p class="road-title">王府井地铁站</p>-->
-<!--          <p class="road-detail">相距124米，步行约12分钟</p>-->
-<!--        </div>-->

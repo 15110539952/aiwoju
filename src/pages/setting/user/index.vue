@@ -58,7 +58,7 @@ export default {
   data(){
       return {
         datePopup:false,
-        currentDate: new Date(),
+        currentDate: new Date(1990,0,1),
         minDate: new Date('1950-01-01'),
         maxDate: new Date(),
         birthday: '',
@@ -74,6 +74,7 @@ export default {
       this.modify = res.data;
       this.birthday = res.data.birthday;
       this.gender = res.data.gender;
+      this.currentDate = new Date(res.data.birthday);
     });
   },
   methods:{

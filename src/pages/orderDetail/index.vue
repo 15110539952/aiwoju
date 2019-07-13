@@ -100,11 +100,11 @@
     </div>
     <!--endregion-->
     <div class="hotel-info">
-      <div class="address active-bg">
+      <div class="address active-bg" @click="$router.push({path:'/map',query:{lng:orderDetail.lng,lat:orderDetail.lat,name:orderDetail.hotelname,address:orderDetail.address}})">
         <p>{{orderDetail.address}}</p><i class="iconfont iconarrow-right"></i>
       </div>
-      <div class="hotel-tab" @click="$router.push({path:'/map',query:{lat:orderDetail.lat,lng:orderDetail.lng}})">
-        <div class="hotel-address">
+      <div class="hotel-tab">
+        <div class="hotel-address" @click="$router.push({path:'/map',query:{lng:orderDetail.lng,lat:orderDetail.lat,name:orderDetail.hotelname,address:orderDetail.address}})">
           <i class="iconfont iconorder-weizhi"></i>
           <p>地图定位</p>
         </div>

@@ -7,7 +7,7 @@
       </div>
       <div class="item" @click="changePhone">
         <p>手机号</p>
-        <p><span class="item-text">12345678901</span><i class="iconfont iconarrow-right"></i></p>
+        <p><span class="item-text"></span><i class="iconfont iconarrow-right"></i></p>
       </div>
       <div class="item" @click="$router.push('/setting/social')">
         <p>社交账号</p>

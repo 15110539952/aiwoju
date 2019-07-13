@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <div class="address-block" @click="$router.push('/map')">
+    <div class="address-block" @click="$router.push({path:'/map',query:{lng:hotel.lng,lat:hotel.lat,name:hotel.name,address:hotel.address}})">
       <div class="left">
         <div class="name-block">
           <p class="name text-ellipsis">{{hotel.address}}</p>
@@ -205,6 +205,7 @@
                 width="100%"
                 height="100%"
                 fit="cover"
+                @click="imgSee(item.images,img_i)"
                 :src="url+img"><template v-slot:error>加载失败</template></van-image>
             </div>
           </div>
@@ -223,6 +224,7 @@
 <script>
 import header from "@/components/Header/header";
 import footer from "@/components/Footer";
+import { ImagePreview } from 'vant';
 import { Toast } from 'vant'
 import {commonJs}  from '@/commonJs/index.js';
 import {hotel}  from '@/api/index';
@@ -310,6 +312,21 @@ export default {
     order(id){
       console.log(id)
       this.$router.push({path:'/hotelorder',query:{id:id}});
+    },
+    imgSee(img,index){
+      let imgs = [];
+      img.forEach(item=>{
+        imgs.push(commonJs.url + item);
+      });
+      // console.log(imgs);
+      ImagePreview({
+        images: imgs,
+        startPosition: index,
+        closeOnPopstate:true,
+        onClose() {
+          // do something
+        }
+      });
     },
     loadMore(done){
       if(this.current_page>this.last_page){

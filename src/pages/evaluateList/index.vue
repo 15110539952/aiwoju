@@ -55,11 +55,12 @@
           <div class="detail">{{item.content}}</div>
           <div class="img-box">
             <!--            style="background-image: url('')"-->
-            <div class="evaluate-img" v-for="img in item.images">
+            <div class="evaluate-img" v-for="(img,img_i) in item.images" :key="'img_i'+img_i">
               <van-image
                 width="100%"
                 height="100%"
                 fit="cover"
+                @click="imgSee(item.images,img_i)"
                 :src="commonJs.url+img"
               />
             </div>
@@ -82,6 +83,7 @@
 
 <script>
 import header from "@/components/Header/header";
+import { ImagePreview } from 'vant';
 import { Toast } from 'vant'
 import {commonJs,toFixedChange}  from '@/commonJs/index.js';
 import {hotelComment} from '@/api/index'
@@ -144,7 +146,7 @@ export default {
       document.documentElement.scrollTop = 0;
     },
     loadMore(done){
-      console.log(this.current_page,this.last_page);
+      // console.log(this.current_page,this.last_page);
       if(this.current_page>this.last_page){
         Toast('没有更多了')
         done(true);
@@ -162,6 +164,21 @@ export default {
           done(false);
         }
       })
+    },
+    imgSee(img,index){
+      let imgs = [];
+      img.forEach(item=>{
+        imgs.push(commonJs.url + item);
+      });
+      // console.log(imgs);
+      ImagePreview({
+        images: imgs,
+        startPosition: index,
+        closeOnPopstate:true,
+        onClose() {
+          // do something
+        }
+      });
     },
   }
 }
