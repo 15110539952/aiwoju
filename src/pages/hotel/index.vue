@@ -352,7 +352,6 @@ export default {
 <style lang='less' scoped>
   @import "index";
   .child-view{
-    height: 100%;
     padding-top: 100px;
   }
 </style>

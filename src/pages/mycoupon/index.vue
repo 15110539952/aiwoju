@@ -42,7 +42,7 @@
           </div>
           <!--          <div class="left" :style="`background-image: url(${})`"></div>-->
           <div class="right">
-            <p :class="item.status ===2?'':'active'"
+            <p :class="item.status === 0?'active':''"
                @click="toHome(item)">{{item.status ===2?'已过期':item.status === 1?'已使用':'去使用'}}</p>
           </div>
         </div>
@@ -64,7 +64,7 @@
 <!--          <div class="left" :style="`background-image: url(${})`"></div>-->
           <div class="right">
             <p :class="item.status ===2?'':'active'"
-               @click="getCoupon(item.id)">{{item.status ===2?'已领取':'点击领取'}}</p>
+               @click="getCoupon(item)">{{item.status ===2?'已领取':'点击领取'}}</p>
           </div>
         </div>
         <!--region 注释的代码-->
@@ -186,13 +186,15 @@ export default {
       }
     },
     // 领取优惠券
-    getCoupon(id){
-      getCoupon({you_id:id}).then(res=>{
-        this.getCouponList();
-        setTimeout(()=>{
-          Toast(res.msg);
-        },2000);
-      });
+    getCoupon(item){
+      if(item.status === 1){
+        getCoupon({you_id:item.id}).then(res=>{
+          this.getCouponList();
+          setTimeout(()=>{
+            Toast(res.msg);
+          },2000);
+        });
+      }
     },
     changeTab(index){
       this.tabId = index;
@@ -203,7 +205,7 @@ export default {
       // this.getOrderList();
     },
     toHome(item){
-      if(this.iscoupon === 1){
+      if(this.iscoupon === 1 && item.status === 0){
         this.$store.dispatch('setCoupon', item);
         this.$router.goBack();
         return;

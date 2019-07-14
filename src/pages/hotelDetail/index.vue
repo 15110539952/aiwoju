@@ -22,7 +22,6 @@
           </div>
         </div>
       </div>
-
       <div class="list-box">
         <p class="title">订房必读</p>
         <div class="hotel_description" style="" v-html="description"></div>
@@ -40,9 +39,7 @@
       </div>
       <div class="list-box">
         <p class="title">交通信息</p>
-
         <div class="hotel_description" style="" v-html="traffic"></div>
-
       </div>
     </div>
   </div>
@@ -69,16 +66,15 @@ export default {
       "v-header": header,
   },
   mounted(){
-    document.documentElement.scrollTop = -240;
     hotelDetail().then(res=>{
       this.peitao = res.data.peitao;
       this.hotel_infor = res.data.hotel_infor[0];
-      Toast.loading();
-      setTimeout(()=>{
+      // Toast.loading();
+      // setTimeout(()=>{
         this.traffic = this.hotel_infor.traffic;
         this.description = this.hotel_infor.description;
-        Toast.clear();
-      },1000);
+      //   Toast.clear();
+      // },1000);
     })
   },
   methods:{
@@ -88,9 +84,10 @@ export default {
         this.$router.push('/map');
       }
       if(selector){
-        // console.log(document.querySelector("."+selector).offsetTop)
-        let top = document.querySelector("."+selector).offsetTop -287;
-        document.documentElement.scrollTop = top;
+        console.log(selector);
+        // console.log(document.querySelector("."+selector).offsetTop);
+        let top = document.querySelector("."+selector).offsetTop-26;
+        document.querySelector('.hotel-detail').scrollTop = top;
       }
     }
   }
@@ -101,5 +98,6 @@ export default {
   @import 'index';
   .child-view{
     padding-top: 100px;
+    overflow: auto;
   }
 </style>

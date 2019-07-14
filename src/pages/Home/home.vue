@@ -161,6 +161,7 @@ export default {
     },
     mounted(){
       home().then((res)=>{
+        document.title = res.data.hotel.name;
         this.all_score = res.data.all_score;
         this.continuity = res.data.continuity+=1;
         this.notice = res.data.notice[0].title;

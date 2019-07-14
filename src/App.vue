@@ -89,6 +89,7 @@ export default {
         }
       }
     }
+    // 修改网页title
 
         // window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc4c761371120fe9b&redirect_uri=${encodeURIComponent(window.location.href)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
         // window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc4c761371120fe9b&redirect_uri=&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
