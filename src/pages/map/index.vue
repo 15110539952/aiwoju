@@ -54,7 +54,7 @@
         let data = res.data;
         this.wxSign = data;
         wx.config({
-          debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
           appId: data.appId, // 必填，公众号的唯一标识
           timestamp: data.timestamp, // 必填，生成签名的时间戳
           nonceStr: data.nonceStr, // 必填，生成签名的随机串
@@ -76,7 +76,7 @@
         wx.getLocation({
           type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
           success: (res) => {
-            console.log(res);
+            // console.log(res);
             this.lat = parseFloat(res.latitude); // 纬度，浮点数，范围为90 ~ -90
             this.lng = parseFloat(res.longitude); // 经度，浮点数，范围为180 ~ -180。
             // let speed = res.speed; // 速度，以米/每秒计
@@ -84,12 +84,13 @@
             this.car();
           },
           fail:(res)=>{
-            alert(res.errMsg);
+            // alert(res.errMsg);
             // console.log(res);
             Toast('定位失败，请重试！');
           },
-          complete:()=>{
-            alert(this.hotel_lng+','+this.hotel_lat+','+this.lng+','+this.lat);
+          complete:(res)=>{
+            console.log(res);
+            // alert(this.hotel_lng+','+this.hotel_lat+','+this.lng+','+this.lat);
           }
         });
       });
@@ -223,7 +224,7 @@
             longitude: this.hotel_lng || 0, // 经度，浮点数，范围为180 ~ -180。
             name: this.hotel_name, // 位置名
             address: this.hotel_address, // 地址详情说明
-            scale: 20, // 地图缩放级别,整形值,范围从1~28。默认为最大
+            scale: 18, // 地图缩放级别,整形值,范围从1~28。默认为最大
             infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
           });
         });

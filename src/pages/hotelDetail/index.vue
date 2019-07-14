@@ -73,10 +73,12 @@ export default {
     hotelDetail().then(res=>{
       this.peitao = res.data.peitao;
       this.hotel_infor = res.data.hotel_infor[0];
+      Toast.loading();
       setTimeout(()=>{
         this.traffic = this.hotel_infor.traffic;
         this.description = this.hotel_infor.description;
-      },100);
+        Toast.clear();
+      },1000);
     })
   },
   methods:{
