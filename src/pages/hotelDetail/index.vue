@@ -22,9 +22,10 @@
           </div>
         </div>
       </div>
-      <div class="list-box guize">
+
+      <div class="list-box">
         <p class="title">订房必读</p>
-<!--        <div class="item hotel_description" v-html="hotel_infor.description"></div>-->
+        <div class="hotel_description" style="" v-html="description"></div>
       </div>
       <div class="list-box twoId">
         <p class="title">酒店详情</p>
@@ -35,12 +36,12 @@
           <p><span>房间数：</span>{{hotel_infor.room_num}}</p>
         </div>
 <!--        <div class="hotel_description" v-html="hotel_infor.remark"></div>-->
-        <div class="room-content" style="font-size: 0.28rem;" v-if="hotel_infor">{{hotel_infor.introduce}}</div>
+        <div class="room-content">{{hotel_infor.introduce}}</div>
       </div>
       <div class="list-box">
         <p class="title">交通信息</p>
 
-        <div class="hotel_description" style="font-size: 0.3rem;" v-html="hotel_infor.traffic"></div>
+        <div class="hotel_description" style="" v-html="traffic"></div>
 
       </div>
     </div>
@@ -60,6 +61,8 @@ export default {
         tabId:0,
         peitao:'',
         hotel_infor:'',
+        traffic:'',
+        description:'',
       }
   },
   components: {
@@ -70,6 +73,10 @@ export default {
     hotelDetail().then(res=>{
       this.peitao = res.data.peitao;
       this.hotel_infor = res.data.hotel_infor[0];
+      setTimeout(()=>{
+        this.traffic = this.hotel_infor.traffic;
+        this.description = this.hotel_infor.description;
+      },100);
     })
   },
   methods:{
