@@ -72,9 +72,6 @@ export default {
       // this.$store.dispatch('setToken', {token:'712aa988-d076-4e11-8781-104460594cde',expires_in:31536000});
       this.$store.dispatch('setToken', {token:'7b97a4b6-ec85-44d2-8bfb-2be92d09c7e3',expires_in:31536000});
       console.log(this.token);
-      setTimeout(()=>{
-        this.wxShare();
-      },500);
     }else{
       if(!this.token){
         let code = this.$utils.getUrlKey('code');
@@ -93,8 +90,10 @@ export default {
           });
         }
       }
-      this.wxShare();
     }
+    setTimeout(()=>{
+      this.wxShare();
+    },1000);
     // 修改网页title
 
         // window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc4c761371120fe9b&redirect_uri=${encodeURIComponent(window.location.href)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
