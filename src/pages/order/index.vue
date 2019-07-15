@@ -14,7 +14,13 @@
       ref="easyRefresh"
       :userSelect="false"
       :autoLoad="false"
+      :onRefresh="onRefresh"
       :loadMore="loadMore">
+
+      <template v-slot:header>
+        <BallPulseHeader :height="140"/>
+      </template>
+
       <div class="new-order-title">最新订单</div>
     <!--region 订单列表-->
     <v-orderList :orderList="orderData"></v-orderList>
@@ -63,23 +69,39 @@ export default {
       "v-orderList": orderListTemplate,
   },
   mounted() {
-    orderList({status:'98',page:this.current_page}).then(res=>{
-      this.wait_pay = res.data.wait_pay;
-      this.wait_live = res.data.wait_live;
-      this.wait_refund = res.data.wait_refund;
-      this.last_page = res.data.last_page;
-      let dataList = res.data.data;
-      dataList.forEach(item=>{
-        item.status = parseInt(item.status);
-      });
-      this.orderData = dataList;
-    })
+    // orderList({status:'98',page:this.current_page}).then(res=>{
+    //   this.wait_pay = res.data.wait_pay;
+    //   this.wait_live = res.data.wait_live;
+    //   this.wait_refund = res.data.wait_refund;
+    //   this.last_page = res.data.last_page;
+    //   let dataList = res.data.data;
+    //   dataList.forEach(item=>{
+    //     item.status = parseInt(item.status);
+    //   });
+    //   this.orderData = dataList;
+    // })
+    this.onRefresh();
   },
   methods:{
     myOrder(index){
       // this.$router.push({name:'myorder',params: {id: 2}})
       this.$router.push({path:'/myorder'});
       sessionStorage.setItem('orderTabId',index);
+    },
+    onRefresh(done){
+      this.current_page = 1;
+      orderList({status:'98',page:this.current_page}).then(res=>{
+        done && done();
+        this.wait_pay = res.data.wait_pay;
+        this.wait_live = res.data.wait_live;
+        this.wait_refund = res.data.wait_refund;
+        this.last_page = res.data.last_page;
+        let dataList = res.data.data;
+        dataList.forEach(item=>{
+          item.status = parseInt(item.status);
+        });
+        this.orderData = dataList;
+      })
     },
     loadMore(done){
       if(this.current_page>this.last_page){

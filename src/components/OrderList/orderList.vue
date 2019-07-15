@@ -41,7 +41,7 @@
                       @click="$router.push({path:'/evaluateAdd',query:{id:item.id}})">去评价</van-button>
           <van-button class="to-close"
                       type="default"
-                      v-if="item.status === 1 || item.status === 2"
+                      v-if="item.is_sure_cancel && (item.status === 1 || item.status === 2) "
                       @click="orderDetail(item)">取消</van-button>
           <span class="refund" v-if="item.status === 6">退款中</span>
         </div>

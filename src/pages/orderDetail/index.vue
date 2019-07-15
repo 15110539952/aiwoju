@@ -35,10 +35,10 @@
       </div>
       <!--endregion-->
       <div class="title" v-if="orderDetail.status === 2">
-        <p class="left">已入住</p>
+        <p class="left">待入住</p>
       </div>
       <div class="title" v-if="orderDetail.status === 3">
-        <p class="left">待入住</p>
+        <p class="left">已入住</p>
       </div>
       <!--region 待评价-->
       <div class="no-evaluate" v-if="orderDetail.status === 4">
@@ -150,7 +150,7 @@
 
 
     <!--region 取消订单-->
-    <van-button v-if="orderDetail.status<3" class="footer" type="default" @click="isCloseOrder= true">取消订单</van-button>
+    <van-button v-if="orderDetail.is_sure_cancel && orderDetail.status<3" class="footer" type="default" @click="isCloseOrder= true">取消订单</van-button>
     <!--endregion-->
 
     <!--region  取消订单弹出框-->

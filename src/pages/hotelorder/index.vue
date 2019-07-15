@@ -295,6 +295,14 @@ export default {
             console.log(parseFloat(coupon.discount/10));
             total*=parseFloat(coupon.discount/10);
           }else{
+            if(total < parseFloat(coupon.man)){
+              this.$store.dispatch('setCoupon', ''); // 重置优惠券
+              setTimeout(()=>{
+                Toast(`金额未满${coupon.man}元，请重新选择`);
+              },500);
+              this.total = total.toFixed(2);
+              return;
+            }
             total-=coupon.jian;
           }
         }

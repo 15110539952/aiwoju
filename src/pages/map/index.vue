@@ -135,17 +135,17 @@
           message: '加载中...'
         });
         this.mapType = 0;
-        // let map = new BMap.Map("container");
-        // map.centerAndZoom(new BMap.Point(this.hotel_lng, this.hotel_lat), 14);
+        let map = new BMap.Map("container");
+        map.centerAndZoom(new BMap.Point(this.hotel_lng, this.hotel_lat), 16);
 
         // let start = "天安门";
         // let end = "百度大厦";
         // this.map.clearOverlays();
 
-        let driving = new BMap.DrivingRoute(this.map,
+        let driving = new BMap.DrivingRoute(map,
           {
             renderOptions: {
-              map: this.map,
+              map: map,
               // panel : "results",
               autoViewport: true
             },
@@ -173,11 +173,11 @@
           message: '加载中...'
         });
         this.mapType = 1;
-        // let map = new BMap.Map("container");
-        // map.centerAndZoom(new BMap.Point(this.hotel_lng, this.hotel_lat), 16);
-        let riding = new BMap.RidingRoute(this.map, {
+        let map = new BMap.Map("container");
+        map.centerAndZoom(new BMap.Point(this.hotel_lng, this.hotel_lat), 16);
+        let riding = new BMap.RidingRoute(map, {
           renderOptions: {
-            map: this.map,
+            map: map,
             autoViewport: true
           }
         })
@@ -198,11 +198,11 @@
           message: '加载中...'
         });
         this.mapType = 2;
-        // let map = new BMap.Map("container");
-        // map.centerAndZoom(new BMap.Point(this.hotel_lng, this.hotel_lat), 16);
-        let walking = new BMap.WalkingRoute(this.map, {
+        let map = new BMap.Map("container");
+        map.centerAndZoom(new BMap.Point(this.hotel_lng, this.hotel_lat), 16);
+        let walking = new BMap.WalkingRoute(map, {
           renderOptions: {
-            map: this.map,
+            map: map,
             autoViewport: true
           }
         });

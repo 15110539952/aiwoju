@@ -36,7 +36,8 @@
 
 <script>
 import './assets/css/mintui-reset.css'
-
+import wx from 'weixin-jsapi'
+import {getSign} from '@/api/index'
 import { Toast } from 'vant';
 
 export default {
@@ -51,6 +52,7 @@ export default {
     }
   },
   mounted() {
+
     // document.addEventListener('DOMContentLoaded', function () {
     //   var deviceWidth = document.documentElement.clientWidth
     //   document.documentElement.style.fontSize = deviceWidth / 10 + 'px'
@@ -70,6 +72,9 @@ export default {
       // this.$store.dispatch('setToken', {token:'712aa988-d076-4e11-8781-104460594cde',expires_in:31536000});
       this.$store.dispatch('setToken', {token:'7b97a4b6-ec85-44d2-8bfb-2be92d09c7e3',expires_in:31536000});
       console.log(this.token);
+      setTimeout(()=>{
+        this.wxShare();
+      },500);
     }else{
       if(!this.token){
         let code = this.$utils.getUrlKey('code');
@@ -88,6 +93,7 @@ export default {
           });
         }
       }
+      this.wxShare();
     }
     // 修改网页title
 
@@ -120,6 +126,44 @@ export default {
         this.transitionName = 'slide-left'
       }
       this.$router.isBack = false
+    },
+  },
+  methods:{
+    wxShare(){
+      getSign().then(res=>{
+        let data = res.data;
+        this.wxSign = data;
+        wx.config({
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: data.appId, // 必填，公众号的唯一标识
+          timestamp: data.timestamp, // 必填，生成签名的时间戳
+          nonceStr: data.nonceStr, // 必填，生成签名的随机串
+          signature: data.signature,// 必填，签名，见附录1
+          jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage'],
+          // jsApiList: ['updateAppMessageShareData','updateTimelineShareData'],
+        });
+      });
+      wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+        wx.onMenuShareAppMessage({
+          // title: '', // 分享标题
+          desc: '分享描述', // 分享描述
+          // link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          // imgUrl: '', // 分享图标
+          success: function () {
+            // 设置成功
+          }
+        })
+      });
+      wx.ready(function () {      //需在用户可能点击分享按钮前就先调用
+        wx.onMenuShareTimeline({
+          // title: '', // 分享标题
+          // link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          // imgUrl: '', // 分享图标
+          success: function () {
+            // 设置成功
+          }
+        })
+      });
     },
   },
   activated(){
