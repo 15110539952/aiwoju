@@ -223,11 +223,12 @@
 
 <script>
 import header from "@/components/Header/header";
+import wx from 'weixin-jsapi'
 import footer from "@/components/Footer";
 import { ImagePreview } from 'vant';
 import { Toast } from 'vant'
 import {commonJs}  from '@/commonJs/index.js';
-import {hotel}  from '@/api/index';
+import {hotel,getSign}  from '@/api/index';
 
 let moment = require('moment');
 
@@ -276,7 +277,46 @@ export default {
       return this.$store.getters.startendDate.end || moment(moment().add(1, 'd')).format('YYYY-MM-DD');
     },
   },
+  created(){
+    getSign().then(res=>{
+      let data = res.data;
+      this.wxSign = data;
+      wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: data.appId, // 必填，公众号的唯一标识
+        timestamp: data.timestamp, // 必填，生成签名的时间戳
+        nonceStr: data.nonceStr, // 必填，生成签名的随机串
+        signature: data.signature,// 必填，签名，见附录1
+        jsApiList: ['getLocation','openLocation']
+      });
+    });
+  },
   mounted(){
+    wx.ready(()=> {
+      wx.getLocation({
+        type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+        success: (res) => {
+          // console.log(res);
+          let lat = parseFloat(res.latitude); // 纬度，浮点数，范围为90 ~ -90
+          let lng = parseFloat(res.longitude); // 经度，浮点数，范围为180 ~ -180。
+          // let speed = res.speed; // 速度，以米/每秒计
+          // let accuracy = res.accuracy; // 位置精度
+          hotel({
+            peo_lng: lng,
+            peo_lat: lat,
+          }).then((res)=>{
+            this.juli = res.data.juli;
+          });
+        },
+        fail: (res) => {
+          this.juli = '0';
+          Toast('定位获取失败，请重试！');
+        },
+        complete: (res) => {
+          console.log(res);
+        }
+      });
+    });
     let zhong = parseInt(this.$route.query.is_hour_home);
     // console.log(zhong);
     // console.log(this.$store.getters.startendDate)
@@ -291,8 +331,8 @@ export default {
     hotel({
       start_time:this.startDate,
       zhong:zhong?1:'',
-      peo_lng:0,
-      peo_lat:0,
+      // peo_lng: '116.400819',
+      // peo_lat: '39.923568',
       page:1
     },{ load: true}).then((res)=>{
       this.hotel = res.data.hotel[0];
@@ -302,7 +342,7 @@ export default {
       this.total = res.data.comment.total;
       this.zongfen = Math.round(res.data.zongfen.score);
       this.zongfenText = this.zongfen.toFixed(1);
-      this.juli = res.data.juli;
+      // this.juli = res.data.juli;
       this.last_page = res.data.comment.last_page;
       this.comment = res.data.comment.data;
       this.current_page +=1 ;

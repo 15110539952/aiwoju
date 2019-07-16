@@ -41,10 +41,12 @@ axios.interceptors.response.use(response => {
 const _request = (method, url ,data,load,loadMsg) => {
   // console.log(window.$globalHub.$store.getters)
 
-  Toast.loading({
-    forbidClick:true,
-    message: '加载中...'
-  });
+  if(load){
+    Toast.loading({
+      forbidClick:true,
+      message: '加载中...'
+    });
+  }
 
   const headers = {
 

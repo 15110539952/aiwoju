@@ -4,7 +4,7 @@ import qs from 'qs'
 
 // 获取微信jssdk签名
 export function getSign(data) {
-  return ajax.get('api/user/getSign',data,{ load: true})
+  return ajax.get('api/user/getSign',data,{ load: false})
 }
 
 // 微信发起支付
