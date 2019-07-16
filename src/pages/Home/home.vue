@@ -51,6 +51,7 @@
 <!--    </div>-->
     <van-notice-bar
       class="notice-tip"
+      @click="$router.push('/notice')"
       :speed="80"
       :text="notice"
       :left-icon="require('assets/img/notice.png')"

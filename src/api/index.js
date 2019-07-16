@@ -17,9 +17,20 @@ export function payOrder(data) {
 export function timeLimit(data) {
   return ajax.get('api/index/timelimit',data,{ load: true})
 }
+
 // 首页详情
 export function home(data) {
   return ajax.get('api/index/index',data,{ load: true})
+}
+
+// 公告列表
+export function noticeList(data) {
+  return ajax.get('api/index/notice',data,{ load: false})
+}
+
+// 公告详情
+export function noticeDetail(data) {
+  return ajax.get('api/index/notice_detail',data,{ load: false})
 }
 
 //首页领取积分

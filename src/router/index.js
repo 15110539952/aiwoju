@@ -194,6 +194,27 @@ export default new Router({
       ]
     },
     {
+      path: '/notice',
+      name: 'notice', // 公告
+      component: () => import('pages/notice'),
+      redirect: '/notice/list',
+      children: [
+        {
+          path: 'list',
+          name: 'notice-list', // 公告列表
+          component: () => import('pages/notice/list')
+        },
+        {
+          path: 'detail',
+          name: 'notice-detail', // 公告详情
+          meta:{
+            background: 'white'
+          },
+          component: () => import('pages/notice/detail')
+        },
+      ]
+    },
+    {
       path: '/mehotel',
       name: 'mehotel', // 酒店经纪人
       component: () => import('pages/mehotel'),
