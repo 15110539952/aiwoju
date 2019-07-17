@@ -62,8 +62,8 @@ export default {
     //   document.documentElement.style.fontSize = deviceWidth / 10 + 'px'
     // }
     // console.log(window.location.href)
-    // let appid = 'wxc4c761371120fe9b'; // 星团公众号
-    let appid = 'wxc142f2f0effc3768'; // 曼节奏主题公寓
+    let appid = 'wxc4c761371120fe9b'; // 星团公众号
+    // let appid = 'wxc142f2f0effc3768'; // 曼节奏主题公寓
 
     let dateTime = new Date().getTime();
     let expires_in = localStorage.getItem('expires_in');
