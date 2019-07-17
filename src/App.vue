@@ -62,6 +62,9 @@ export default {
     //   document.documentElement.style.fontSize = deviceWidth / 10 + 'px'
     // }
     // console.log(window.location.href)
+    // let appid = 'wxc4c761371120fe9b'; // 星团公众号
+    let appid = 'wxc142f2f0effc3768'; // 曼节奏主题公寓
+
     let dateTime = new Date().getTime();
     let expires_in = localStorage.getItem('expires_in');
     if(dateTime>parseInt(expires_in)){
@@ -77,7 +80,7 @@ export default {
         let code = this.$utils.getUrlKey('code');
         if(!code){
           let invite = this.$utils.getUrlKey('invite') || '';
-          location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc4c761371120fe9b&redirect_uri=${encodeURIComponent(window.location.href)}&response_type=code&scope=snsapi_userinfo&state=${invite}#wechat_redirect`;
+          location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(window.location.href)}&response_type=code&scope=snsapi_userinfo&state=${invite}#wechat_redirect`;
         }else{
           let state = this.$utils.getUrlKey('state') || '';
           state = state.split('#')[0];
@@ -94,11 +97,6 @@ export default {
     setTimeout(()=>{
       this.wxShare();
     },1000);
-    // 修改网页title
-
-        // window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc4c761371120fe9b&redirect_uri=${encodeURIComponent(window.location.href)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
-        // window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc4c761371120fe9b&redirect_uri=&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`;
-        // window.location.href = `http://xt.aixingtuan.com/third/connect/wechat?url=${encodeURIComponent(window.location.href)}`;
   },
   data (){
     return {

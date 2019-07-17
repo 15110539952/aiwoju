@@ -45,17 +45,24 @@
         <van-button type="primary" size="large" @click="go()">订房间</van-button>
       </div>
     </div>
-<!--    <div class="notice-tip">-->
-<!--      <img src="~assets/img/notice.png">-->
-<!--      <span></span>-->
-<!--    </div>-->
-    <van-notice-bar
-      class="notice-tip"
-      @click="$router.push('/notice')"
-      :speed="80"
-      :text="notice"
-      :left-icon="require('assets/img/notice.png')"
-    />
+
+<!--    <van-notice-bar-->
+<!--      class="notice-tip"-->
+<!--      @click="$router.push('/notice')"-->
+<!--      :speed="80"-->
+<!--      :text="notice"-->
+<!--      :left-icon="require('assets/img/notice.png')"-->
+<!--    />-->
+
+    <div class="notice-box" @click="$router.push('/notice')">
+      <img class="notice-img" src="~assets/img/notice.png">
+      <van-swipe :autoplay="1500" vertical :show-indicators="false">
+        <van-swipe-item class="text-ellipsis" v-for="(item,index) in noticeList" :key="'swipe'+index">{{item.title}}</van-swipe-item>
+      </van-swipe>
+    </div>
+
+
+
     <div class="integral">
       <div class="left">
         <span class="big">每日积分</span>
@@ -141,6 +148,7 @@ export default {
           isShowDatePicker:true,
           hotel:'',
           notice:'',
+          noticeList: [],
           continuity:'',
           all_score:'',
           already:1,
@@ -166,6 +174,7 @@ export default {
         this.all_score = res.data.all_score;
         this.continuity = res.data.continuity+=1;
         this.notice = res.data.notice[0].title;
+        this.noticeList = res.data.notice;
         this.hotel = res.data.hotel;
         this.already = res.data.already;
         this.images = this.hotel.image;

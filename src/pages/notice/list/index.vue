@@ -17,7 +17,7 @@
            :key="index">
         <i class="iconfont iconhome-gonggao"></i>
         <div class="right">
-          <p class="type">活动通知</p>
+          <p class="type">{{item.cate}}</p>
           <p class="title text-ellipsis">{{item.title}}</p>
           <p class="content text-ellipsis">{{item.content}}</p>
           <div class="bottom">

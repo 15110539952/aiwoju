@@ -16,7 +16,7 @@
           <div><p class="label">取消规则：</p><p class="text-detial">入住前可免费取消</p></div>
         </div>
         <van-button class="to-pay" type="default" @click="$router.push({path:'/payOrder',query:{id:orderDetail.id,isdetail:1}})">
-          去支付<span>￥</span><span class="number">456</span>
+          去支付<span>￥</span><span class="number">{{orderDetail.amount}}</span>
         </van-button>
       </div>
       <!--endregion-->
@@ -255,7 +255,7 @@ export default {
         this.orderDetail.status = parseInt(this.orderDetail.status);
         this.orderDetail.predict_begin_time = strDate(res.data.predict_begin_time);
         this.orderDetail.predict_end_time = strDate(res.data.predict_end_time);
-        this.sub_order = res.data.sub_order.filter(res=>res.status<2);
+        this.sub_order = res.data.sub_order.filter(res=>res.status<3);
         this.sub_order.forEach(item=>{
           item.active = false;
         });
