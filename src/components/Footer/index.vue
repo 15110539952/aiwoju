@@ -76,16 +76,16 @@ export default {
   }
   img{
     &.home{
-      width: 57px;
-      height: 56px;
+      width: 51px;
+      height: 50px;
     }
     &.order{
-      width: 54px;
-      height: 56px;
+      width: 46px;
+      height: 48px;
     }
     &.me{
-      width: 54px;
-      height: 56px;
+      width: 48px;
+      height: 50px;
     }
   }
 </style>

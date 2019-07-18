@@ -7,7 +7,7 @@
         <p>{{hotelorder.hotel_room_type.name}}</p>
         <p @click="$router.push('/hotelDetail')">房间详情<i class="iconfont iconarrow-right"></i></p>
       </div>
-      <p class="address">{{hotelorder.hotel.address}}</p>
+      <p class="address text-ellipsis">{{hotelorder.hotel.address}}</p>
       <div class="date"><span>{{startDateText}}-{{endDateText}}</span><b></b><span>共{{hotelorder.night}}晚</span></div>
       <p class="room-on">
         <span v-for="item in hotelorder.hotel_room_type.list">{{item}}<i>·</i></span>

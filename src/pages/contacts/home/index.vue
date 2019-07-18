@@ -7,6 +7,12 @@
         </div>
         <p class="edit"  @click="$router.push({name:'contacts-save',params: {name: 'edit',id:item.id}})">编辑</p>
       </div>
+
+
+      <div class="no-order" v-show="!checkinList.length">
+        <img src="~assets/img/no-content.png">
+        <p>暂无联系人</p>
+      </div>
     </div>
     <div class="footer">
       <van-button class="add-contact" type="primary" size="large" @click="$router.push({name:'contacts-save',params: {name: 'add'}})">新增联系人</van-button>
@@ -98,4 +104,16 @@ export default {
     color: #fff;
     font-size: 36px;
   }
+  .no-order{
+    margin-top: 160px;
+    text-align: center;
+    img{
+      width: 200px;
+    }
+    p{
+      font-size: 24px;
+      color: #666666;
+    }
+  }
+
 </style>

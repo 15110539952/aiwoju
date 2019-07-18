@@ -37,7 +37,8 @@
 <script>
 import './assets/css/mintui-reset.css'
 import wx from 'weixin-jsapi'
-import {getSign} from '@/api/index'
+import {getSign,hotelShare} from '@/api/index'
+import {commonJs}  from '@/commonJs/index.js'
 import { Toast } from 'vant';
 
 export default {
@@ -62,8 +63,8 @@ export default {
     //   document.documentElement.style.fontSize = deviceWidth / 10 + 'px'
     // }
     // console.log(window.location.href)
-    let appid = 'wxc4c761371120fe9b'; // 星团公众号
-    // let appid = 'wxc142f2f0effc3768'; // 曼节奏主题公寓
+    // let appid = 'wxc4c761371120fe9b'; // 星团公众号
+    let appid = 'wxc142f2f0effc3768'; // 曼节奏主题公寓
 
     let dateTime = new Date().getTime();
     let expires_in = localStorage.getItem('expires_in');
@@ -72,15 +73,15 @@ export default {
       location.reload();
     }
     if(process.env.NODE_ENV === 'development'){
-      // this.$store.dispatch('setToken', {token:'712aa988-d076-4e11-8781-104460594cde',expires_in:31536000});
-      this.$store.dispatch('setToken', {token:'7b97a4b6-ec85-44d2-8bfb-2be92d09c7e3',expires_in:31536000});
+      // this.$store.dispatch('setToken', {token:'7b97a4b6-ec85-44d2-8bfb-2be92d09c7e3',expires_in:31536000});
+      this.$store.dispatch('setToken', {token:'a9fb0d26-e439-4246-9c55-e81ce04e8292',expires_in:31536000});
       console.log(this.token);
     }else{
       if(!this.token){
         let code = this.$utils.getUrlKey('code');
         if(!code){
           let invite = this.$utils.getUrlKey('invite') || '';
-          location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(window.location.href)}&response_type=code&scope=snsapi_userinfo&state=${invite}#wechat_redirect`;
+          location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(window.location.href)}&response_type=code&scope=snsapi_base&state=${invite}#wechat_redirect`;
         }else{
           let state = this.$utils.getUrlKey('state') || '';
           state = state.split('#')[0];
@@ -95,12 +96,17 @@ export default {
       }
     }
     setTimeout(()=>{
-      this.wxShare();
+      hotelShare().then(res=>{
+        this.share = res.data;
+        this.wxShare();
+      });
     },1000);
+    // console.log(window.location.href.split('#')[0].split('?')[0]);
   },
   data (){
     return {
       transitionFade: 'fade',
+      share:'',
       // transitionName: 'slide-right',
     }
   },
@@ -127,6 +133,7 @@ export default {
   },
   methods:{
     wxShare(){
+      let link = window.location.href.split('#')[0].split('?')[0];
       getSign().then(res=>{
         let data = res.data;
         this.wxSign = data;
@@ -140,22 +147,22 @@ export default {
           // jsApiList: ['updateAppMessageShareData','updateTimelineShareData'],
         });
       });
-      wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+      wx.ready(() => {   //需在用户可能点击分享按钮前就先调用
         wx.onMenuShareAppMessage({
-          // title: '', // 分享标题
-          desc: '分享描述', // 分享描述
-          // link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          // imgUrl: '', // 分享图标
+          title: this.share.fenxiang_title || '', // 分享标题
+          desc: this.share.fenxiang_zhaiyao || '', // 分享描述
+          link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          imgUrl: commonJs.url.this.share.fenxiang_image || '', // 分享图标
           success: function () {
             // 设置成功
           }
         })
       });
-      wx.ready(function () {      //需在用户可能点击分享按钮前就先调用
+      wx.ready(() => {      //需在用户可能点击分享按钮前就先调用
         wx.onMenuShareTimeline({
-          // title: '', // 分享标题
-          // link: '', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          // imgUrl: '', // 分享图标
+          title: this.share.fenxiang_title || '', // 分享标题
+          link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          imgUrl: commonJs.url+this.share.fenxiang_image || '', // 分享图标
           success: function () {
             // 设置成功
           }
@@ -198,6 +205,7 @@ export default {
     width:100%;
     height: 100%;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     transition: all .5s cubic-bezier(.55,0,.1,1);
     /*width: 100%;*/
     /*height:100%;*/

@@ -13,6 +13,12 @@ export function payOrder(data) {
 }
 
 
+// 酒店分享
+export function hotelShare(data) {
+  return ajax.post('api/hotel/share',data,{ load: false})
+}
+
+
 // 订房时长限制
 export function timeLimit(data) {
   return ajax.get('api/index/timelimit',data,{ load: true})

@@ -29,7 +29,7 @@
     </div>
     <!--endregion-->
 
-    <div class="no-order" v-show="!evaluateList.length">
+    <div class="no-order" v-show="!comment.length">
       <img src="~assets/img/no-content.png">
       <p>您还没有评价哦，快去评价吧!</p>
     </div>

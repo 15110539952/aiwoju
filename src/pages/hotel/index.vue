@@ -68,7 +68,7 @@
     <div class="room-list">
       <div class="room-item" :class="index===0?'':'van-hairline--top'" v-for="(item,index) in hotel_room_type" :key="'room_'+index">
         <div class="room-info">
-          <div :style="'background-image: url('+url+item.images+');'" class="img"></div>
+          <div :style="'background-image: url('+url+item.images.split(',')[0]+');'" class="img"></div>
           <div class="info">
             <p class="one"><span class="name">{{item.name}}</span>
 <!--              <span class="label">（1小时确认）</span>-->
@@ -80,6 +80,7 @@
           </div>
         </div>
         <div class="price-item van-hairline--top"
+             @click="showRoomDetail(item,room)"
              v-for="(room,room_index) in item.list"
              :key="'roomlist_'+room_index">
           <div class="type">
@@ -91,7 +92,7 @@
 <!--            <p class="bottom">当前星享卡可代扣100元</p>-->
           </div>
           <div class="fix">
-            <van-button type="primary" size="large" @click="order(item.id)" :disabled="item.room_rest_num===0">在线预定</van-button>
+            <van-button type="primary" size="large" @click.stop="order(room.id)" :disabled="item.room_rest_num < 1">在线预定</van-button>
           </div>
         </div>
       </div>
@@ -99,7 +100,7 @@
     <div class="room-list">
       <div class="room-item" :class="index===0?'':'van-hairline--top'" v-for="(item,index) in hotel_room_type2" :key="'room_'+index">
         <div class="room-info van-hairline--bottom">
-          <div :style="'background-image: url('+url+item.images+');'" class="img"></div>
+          <div :style="'background-image: url('+url+item.images.split(',')[0]+');'" class="img"></div>
           <div class="info">
             <p class="one"><span class="name">{{item.name}}</span>
 <!--              <span class="label">（30分钟确认）</span>-->
@@ -110,6 +111,7 @@
             </p>          </div>
         </div>
         <div class="price-item van-hairline--top"
+             @click="showRoomDetail(item,room)"
              v-for="(room,room_index) in item.list"
              :key="'roomlist_'+room_index">
           <div class="type">
@@ -121,7 +123,7 @@
             <!--            <p class="bottom">当前星享卡可代扣100元</p>-->
           </div>
           <div class="fix">
-            <van-button type="primary" size="large" @click="order(item.id)" :disabled="item.room_rest_num===0">在线预定</van-button>
+            <van-button type="primary" size="large" @click.stop="order(room.id)" :disabled="item.room_rest_num < 1">在线预定</van-button>
           </div>
         </div>
       </div>
@@ -211,6 +213,11 @@
           </div>
         </div>
       </div>
+
+      <div class="no-order" v-show="!comment.length">
+        <img src="~assets/img/no-content.png">
+        <p>暂无评价</p>
+      </div>
     </div>
 
     <template v-slot:footer>
@@ -218,6 +225,33 @@
       <BallPulseFooter :height="140"/>
     </template>
     </EasyRefresh>
+
+    <van-action-sheet v-model="roomDetailShow" :title="`${roomDetail.name}-${roomDetail?(roomDetail.room.breakfast===2?'含双早':roomDetail.room.breakfast===1?'含单早':'不含早'):''}`">
+      <div class="roomDetail" v-if="roomDetail">
+        <van-swipe :autoplay="5000" indicator-color="white">
+          <van-swipe-item v-for="(item,index) in roomDetail.images.split(',')" :key="'banner_'+index">
+            <van-image
+              width="100%"
+              height="100%"
+              fit="cover"
+              :src="url+item"/>
+          </van-swipe-item>
+        </van-swipe>
+        <div class="list">
+          <div class="item"><span class="label">面积:</span><span class="value text-ellipsis">18㎡</span></div>
+          <div class="item"><span class="label">楼层:</span><span class="value text-ellipsis">9-12层</span></div>
+          <div class="item"><span class="label">窗户:</span><span class="value text-ellipsis">有窗</span></div>
+          <div class="item"><span class="label">可住:</span><span class="value text-ellipsis">2人</span></div>
+          <div class="item"><span class="label">宽带:</span><span class="value text-ellipsis">无线wifi和有线宽带</span></div>
+          <div class="item"><span class="label">卫浴:</span><span class="value text-ellipsis">独立卫浴</span></div>
+          <div class="item"><span class="label">空调:</span><span class="value text-ellipsis">有空调</span></div>
+          <div class="item"><span class="label">床型:</span><span class="value text-ellipsis">单人床1.2x2.0米2张</span></div>
+        </div>
+
+        <van-button class="footer" type="primary" size="large" @click="order(roomDetail.room.id)" :disabled="roomDetail.room_rest_num < 1">在线预定</van-button>
+      </div>
+    </van-action-sheet>
+
   </div>
 </template>
 
@@ -258,6 +292,12 @@ export default {
         endDateText:'', // 结束日
         day:'',// 共几晚
 
+        lat: 0,
+        lng: 0,
+        zhong: 1,
+        roomDetailShow:false, // 房间详情
+        roomDetail:'',
+
         total:'', // 评价总条数
         last_page:'', // 最后页码
         current_page:1, // 当前第几页
@@ -292,32 +332,7 @@ export default {
     });
   },
   mounted(){
-    wx.ready(()=> {
-      wx.getLocation({
-        type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-        success: (res) => {
-          // console.log(res);
-          let lat = parseFloat(res.latitude); // 纬度，浮点数，范围为90 ~ -90
-          let lng = parseFloat(res.longitude); // 经度，浮点数，范围为180 ~ -180。
-          // let speed = res.speed; // 速度，以米/每秒计
-          // let accuracy = res.accuracy; // 位置精度
-          hotel({
-            peo_lng: lng,
-            peo_lat: lat,
-          }).then((res)=>{
-            this.juli = res.data.juli;
-          });
-        },
-        fail: (res) => {
-          this.juli = '0';
-          Toast('定位获取失败，请重试！');
-        },
-        complete: (res) => {
-          console.log(res);
-        }
-      });
-    });
-    let zhong = parseInt(this.$route.query.is_hour_home);
+    this.zhong = parseInt(this.$route.query.is_hour_home) || 0;
     // console.log(zhong);
     // console.log(this.$store.getters.startendDate)
     // console.log(this.startDate)
@@ -327,30 +342,59 @@ export default {
     this.endMonthText = this.endDate.slice(5,7) || '';
     this.endDateText = this.endDate.slice(8,10) || '';
     this.day = moment(this.endDate).diff(moment(this.startDate), 'days');
-
-    hotel({
-      start_time:this.startDate,
-      zhong:zhong?1:'',
-      // peo_lng: '116.400819',
-      // peo_lat: '39.923568',
-      page:1
-    },{ load: true}).then((res)=>{
-      this.hotel = res.data.hotel[0];
-      this.hotel_room_type = res.data.hotel_room_type;
-      this.hotel_room_type2 = res.data.hotel_room_type2;
-      // this.comment = res.data.comment;
-      this.total = res.data.comment.total;
-      this.zongfen = Math.round(res.data.zongfen.score);
-      this.zongfenText = this.zongfen.toFixed(1);
-      // this.juli = res.data.juli;
-      this.last_page = res.data.comment.last_page;
-      this.comment = res.data.comment.data;
-      this.current_page +=1 ;
+    wx.ready(()=> {
+      wx.getLocation({
+        type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+        success: (res) => {
+          // console.log(res);
+          this.lat = parseFloat(res.latitude); // 纬度，浮点数，范围为90 ~ -90
+          this.lng = parseFloat(res.longitude); // 经度，浮点数，范围为180 ~ -180。
+          // let speed = res.speed; // 速度，以米/每秒计
+          // let accuracy = res.accuracy; // 位置精度
+          this.getHotel();
+        },
+        fail: (res) => {
+          this.getHotel();
+          Toast('定位获取失败，请重试！');
+        },
+        complete: (res) => {
+          console.log(res);
+        }
+      });
     });
   },
   methods:{
+    showRoomDetail(item,room){
+      this.roomDetail = item;
+      this.roomDetail.room = room;
+      // this.roomDetail.images = this.roomDetail.images+','+this.roomDetail.images;
+      console.log(this.roomDetail);
+      this.$set(this.roomDetail,this.roomDetail);
+      this.roomDetailShow = true;
+    },
+    getHotel(){
+      hotel({
+        start_time:this.startDate,
+        zhong: this.zhong,
+        peo_lng: this.lng,
+        peo_lat: this.lat,
+        page:1
+      },{ load: true}).then((res)=>{
+        this.hotel = res.data.hotel[0];
+        this.hotel_room_type = res.data.hotel_room_type;
+        this.hotel_room_type2 = res.data.hotel_room_type2;
+        // this.comment = res.data.comment;
+        this.total = res.data.comment.total;
+        this.zongfen = Math.round(res.data.zongfen.score);
+        this.zongfenText = this.zongfen.toFixed(1);
+        this.juli = res.data.juli || 0;
+        this.last_page = res.data.comment.last_page;
+        this.comment = res.data.comment.data;
+        this.current_page +=1 ;
+      });
+    },
     order(id){
-      console.log(id)
+      console.log(id);
       this.$router.push({path:'/hotelorder',query:{id:id}});
     },
     imgSee(img,index){
