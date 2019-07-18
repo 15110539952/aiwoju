@@ -70,7 +70,7 @@ export default {
     let expires_in = localStorage.getItem('expires_in');
     if(dateTime>parseInt(expires_in)){
       localStorage.clear();
-      location.reload();
+      location.href = window.location.href.split('#')[0].split('?')[0];
     }
     if(process.env.NODE_ENV === 'development'){
       // this.$store.dispatch('setToken', {token:'7b97a4b6-ec85-44d2-8bfb-2be92d09c7e3',expires_in:31536000});
@@ -89,7 +89,7 @@ export default {
             console.log(res);
             this.$store.dispatch('setToken', {token:res.data.token,expires_in:res.data.expires_in});
             setTimeout(()=>{
-              location.reload();
+              location.href = window.location.href.split('#')[0].split('?')[0];
             },200);
           });
         }
