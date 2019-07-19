@@ -11,6 +11,10 @@
         :src="modify.avatar"
       /></span><i class="iconfont iconarrow-right"></i></p>
       </div>
+      <div class="item bg-active" @click="nameShow = true">
+        <p class="label">用户名</p>
+        <p><span class="item-text">{{oname}}</span><i class="iconfont iconarrow-right"></i></p>
+      </div>
       <div class="item bg-active" @click="datePopup = true">
         <p class="label">生日</p>
         <p><span class="item-text">{{birthday}}</span><i class="iconfont iconarrow-right"></i></p>
@@ -44,6 +48,16 @@
         :formatter="formatter"
       />
     </van-popup>
+
+    <van-dialog
+      v-model="nameShow"
+      title="修改用户名"
+      show-cancel-button
+      @confirm="nameUpdata"
+      @close="name=''"
+    >
+      <van-field v-model="name" maxlength="16" placeholder="请输入用户名" />
+    </van-dialog>
   </div>
 </template>
 
@@ -52,11 +66,12 @@ import header from "@/components/Header/header";
 import montent from 'moment'
 import { Toast } from 'vant'
 import {commonUrl}  from '@/commonJs/index.js'
-import {modify,modifySubmit} from '@/api/index'
+import {modify,modifySubmit,nameUpadta} from '@/api/index'
 
 export default {
   data(){
       return {
+        nameShow:false,
         datePopup:false,
         currentDate: new Date(1990,0,1),
         minDate: new Date('1950-01-01'),
@@ -64,6 +79,8 @@ export default {
         birthday: '',
         gender:0, // 1男，2女
         modify:'',
+        name:'',
+        oname:''
       }
   },
   components: {
@@ -74,6 +91,7 @@ export default {
       this.modify = res.data;
       this.birthday = res.data.birthday;
       this.gender = res.data.gender;
+      this.oname = res.data.oname || '';
       this.currentDate = new Date(res.data.birthday);
     });
   },
@@ -101,6 +119,18 @@ export default {
         return `${value}日`
       }
       return value;
+    },
+    nameUpdata(){
+      if(!this.name){
+        Toast('请输入用户名');
+        return;
+      }
+      nameUpadta({new_name:this.name}).then(res=>{
+        Toast(res.msg);
+        if(res.code === 2000){
+          this.oname = res.data;
+        }
+      });
     }
   }
 }

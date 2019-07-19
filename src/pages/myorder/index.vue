@@ -31,7 +31,7 @@
 <!--      <p class="month-item"><span>11</span>月订单</p>-->
 <!--      <p class="month-item"><span>10</span>月订单</p>-->
 <!--    </div>-->
-    <p class="hotel-tip">遇到问题请拨打客服：4008525636</p>
+    <p class="hotel-tip">遇到问题请拨打客服：{{hotel_phone}}</p>
 
     <div class="no-order" v-show="!orderData.length">
       <img src="~assets/img/no-content.png">
@@ -62,6 +62,7 @@ export default {
         wait_pay:'',
         wait_live:'',
         wait_refund:'',
+        hotel_phone:' - - - ',
 
         last_page:'', // 最后页码
         current_page:1, // 当前第几页
@@ -93,6 +94,7 @@ export default {
         this.wait_pay = res.data.wait_pay;
         this.wait_live = res.data.wait_live;
         this.wait_refund = res.data.wait_refund;
+        this.hotel_phone = res.data.phone;
 
         this.last_page = res.data.last_page;
         this.current_page += 1;

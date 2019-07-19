@@ -74,10 +74,11 @@ export default {
     }
     if(process.env.NODE_ENV === 'development'){
       // this.$store.dispatch('setToken', {token:'7b97a4b6-ec85-44d2-8bfb-2be92d09c7e3',expires_in:31536000});
-      this.$store.dispatch('setToken', {token:'a9fb0d26-e439-4246-9c55-e81ce04e8292',expires_in:31536000});
+      this.$store.dispatch('setToken', {token:'539e86e8-494c-4da4-8994-c77dfddedc8c',expires_in:31536000});
       console.log(this.token);
     }else{
-      if(!this.token){
+      if(!this.token)
+      {
         let code = this.$utils.getUrlKey('code');
         if(!code){
           let invite = this.$utils.getUrlKey('invite') || '';
@@ -101,6 +102,7 @@ export default {
         this.wxShare();
       });
     },1000);
+    // console.log()
     // console.log(window.location.href.split('#')[0].split('?')[0]);
   },
   data (){

@@ -85,7 +85,7 @@
              :key="'roomlist_'+room_index">
           <div class="type">
             <p class="top">{{room.breakfast===2?'含双早':room.breakfast===1?'含单早':'不含早'}}</p>
-            <p class="bottom">限时取消</p>
+            <p class="bottom">{{room.is_limit_cancel}}</p>
           </div>
           <div class="price">
             <p class="top">￥<span>{{room.price}}</span></p>
@@ -226,10 +226,10 @@
     </template>
     </EasyRefresh>
 
-    <van-action-sheet v-model="roomDetailShow" :title="`${roomDetail.name}-${roomDetail?(roomDetail.room.breakfast===2?'含双早':roomDetail.room.breakfast===1?'含单早':'不含早'):''}`">
+    <van-action-sheet v-model="roomDetailShow" :title="`${roomDetail.name}-${roomDetail?(roomDetail.room.breakfast===2?'含双早':roomDetail.room.breakfast===1?'含单早':'不含早'):''}-${roomDetail?roomDetail.room.is_limit_cancel:''}`">
       <div class="roomDetail" v-if="roomDetail">
         <van-swipe :autoplay="5000" indicator-color="white">
-          <van-swipe-item v-for="(item,index) in roomDetail.images.split(',')" :key="'banner_'+index">
+          <van-swipe-item v-for="(item,index) in roomDetail.open_detail.images" :key="'banner_'+index">
             <van-image
               width="100%"
               height="100%"
@@ -238,14 +238,10 @@
           </van-swipe-item>
         </van-swipe>
         <div class="list">
-          <div class="item"><span class="label">面积:</span><span class="value text-ellipsis">18㎡</span></div>
-          <div class="item"><span class="label">楼层:</span><span class="value text-ellipsis">9-12层</span></div>
-          <div class="item"><span class="label">窗户:</span><span class="value text-ellipsis">有窗</span></div>
-          <div class="item"><span class="label">可住:</span><span class="value text-ellipsis">2人</span></div>
-          <div class="item"><span class="label">宽带:</span><span class="value text-ellipsis">无线wifi和有线宽带</span></div>
-          <div class="item"><span class="label">卫浴:</span><span class="value text-ellipsis">独立卫浴</span></div>
-          <div class="item"><span class="label">空调:</span><span class="value text-ellipsis">有空调</span></div>
-          <div class="item"><span class="label">床型:</span><span class="value text-ellipsis">单人床1.2x2.0米2张</span></div>
+          <div class="item" v-for="item in roomDetail.open_list">
+            <span class="label text-ellipsis">{{item.name}}:</span>
+            <span class="value text-ellipsis">{{item.option_value}}</span>
+          </div>
         </div>
 
         <van-button class="footer" type="primary" size="large" @click="order(roomDetail.room.id)" :disabled="roomDetail.room_rest_num < 1">在线预定</van-button>

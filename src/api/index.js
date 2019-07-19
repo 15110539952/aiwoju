@@ -158,6 +158,11 @@ export function modifySubmit(data) {
   return ajax.post('api/user/modify',data,{ load: true})
 }
 
+//个人信息修改用户名
+export function nameUpadta(data) {
+  return ajax.post('api/user/up_name',data,{ load: true})
+}
+
 //入住人列表
 export function checkinList(data) {
   return ajax.get('api/user/index_checkin',data,{ load: true})

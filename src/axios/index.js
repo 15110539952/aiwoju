@@ -23,6 +23,7 @@ axios.interceptors.request.use(config => {
 // 返回数据拦截处理
 axios.interceptors.response.use(response => {
   //code... 你的逻辑
+  // console.log(response);
   if(response.data.code === 401){
     localStorage.clear();
     location.reload();
@@ -30,6 +31,11 @@ axios.interceptors.response.use(response => {
   closeLoading();
   return response.data //直接返回后台返回的json object
 }, error => {
+  console.log(error.response);
+  if(error.response.data.code === 401){
+    localStorage.clear();
+    location.reload();
+  }
   closeLoading();
   Promise.reject(error.response)
 })

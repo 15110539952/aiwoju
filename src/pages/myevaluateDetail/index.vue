@@ -22,7 +22,7 @@
           </div>
           <div class="room-name">{{CommentDetail.time.hotel_room_type_id}}</div>
           <div class="time-block">
-            <p><span>{{CommentDetail.creatime}}</span>评论</p><p><span></span></p>
+            <p><span>{{CommentDetail.time.creatime}}</span>评论</p><p><span></span></p>
           </div>
           <div class="detail">{{CommentDetail.content}}</div>
           <div class="img-box">

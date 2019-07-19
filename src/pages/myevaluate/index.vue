@@ -22,7 +22,7 @@
                v-for="(item,index) in 5-parseInt(item.score)"
                :key="'facilities-no'+index"></i>
           </div>
-          <p class="img-num">{{item.images}}张照片·留言</p>
+          <p class="img-num">{{item.images>0?item.images+'张照片·':''}}留言</p>
         </div>
         <b class="right-bg"></b>
       </div>
