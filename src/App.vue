@@ -63,8 +63,8 @@ export default {
     //   document.documentElement.style.fontSize = deviceWidth / 10 + 'px'
     // }
     // console.log(window.location.href)
-    // let appid = 'wxc4c761371120fe9b'; // 星团公众号
-    let appid = 'wxc142f2f0effc3768'; // 曼节奏主题公寓
+    let appid = 'wxc4c761371120fe9b'; // 星团公众号
+    // let appid = 'wxc142f2f0effc3768'; // 曼节奏主题公寓
 
     let dateTime = new Date().getTime();
     let expires_in = localStorage.getItem('expires_in');
@@ -154,7 +154,7 @@ export default {
           title: this.share.fenxiang_title || '', // 分享标题
           desc: this.share.fenxiang_zhaiyao || '', // 分享描述
           link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: commonJs.url.this.share.fenxiang_image || '', // 分享图标
+          imgUrl: commonJs.url+this.share.fenxiang_image || '', // 分享图标
           success: function () {
             // 设置成功
           }

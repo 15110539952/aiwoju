@@ -26,7 +26,9 @@ axios.interceptors.response.use(response => {
   // console.log(response);
   if(response.data.code === 401){
     localStorage.clear();
-    location.reload();
+    setTimeout(()=>{
+      location.reload();
+    },1000);
   }
   closeLoading();
   return response.data //直接返回后台返回的json object
@@ -34,7 +36,9 @@ axios.interceptors.response.use(response => {
   console.log(error.response);
   if(error.response.data.code === 401){
     localStorage.clear();
-    location.reload();
+    setTimeout(()=>{
+      location.reload();
+    },1000);
   }
   closeLoading();
   Promise.reject(error.response)
