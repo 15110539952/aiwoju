@@ -207,21 +207,19 @@ export default {
 
 
   .child-view {
-    position: absolute;
-    width:100%;
-    height: 100%;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
     transition: all .5s cubic-bezier(.55,0,.1,1);
-    /*width: 100%;*/
-    /*height:100%;*/
-    /*position: absolute;*/
-    /*top: 0;*/
-    /*bottom: 0;*/
-    /*margin: 0 auto;*/
-    /*overflow-y: auto;*/
-    /*overflow-x: hidden;*/
-    /*-webkit-overflow-scrolling: touch;*/
+    &:after{
+      min-height: calc(100% + 1px)
+    }
+    width: 100%;
+    height:100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: 0 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
   }
   .slide-left-enter, .slide-right-leave-active {
     opacity: 0;
