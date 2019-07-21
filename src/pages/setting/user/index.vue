@@ -2,13 +2,14 @@
   <div class="setting-user">
 <!--    <v-header title="设置"></v-header>-->
     <div class="set-list">
-      <div class="item bg-active">
+      <div class="item bg-active head-item">
+        <input type="file" class="head-input" ref="headinput" accept="image/*" @change="selectImg($event)">
         <p class="label">头像</p>
         <p><span class="head"><van-image
         width="100%"
         height="100%"
         fit="cover"
-        :src="modify.avatar"
+        :src="headimg"
       /></span><i class="iconfont iconarrow-right"></i></p>
       </div>
       <div class="item bg-active" @click="nameShow = true">
@@ -58,6 +59,20 @@
     >
       <van-field v-model="name" maxlength="16" placeholder="请输入用户名" />
     </van-dialog>
+
+    <div class="head-img-box" v-if="headSelectCropper">
+      <div class="top-btn">
+        <van-button type="default" @click="closeHead">返回</van-button>
+        <van-button type="info" @click="upDataHead">确认</van-button>
+      </div>
+      <vueCropper
+        ref="cropper"
+        :autoCrop="true"
+        :centerBox="true"
+        :fixed="true"
+        :outputSize=".5"
+        :img="headCropperImg"></vueCropper>
+    </div>
   </div>
 </template>
 
@@ -66,7 +81,8 @@ import header from "@/components/Header/header";
 import montent from 'moment'
 import { Toast } from 'vant'
 import {commonUrl}  from '@/commonJs/index.js'
-import {modify,modifySubmit,nameUpadta} from '@/api/index'
+import {modify,modifySubmit,nameUpadta,headUpadta} from '@/api/index'
+import { VueCropper }  from 'vue-cropper'
 
 export default {
   data(){
@@ -80,11 +96,16 @@ export default {
         gender:0, // 1男，2女
         modify:'',
         name:'',
-        oname:''
+        oname:'',
+        headimg:'',
+
+        headSelectCropper:false,
+        headCropperImg:'',
       }
   },
   components: {
       "v-header": header,
+      VueCropper,
   },
   mounted(){
     modify().then(res=> {
@@ -92,10 +113,54 @@ export default {
       this.birthday = res.data.birthday;
       this.gender = res.data.gender;
       this.oname = res.data.oname || '';
+      this.headimg = res.data.avatar;
       this.currentDate = new Date(res.data.birthday);
     });
   },
   methods:{
+    // 选择头像文件
+    selectImg(e){
+      // console.log(e);
+      let file = e.target.files[0];
+      if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)||e.target.files.length<1) {
+        return;
+      }else{
+        let reader = new FileReader();
+        reader.onload = (e) => {
+          let data;
+          if (typeof e.target.result === 'object') {
+          // 把Array Buffer转化为blob 如果是base64不需
+            data = window.URL.createObjectURL(new Blob([e.target.result]))
+          } else {
+            data = e.target.result;
+          }
+          this.headCropperImg = data;
+          this.headSelectCropper = true;
+        };
+        reader.readAsArrayBuffer(file);
+      }
+    },
+    // 取消上传头像
+    closeHead(){
+      this.$refs.headinput.value = null;
+      this.headSelectCropper = false;
+    },
+    // 上传头像
+    upDataHead(){
+      // 获取截图的blob数据
+      this.$refs.cropper.getCropBlob((data) => {
+        // console.log(data);
+        let formData = new FormData();
+        formData.append('images[0]',data);
+        headUpadta(formData).then(res=>{
+          Toast(res.msg);
+          if(res.code === 2000){
+            this.headimg = res.data;
+          }
+          this.closeHead();
+        });
+      })
+    },
     birthdayConfirm(){
       this.birthday = montent(this.currentDate).format('YYYY-MM-DD');
       console.log(this.birthday)
@@ -213,6 +278,40 @@ export default {
       }
       .item-text{
         margin-right: 20px;
+      }
+      &.head-item{
+       position: relative;
+        .head-input{
+          position: absolute;
+          display: block;
+          width: 100%;height: 100%;
+          top: 0;left: 0;
+          opacity: 0;
+        }
+      }
+    }
+  }
+
+  .head-img-box{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 9;
+    .top-btn{
+      position: absolute;
+      top:0;
+      left: 0;
+      width: 100%;
+      /*height: 100px;*/
+      padding: 20px 40px 0;
+      display: flex;
+      justify-content: space-between;
+      z-index: 99;
+      .van-button{
+        height: 70px;
+        line-height: 70px;
       }
     }
   }

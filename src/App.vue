@@ -17,12 +17,12 @@
 
     <transition :name="transitionFade">
     <keep-alive>
-      <router-view v-if="$route.meta.isKeepLive" class="child-view"></router-view>
+      <router-view v-if="$route.meta.isKeepLive && isView" class="child-view"></router-view>
     </keep-alive>
     </transition>
 
     <transition :name="transitionFade">
-      <router-view v-if="!$route.meta.isKeepLive" class="child-view"></router-view>
+      <router-view v-if="!$route.meta.isKeepLive && isView" class="child-view"></router-view>
     </transition>
 
 <!--    <van-loading v-show="loading.show"-->
@@ -76,6 +76,7 @@ export default {
       // this.$store.dispatch('setToken', {token:'7b97a4b6-ec85-44d2-8bfb-2be92d09c7e3',expires_in:31536000});
       this.$store.dispatch('setToken', {token:'539e86e8-494c-4da4-8994-c77dfddedc8c',expires_in:31536000});
       console.log(this.token);
+      this.isView = true;
     }else{
       if(!this.token)
       {
@@ -94,6 +95,8 @@ export default {
             },200);
           });
         }
+      }else{
+        this.isView = true;
       }
     }
     setTimeout(()=>{
@@ -109,6 +112,7 @@ export default {
     return {
       transitionFade: 'fade',
       share:'',
+      isView:'',
       // transitionName: 'slide-right',
     }
   },

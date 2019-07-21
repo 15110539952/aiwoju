@@ -163,6 +163,11 @@ export function nameUpadta(data) {
   return ajax.post('api/user/up_name',data,{ load: true})
 }
 
+//个人信息修改头像
+export function headUpadta(data) {
+  return ajax.postForm('api/user/up_avatar',data,{ load: true})
+}
+
 //入住人列表
 export function checkinList(data) {
   return ajax.get('api/user/index_checkin',data,{ load: true})

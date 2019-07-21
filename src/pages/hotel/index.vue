@@ -39,7 +39,7 @@
       <div class="right"><img src="~assets/img/address.png"></div>
     </div>
 
-    <div class="date-block">
+    <div class="date-block" @click="showCalendar = true;">
       <div class="start">
         <p class="text1">入住时间</p>
         <div class="date">
@@ -248,11 +248,23 @@
       </div>
     </van-action-sheet>
 
+    <van-popup v-model="showCalendar" position="right" style="height:100%;width:100%;">
+      <calender
+        :date="nowDate"
+        :monthNumber="4"
+        @closeProp="showCalendar=false"
+        v-on:asureEvent="asureClick"
+        :onlyOne="false"
+        :isShowDatePicker="isShowDatePicker"
+      ></calender>
+      <!--      <inlineCalendar />-->
+    </van-popup>
   </div>
 </template>
 
 <script>
 import header from "@/components/Header/header";
+import Calender from '@/components/Calender/calender.vue'
 import wx from 'weixin-jsapi'
 import footer from "@/components/Footer";
 import { ImagePreview } from 'vant';
@@ -299,11 +311,16 @@ export default {
         current_page:1, // 当前第几页
         per_page:'', // 每页几条
 
+        nowDate: new Date(),
+        showCalendar: false, // 是否显示日期选择
+        isShowDatePicker:true,
+
       }
   },
   components: {
       "v-header": header,
       "v-footer": footer,
+      "Calender":Calender
   },
   computed:{
     'startDate'(){
@@ -360,6 +377,21 @@ export default {
     });
   },
   methods:{
+    asureClick (dateList) {
+      console.log(dateList)
+      this.showCalendar = false;
+      this.startMonthText = dateList.startDate.format.slice(5,7);
+      this.endMonthText = dateList.endDate.format.slice(5,7);
+      this.startDateText = dateList.startDate.format.slice(8,10);
+      this.endDateText = dateList.endDate.format.slice(8,10);
+
+
+      this.$store.dispatch('setStartEndDate',{start:dateList.startDate.format,end:dateList.endDate.format});
+
+      this.day = moment(dateList.endDate.format).diff(moment(dateList.startDate.format), 'days');
+
+      this.getHotel();
+    },
     showRoomDetail(item,room){
       this.roomDetail = item;
       this.roomDetail.room = room;

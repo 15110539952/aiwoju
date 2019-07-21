@@ -25,20 +25,24 @@ axios.interceptors.response.use(response => {
   //code... 你的逻辑
   // console.log(response);
   if(response.data.code === 401){
-    localStorage.clear();
-    setTimeout(()=>{
-      location.reload();
-    },1000);
+    if(localStorage.getItem('token')){
+      localStorage.clear();
+      setTimeout(()=>{
+        location.reload();
+      },2000);
+    }
   }
   closeLoading();
   return response.data //直接返回后台返回的json object
 }, error => {
   console.log(error.response);
   if(error.response.data.code === 401){
-    localStorage.clear();
-    setTimeout(()=>{
-      location.reload();
-    },1000);
+    if(localStorage.getItem('token')){
+      localStorage.clear();
+      setTimeout(()=>{
+        location.reload();
+      },2000);
+    }
   }
   closeLoading();
   Promise.reject(error.response)

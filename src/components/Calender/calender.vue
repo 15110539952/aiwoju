@@ -68,6 +68,9 @@
   import _moment from 'moment'
   import BScroll from 'better-scroll'
   import header from "@/components/Header/header";
+  import { Toast } from 'vant'
+  import {timeLimit} from '@/api/index'
+  let moment = require('moment');
 
   const formatZh = 'YYYY年MM月DD日'
   const formatEn = 'YYYY-MM-DD'
@@ -83,7 +86,7 @@
       },
       monthNumber: Number, // 显示多少个月可供选择
       onlyOne: Boolean, // 仅选择一个日期
-      isShowDatePicker: Boolean
+      isShowDatePicker: Boolean,
     },
     created () {
       this.initData()
@@ -91,13 +94,18 @@
       this.initStartAndEndDays(this.date)
     },
     mounted () {
-      this.$refs.scrollPanelWrapperBox
+      this.$refs.scrollPanelWrapperBox;
+
+      timeLimit().then(res=>{
+        this.timeLimit = res.data.timelimit;
+      });
     },
     data () {
       return {
         startDate: {},
         endDate: {},
-        monthList: []
+        monthList: [],
+        timeLimit:'', // zdw可选择几天之内
       }
     },
     computed: {
@@ -216,8 +224,16 @@
         }
       },
       asureClick () {
-        let startTime = this.startDate.time
-        let endTime = this.endDate.time
+        let startTime = this.startDate.time;
+        let endTime = this.endDate.time;
+
+        let day = moment(this.endDate.format).diff(moment(this.startDate.format), 'days');
+        // console.log(day);
+        if(day>this.timeLimit){
+          Toast(`最多可选择${this.timeLimit}天,请重新选择`);
+          return;
+        }
+
         if (this.onlyOne && startTime) {
           this.$emit('asureEvent', {
             startDate: this.startDate,

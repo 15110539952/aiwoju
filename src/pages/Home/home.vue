@@ -111,7 +111,7 @@ import {isten,commonJs,weekDay}  from '@/commonJs/index.js'
 import {home,homeAddScore,timeLimit} from '@/api/index'
 
 
-var moment = require('moment');
+let moment = require('moment');
 // console.log(moment().format('l'));
 // console.log(moment().date());
 // console.log(moment().toArray());
@@ -142,7 +142,7 @@ export default {
           images: [],
           dateTime:require('assets/img/date-time.png'),
           is_hour_home: false, // 钟点房选择
-          showCalendar: false, // 是否现实日期选择
+          showCalendar: false, // 是否显示日期选择
           nowDate: new Date(),
           roomType:1, // 组件中的房间类型
           isShowDatePicker:true,
@@ -172,7 +172,7 @@ export default {
       home().then((res)=>{
         document.title = res.data.hotel.name;
         this.all_score = res.data.all_score;
-        this.continuity = res.data.continuity+=1;
+        this.continuity = res.data.already ===1 ?res.data.continuity:res.data.continuity+=1;
         this.notice = res.data.notice[0].title;
         this.noticeList = res.data.notice;
         this.hotel = res.data.hotel;
@@ -190,9 +190,9 @@ export default {
         },8000)
         this.$store.dispatch('setStartEndDate',{start:this.startDate,end:this.endDate});
       });
-      timeLimit().then(res=>{
-        this.timeLimit = res.data.timelimit;
-      });
+      // timeLimit().then(res=>{
+      //   this.timeLimit = res.data.timelimit;
+      // });
     },
     methods:{
       // 领取积分
@@ -223,10 +223,10 @@ export default {
       go(){
         console.log(this.startDate);
         console.log(this.endDate);
-        if(this.day>this.timeLimit){
-          Toast(`最多可选择${this.timeLimit}天,请重新选择`);
-          return;
-        }
+        // if(this.day>this.timeLimit){
+        //   Toast(`最多可选择${this.timeLimit}天,请重新选择`);
+        //   return;
+        // }
         this.$router.push({ path: '/hotel',query:{
           is_hour_home:this.is_hour_home?1:0,startDate:this.startDate,endDate:this.endDate
         } });
