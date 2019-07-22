@@ -76,7 +76,7 @@ export default {
       // this.$store.dispatch('setToken', {token:'7b97a4b6-ec85-44d2-8bfb-2be92d09c7e3',expires_in:31536000});
       this.$store.dispatch('setToken', {token:'549f60ac-e30e-45c3-a8d2-cb4eb1839301',expires_in:31536000});
       console.log(this.token);
-      // this.isView = true;
+      this.isView = true;
     }else{
       if(!this.token)
       {
