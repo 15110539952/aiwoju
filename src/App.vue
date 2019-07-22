@@ -37,7 +37,7 @@
 <script>
 import './assets/css/mintui-reset.css'
 import wx from 'weixin-jsapi'
-import {getSign,hotelShare} from '@/api/index'
+import {getSign,hotelShare,getOpenid2} from '@/api/index'
 import {commonJs}  from '@/commonJs/index.js'
 import { Toast } from 'vant';
 
@@ -74,9 +74,9 @@ export default {
     }
     if(process.env.NODE_ENV === 'development'){
       // this.$store.dispatch('setToken', {token:'7b97a4b6-ec85-44d2-8bfb-2be92d09c7e3',expires_in:31536000});
-      this.$store.dispatch('setToken', {token:'539e86e8-494c-4da4-8994-c77dfddedc8c',expires_in:31536000});
+      this.$store.dispatch('setToken', {token:'549f60ac-e30e-45c3-a8d2-cb4eb1839301',expires_in:31536000});
       console.log(this.token);
-      this.isView = true;
+      // this.isView = true;
     }else{
       if(!this.token)
       {
@@ -96,6 +96,17 @@ export default {
           });
         }
       }else{
+        if(localStorage.getItem('token2') === 'token2'){
+          let code = this.$utils.getUrlKey('code');
+          if(code){
+            setTimeout(()=>{
+              getOpenid2().then((res)=>{
+                console.log(res);
+                localStorage.removeItem('token2');
+              })
+            },1000);
+          }
+        }
         this.isView = true;
       }
     }

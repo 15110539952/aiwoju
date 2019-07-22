@@ -29,8 +29,17 @@ axios.interceptors.response.use(response => {
       localStorage.clear();
       setTimeout(()=>{
         location.reload();
-      },2000);
+      },10000);
     }
+  }
+
+  if(response.data.code === 2002){
+    setTimeout(()=>{
+      localStorage.setItem('token2','token2');
+      let appid = response.data.data.appid;
+      let href = window.location.href.split('#')[0].split('?')[0];
+      location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(href)}&response_type=code&scope=snsapi_base&state=#wechat_redirect`;
+    },10000)
   }
   closeLoading();
   return response.data //直接返回后台返回的json object
@@ -41,7 +50,7 @@ axios.interceptors.response.use(response => {
       localStorage.clear();
       setTimeout(()=>{
         location.reload();
-      },2000);
+      },10000);
     }
   }
   closeLoading();

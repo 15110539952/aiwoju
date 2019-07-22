@@ -14,7 +14,7 @@
       </div>
       <div class="item bg-active" @click="nameShow = true">
         <p class="label">用户名</p>
-        <p><span class="item-text">{{oname}}</span><i class="iconfont iconarrow-right"></i></p>
+        <p><span class="item-text">{{nickname}}</span><i class="iconfont iconarrow-right"></i></p>
       </div>
       <div class="item bg-active" @click="datePopup = true">
         <p class="label">生日</p>
@@ -96,7 +96,7 @@ export default {
         gender:0, // 1男，2女
         modify:'',
         name:'',
-        oname:'',
+        nickname:'',
         headimg:'',
 
         headSelectCropper:false,
@@ -112,7 +112,7 @@ export default {
       this.modify = res.data;
       this.birthday = res.data.birthday;
       this.gender = res.data.gender;
-      this.oname = res.data.oname || '';
+      this.nickname = res.data.nickname || '';
       this.headimg = res.data.avatar;
       this.currentDate = new Date(res.data.birthday);
     });
@@ -193,7 +193,7 @@ export default {
       nameUpadta({new_name:this.name}).then(res=>{
         Toast(res.msg);
         if(res.code === 2000){
-          this.oname = res.data;
+          this.nickname = res.data;
         }
       });
     }

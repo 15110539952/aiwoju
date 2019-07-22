@@ -18,6 +18,10 @@ export function hotelShare(data) {
   return ajax.post('api/hotel/share',data,{ load: false})
 }
 
+// 二次授权
+export function getOpenid2(data) {
+  return ajax.post('api/user/get_openid', data, {load: false});
+}
 
 // 订房时长限制
 export function timeLimit(data) {
