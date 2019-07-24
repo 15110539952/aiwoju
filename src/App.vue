@@ -106,6 +106,8 @@ export default {
                 this.isView = true;
               })
             },1000);
+          }else{
+            this.isView = true;
           }
         }else{
           this.isView = true;
