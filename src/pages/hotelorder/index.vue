@@ -59,8 +59,8 @@
 
     <div class="hotel-tip">
       <p class="title">温馨提示：</p>
-      <p class="content">取消规则：入住前可以免费取消</p>
-      <p class="content">入离时间：08：00以后入住，14：00以前离店</p>
+      <p class="content" v-if="hotelorder">{{hotelorder.hotel_room_type.remark}}</p>
+<!--      <p class="content">入离时间：08：00以后入住，14：00以前离店</p>-->
     </div>
 
     <div class="footer-order">
@@ -108,13 +108,14 @@
                       title="费用明细">
       <div class="coseBox">
         <div class="one"><p class="left">在线支付</p><p class="right">￥{{total}}</p></div>
-        <div class="two"><p class="left">房费</p><p class="right">{{hotelorder.night}}晚{{actionRoomId}}间 共 ￥{{total}}</p></div>
+        <div class="two"><p class="left">房费</p><p class="right">{{hotelorder.night}}晚{{actionRoomId}}间 共 ￥{{oldtotal}}</p></div>
         <div class="coseList">
           <div class="item" v-for="(item,index) in hotelorder.mingxi" :key="index">
             <p class="left"><span>{{item.day}}-{{item.day_two}}</span>{{item.breakfast}}</p>
             <p class="right">{{actionRoomId}} X ￥{{(actionRoomId*item.price).toFixed(2)}}</p>
           </div>
-<!--          <div class="item"><p class="left"><span>12月01日-12月02日</span>单早</p><p class="right">1X ￥200</p></div>-->
+          <div class="cose-bottom">优惠减免：￥{{couponPrice}}</div>
+          <!--          <div class="item"><p class="left"><span>12月01日-12月02日</span>单早</p><p class="right">1X ￥200</p></div>-->
         </div>
       </div>
     </van-action-sheet>
@@ -169,7 +170,9 @@ export default {
         },
         peopleList:[],
         coseShow:false,
-        total:'',
+        total:'', // 优惠后总价
+        oldtotal:'', // 优惠前原价
+        couponPrice:'', // 优惠金额
       }
   },
   computed:{
@@ -290,6 +293,7 @@ export default {
         this.hotelorder.mingxi.forEach(item=>{
           total+=item.price*this.actionRoomId;
         });
+        this.oldtotal = total.toFixed(2);
         if(coupon){
           if(coupon.isDz){
             console.log(parseFloat(coupon.discount/10));
@@ -300,12 +304,12 @@ export default {
               setTimeout(()=>{
                 Toast(`金额未满${coupon.man}元，请重新选择`);
               },500);
-              this.total = total.toFixed(2);
-              return;
+            }else{
+              total-=coupon.jian;
             }
-            total-=coupon.jian;
           }
         }
+        this.couponPrice = (this.oldtotal - total).toFixed(2);
         this.total = total.toFixed(2);
       }
     },
@@ -364,6 +368,7 @@ export default {
       this.$route.meta.ifDoFresh = false;
       //获取列表数据方法第一参数为是否重置搜索条件和页数
       // this.getDetail();
+      this.$store.dispatch('setCoupon', ''); // 重置优惠券
       this.actionRoomId = 1;
       this.actionTimeId = 1;
     }else{

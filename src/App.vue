@@ -73,8 +73,7 @@ export default {
       location.href = window.location.href.split('#')[0].split('?')[0];
     }
     if(process.env.NODE_ENV === 'development'){
-      // this.$store.dispatch('setToken', {token:'7b97a4b6-ec85-44d2-8bfb-2be92d09c7e3',expires_in:31536000});
-      this.$store.dispatch('setToken', {token:'549f60ac-e30e-45c3-a8d2-cb4eb1839301',expires_in:31536000});
+      this.$store.dispatch('setToken', {token:'75a8a77f-9c8a-4f7f-a3c4-54e17738317d',expires_in:31536000});
       console.log(this.token);
       this.isView = true;
     }else{

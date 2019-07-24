@@ -16,6 +16,10 @@
         <p class="label">用户名</p>
         <p><span class="item-text">{{nickname}}</span><i class="iconfont iconarrow-right"></i></p>
       </div>
+      <div class="item bg-active" @click="">
+        <p class="label">手机号</p>
+        <p><span class="item-text">{{mobile}}</span><i class="iconfont iconarrow-right"></i></p>
+      </div>
       <div class="item bg-active" @click="datePopup = true">
         <p class="label">生日</p>
         <p><span class="item-text">{{birthday}}</span><i class="iconfont iconarrow-right"></i></p>
@@ -34,6 +38,9 @@
         </div>
       </div>
     </div>
+
+    <van-button class="outLogin" type="primary" size="large" @click="">保存</van-button>
+
 
     <van-popup class="date-popup" v-model="datePopup" position="right">
       <van-datetime-picker
@@ -97,6 +104,7 @@ export default {
         modify:'',
         name:'',
         nickname:'',
+        mobile:'',
         headimg:'',
 
         headSelectCropper:false,
@@ -112,7 +120,8 @@ export default {
       this.modify = res.data;
       this.birthday = res.data.birthday;
       this.gender = res.data.gender;
-      this.nickname = res.data.nickname || '';
+      this.nickname = res.data.nickname;
+      this.mobile = res.data.mobile;
       this.headimg = res.data.avatar;
       this.currentDate = new Date(res.data.birthday);
     });
@@ -314,5 +323,16 @@ export default {
         line-height: 70px;
       }
     }
+  }
+  .outLogin{
+    position: fixed;
+    width: 670px;
+    left: 40px;
+    bottom: 107px;
+    border-radius: 10px;
+    border: solid 1px #ff8900;
+    background: #FF8900;
+    color: #fff;font-size: 36px;
+
   }
 </style>

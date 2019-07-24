@@ -66,7 +66,10 @@
     </div>
 
     <div class="room-list">
-      <div class="room-item" :class="index===0?'':'van-hairline--top'" v-for="(item,index) in hotel_room_type" :key="'room_'+index">
+      <div class="room-item"
+           @click="showRoomDetail(item)"
+           :class="index===0?'':'van-hairline--top'"
+           v-for="(item,index) in hotel_room_type" :key="'room_'+index">
         <div class="room-info">
           <div :style="'background-image: url('+url+item.images.split(',')[0]+');'" class="img"></div>
           <div class="info">
@@ -80,7 +83,6 @@
           </div>
         </div>
         <div class="price-item van-hairline--top"
-             @click="showRoomDetail(item,room)"
              v-for="(room,room_index) in item.list"
              :key="'roomlist_'+room_index">
           <div class="type">
@@ -98,7 +100,10 @@
       </div>
     </div>
     <div class="room-list">
-      <div class="room-item" :class="index===0?'':'van-hairline--top'" v-for="(item,index) in hotel_room_type2" :key="'room_'+index">
+      <div class="room-item"
+           @click="showRoomDetail(item)"
+           :class="index===0?'':'van-hairline--top'"
+           v-for="(item,index) in hotel_room_type2" :key="'room_'+index">
         <div class="room-info van-hairline--bottom">
           <div :style="'background-image: url('+url+item.images.split(',')[0]+');'" class="img"></div>
           <div class="info">
@@ -111,7 +116,6 @@
             </p>          </div>
         </div>
         <div class="price-item van-hairline--top"
-             @click="showRoomDetail(item,room)"
              v-for="(room,room_index) in item.list"
              :key="'roomlist_'+room_index">
           <div class="type">
@@ -226,7 +230,9 @@
     </template>
     </EasyRefresh>
 
-    <van-action-sheet v-model="roomDetailShow" :title="`${roomDetail.name}-${roomDetail?(roomDetail.room.breakfast===2?'含双早':roomDetail.room.breakfast===1?'含单早':'不含早'):''}-${roomDetail?roomDetail.room.is_limit_cancel:''}`">
+<!--    <van-action-sheet v-model="roomDetailShow" :title="`${roomDetail.name}-${roomDetail?(roomDetail.room.breakfast===2?'含双早':roomDetail.room.breakfast===1?'含单早':'不含早'):''}-${roomDetail?roomDetail.room.is_limit_cancel:''}`">-->
+    <van-action-sheet v-model="roomDetailShow"
+                      :title="roomDetail.name">
       <div class="roomDetail" v-if="roomDetail">
         <van-swipe :autoplay="5000" indicator-color="white">
           <van-swipe-item v-for="(item,index) in roomDetail.open_detail.images" :key="'banner_'+index">
@@ -243,8 +249,13 @@
             <span class="value text-ellipsis">{{item.option_value}}</span>
           </div>
         </div>
-
-        <van-button class="footer" type="primary" size="large" @click="order(roomDetail.room.id)" :disabled="roomDetail.room_rest_num < 1">在线预定</van-button>
+        <div class="hotel-tip">
+          <p class="title">温馨提示：</p>
+          <p class="content">{{roomDetail.open_detail.remark}}</p>
+        </div>
+<!--        <van-button class="footer" type="primary" size="large" @click="order(roomDetail.room.id)" :disabled="roomDetail.room_rest_num < 1">在线预定</van-button>-->
+        <van-button class="footer" type="primary" size="large"
+                    @click="roomDetailShow=false">查看更多价格</van-button>
       </div>
     </van-action-sheet>
 
@@ -394,7 +405,6 @@ export default {
     },
     showRoomDetail(item,room){
       this.roomDetail = item;
-      this.roomDetail.room = room;
       // this.roomDetail.images = this.roomDetail.images+','+this.roomDetail.images;
       console.log(this.roomDetail);
       this.$set(this.roomDetail,this.roomDetail);
