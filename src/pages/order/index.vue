@@ -101,6 +101,7 @@ export default {
           item.status = parseInt(item.status);
         });
         this.orderData = dataList;
+        this.current_page += 1;
       })
     },
     loadMore(done){

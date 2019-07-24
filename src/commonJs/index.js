@@ -10,7 +10,7 @@ export const  commonUrl = {
 
 //判断手机号是否正确
 export const isPhone = function(phone){
-  if(!(/^1[13456789]\d{9}$/.test(phone))){
+  if(!(/^1[123456789]\d{9}$/.test(phone))){
     return false;
   }
   return true;

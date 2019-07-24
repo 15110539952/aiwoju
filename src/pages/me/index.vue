@@ -13,7 +13,7 @@
         </div>
         <p class="head-bm">{{modify.gender===2?'Female':'Gentleman'}}</p>
       </div>
-      <p class="username">{{info.name}}</p>
+      <p class="username">{{modify.nickname}}</p>
 <!--      <div class="me-type">-->
 <!--        <div class="item"><span>{{info.score || 0}}</span><p>我的积分</p></div>-->
 <!--        <div class="item" @click="$router.push('/myevaluate')"><span>{{info.comment}}</span><p>我的评价</p></div>-->

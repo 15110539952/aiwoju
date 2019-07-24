@@ -12,14 +12,28 @@
         :src="headimg"
       /></span><i class="iconfont iconarrow-right"></i></p>
       </div>
-      <div class="item bg-active" @click="nameShow = true">
-        <p class="label">用户名</p>
-        <p><span class="item-text">{{nickname}}</span><i class="iconfont iconarrow-right"></i></p>
-      </div>
-      <div class="item bg-active" @click="">
-        <p class="label">手机号</p>
-        <p><span class="item-text">{{mobile}}</span><i class="iconfont iconarrow-right"></i></p>
-      </div>
+      <van-field
+        v-model="name"
+        label="用户名"
+        type="text"
+        maxlength="20"
+        input-align="right"
+        placeholder="请输入用户名"/>
+      <van-field
+        v-model="mobile"
+        label="手机号"
+        type="tel"
+        maxlength="11"
+        input-align="right"
+        placeholder="请输入手机号"/>
+<!--      <div class="item bg-active" @click="nameShow = true">-->
+<!--        <p class="label">用户名</p>-->
+<!--        <p><span class="item-text">{{nickname}}</span><i class="iconfont iconarrow-right"></i></p>-->
+<!--      </div>-->
+<!--      <div class="item bg-active" @click="">-->
+<!--        <p class="label"></p>-->
+<!--        <p><span class="item-text">{{mobile}}</span><i class="iconfont iconarrow-right"></i></p>-->
+<!--      </div>-->
       <div class="item bg-active" @click="datePopup = true">
         <p class="label">生日</p>
         <p><span class="item-text">{{birthday}}</span><i class="iconfont iconarrow-right"></i></p>
@@ -39,7 +53,7 @@
       </div>
     </div>
 
-    <van-button class="outLogin" type="primary" size="large" @click="">保存</van-button>
+    <van-button class="outLogin" type="primary" size="large" @click="updataInfo">保存</van-button>
 
 
     <van-popup class="date-popup" v-model="datePopup" position="right">
@@ -87,7 +101,7 @@
 import header from "@/components/Header/header";
 import montent from 'moment'
 import { Toast } from 'vant'
-import {commonUrl}  from '@/commonJs/index.js'
+import {commonUrl,isPhone}  from '@/commonJs/index.js'
 import {modify,modifySubmit,nameUpadta,headUpadta} from '@/api/index'
 import { VueCropper }  from 'vue-cropper'
 
@@ -120,7 +134,7 @@ export default {
       this.modify = res.data;
       this.birthday = res.data.birthday;
       this.gender = res.data.gender;
-      this.nickname = res.data.nickname;
+      this.name = res.data.nickname;
       this.mobile = res.data.mobile;
       this.headimg = res.data.avatar;
       this.currentDate = new Date(res.data.birthday);
@@ -170,19 +184,36 @@ export default {
         });
       })
     },
-    birthdayConfirm(){
-      this.birthday = montent(this.currentDate).format('YYYY-MM-DD');
-      console.log(this.birthday)
-      this.datePopup = false; // 关闭生日选择
-      modifySubmit({birthday:this.birthday}).then(res=> {
+    updataInfo(){
+      if(!this.name){
+        Toast('请重新输入用户名');
+        return;
+      }
+      if(!isPhone(this.mobile)){
+        Toast('手机号不正确，请重新输入！');
+        return;
+      }
+      modifySubmit({
+        birthday:this.birthday,
+        gender:this.gender || '',
+        nickname:this.name,
+        mobile:this.mobile,
+      }).then(res=> {
         Toast(res.msg);
       });
     },
+    birthdayConfirm(){
+      this.birthday = montent(this.currentDate).format('YYYY-MM-DD');
+      this.datePopup = false; // 关闭生日选择
+      // modifySubmit({birthday:this.birthday}).then(res=> {
+      //   Toast(res.msg);
+      // });
+    },
     bindSex(i){
       this.gender = i;
-      modifySubmit({gender:this.gender}).then(res=> {
-        Toast(res.msg);
-      });
+      // modifySubmit({gender:this.gender}).then(res=> {
+      //   Toast(res.msg);
+      // });
     },
     formatter(type, value) {
       if (type === 'year') {
@@ -211,6 +242,21 @@ export default {
 
 </script>
 <style lang='less' scoped>
+  /deep/ .van-field{
+    padding: 20px 0;
+    &:after{
+      left: 0;
+    }
+    .van-field__label{
+      width: auto;
+      text-align: left;
+      font-size: 24px;
+      span{
+        display: inline-block;
+        text-align: left;
+      }
+    }
+  }
   /deep/ .date-popup{
     width: 100%;
     height: 100%;
