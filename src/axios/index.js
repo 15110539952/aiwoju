@@ -1,11 +1,8 @@
-import axios from 'axios'
-import qs from 'qs'
-
+import axios from 'axios';
+import qs from 'qs';
 import { Toast } from 'vant';
 
-const TIME_OUT = 30000 // 超时时间30秒
-
-
+const TIME_OUT = 30000; // 超时时间30秒
 // 关闭 loading
 function closeLoading () {
   Toast.clear();
@@ -15,66 +12,60 @@ function closeLoading () {
 axios.defaults.withCredentials = true;
 axios.interceptors.request.use(config => {
 // code... 你的逻辑
-  return config
+  return config;
 }, error => {
-  return Promise.reject(error)
-})
-
+  return Promise.reject(error);
+});
 // 返回数据拦截处理
 axios.interceptors.response.use(response => {
   //code... 你的逻辑
   // console.log(response);
-  if(response.data.code === 401){
-    if(localStorage.getItem('token')){
+  if (response.data.code === 401) {
+    if (localStorage.getItem('token')) {
       localStorage.clear();
-      setTimeout(()=>{
+      setTimeout(() => {
         location.reload();
-      },2000);
+      }, 2000);
     }
   }
-
-  if(response.data.code === 2002){
-    setTimeout(()=>{
-      localStorage.setItem('token2','token2');
+  if (response.data.code === 2002) {
+    setTimeout(() => {
+      localStorage.setItem('token2', 'token2');
       let appid = response.data.data.appid;
-      let href = window.location.href.split('#')[0].split('?')[0];
-      location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(href)}&response_type=code&scope=snsapi_base&state=#wechat_redirect`;
-    },2000)
+      let scope = response.data.data.scope;
+      let href = window.location.href;
+      // let href = window.location.href.split('#')[0].split('?')[0];
+      location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${ appid }&redirect_uri=${ encodeURIComponent(href) }&response_type=code&scope=${ scope }&state=#wechat_redirect`;
+    }, 2000);
   }
   closeLoading();
-  return response.data //直接返回后台返回的json object
+  return response.data; //直接返回后台返回的json object
 }, error => {
   console.log(error.response);
-  if(error.response.data.code === 401){
-    if(localStorage.getItem('token')){
+  if (error.response.data.code === 401) {
+    if (localStorage.getItem('token')) {
       localStorage.clear();
-      setTimeout(()=>{
+      setTimeout(() => {
         location.reload();
-      },2000);
+      }, 2000);
     }
   }
   closeLoading();
-  Promise.reject(error.response)
-})
-
+  Promise.reject(error.response);
+});
 /*
 * 封装一个私有的请求方法
 */
-
-const _request = (method, url ,data,load,loadMsg) => {
+const _request = (method, url, data, load, loadMsg) => {
   // console.log(window.$globalHub.$store.getters)
-
-  if(load){
+  if (load) {
     Toast.loading({
-      forbidClick:true,
+      forbidClick: true,
       message: '加载中...'
     });
   }
-
-  const headers = {
-
-  };
-  if(window.$globalHub){
+  const headers = {};
+  if (window.$globalHub) {
     // console.log(window.$globalHub.$store.getters.token);
     headers.token = window.$globalHub.$store.getters.token || '';
   }
@@ -83,53 +74,46 @@ const _request = (method, url ,data,load,loadMsg) => {
     url: baseUrl + url, // 请求的地址
     timeout: TIME_OUT, // 超时时间, 单位毫秒
     headers
-  }
-  let Data // 设置默认source
+  };
+  let Data; // 设置默认source
   if (data instanceof FormData) {
-    Data = data
+    Data = data;
     // Data.append('source', SOURCE)
   } else {
     // Data = {...data, source: SOURCE}
-    Data = {...data}
+    Data = { ...data };
   }
-
   if (method === 'get') {
-    configData.method = 'get'
-    configData.params = Data // get 请求的数据
+    configData.method = 'get';
+    configData.params = Data; // get 请求的数据
   } else if (method === 'postForm') {
-    configData.method = 'post'
+    configData.method = 'post';
     if (Data instanceof FormData) {
-      configData.headers['Content-Type'] = 'multipart/form-data; charset=UTF-8'
-      configData.data = Data
+      configData.headers['Content-Type'] = 'multipart/form-data; charset=UTF-8';
+      configData.data = Data;
     } else {
-      configData.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
-      configData.data = qs.stringify(Data)
+      configData.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+      configData.data = qs.stringify(Data);
     }
   } else if (method === 'postJson') {
-    configData.method = 'post'
-    configData.headers['Content-Type'] = 'application/json; charset=UTF-8'
-    configData.data = Data
+    configData.method = 'post';
+    configData.headers['Content-Type'] = 'application/json; charset=UTF-8';
+    configData.data = Data;
   }
-
-  return axios(configData)
-}
+  return axios(configData);
+};
 
 class Ajax {
-
-
-  get = (url, data = {},{load = false,loadMsg = '加载中...'} = {}) => {
-    return _request('get', url, data, load,loadMsg)
-  }
-
-  postForm = (url, data = {},{load = false,loadMsg = '加载中...'} = {}) => {
-    return _request('postForm', url, data, load,loadMsg)
-  }
-
-  postJson = (url, data = {},{load = false,loadMsg = '加载中...'} = {}) => {
-    return _request('postJson', url, data,load,loadMsg)
-  }
-
-  post = this.postJson // 默认post的Content-Type是application/json
+  get = (url, data = {}, { load = false, loadMsg = '加载中...' } = {}) => {
+    return _request('get', url, data, load, loadMsg);
+  };
+  postForm = (url, data = {}, { load = false, loadMsg = '加载中...' } = {}) => {
+    return _request('postForm', url, data, load, loadMsg);
+  };
+  postJson = (url, data = {}, { load = false, loadMsg = '加载中...' } = {}) => {
+    return _request('postJson', url, data, load, loadMsg);
+  };
+  post = this.postJson; // 默认post的Content-Type是application/json
 }
 
-export default new Ajax()
+export default new Ajax();

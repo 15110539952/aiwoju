@@ -43,7 +43,7 @@
         <p class="icon"><i class="iconfont iconziyuan"></i></p>
         <p class="name">我的积分</p>
       </div>
-      <div class="item" @click="$router.push('/setting')">
+      <div class="item" @click="$router.push('/setting/user')">
         <p class="icon"><i class="iconfont iconsetup_icon"></i></p>
         <p class="name">设置</p>
       </div>

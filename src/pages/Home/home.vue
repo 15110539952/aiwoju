@@ -172,8 +172,7 @@ export default {
       home().then((res)=>{
         document.title = res.data.hotel.name;
         this.all_score = res.data.all_score;
-        this.day = res.data.continuity;
-        this.continuity = res.data.day;
+        this.continuity = res.data.continuity;
         // if(res.data.continuity===1){
         //   this.continuity = res.data.continuity;
         // }else{
@@ -204,9 +203,9 @@ export default {
       // 领取积分
       addScore(is_click){
         if(is_click&&this.already===2){
-          homeAddScore({send_score:this.day}).then((res)=>{
+          homeAddScore({send_score:this.continuity}).then((res)=>{
             this.already = 1;
-            this.all_score = this.all_score + this.day;
+            this.all_score = this.all_score + this.continuity;
             Toast(res.msg);
           });
         }

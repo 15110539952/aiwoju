@@ -100,14 +100,16 @@ export default {
           let code = this.$utils.getUrlKey('code');
           if(code){
             setTimeout(()=>{
-              getOpenid2().then((res)=>{
+              getOpenid2({code:code}).then((res)=>{
                 console.log(res);
                 localStorage.removeItem('token2');
+                this.isView = true;
               })
             },1000);
           }
+        }else{
+          this.isView = true;
         }
-        this.isView = true;
       }
     }
     setTimeout(()=>{
