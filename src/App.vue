@@ -111,6 +111,7 @@ export default {
             this.isView = true;
           }
         }else{
+          localStorage.removeItem('token2');
           this.isView = true;
         }
       }
