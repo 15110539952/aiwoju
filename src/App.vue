@@ -107,6 +107,7 @@ export default {
               })
             },1000);
           }else{
+            localStorage.removeItem('token2');
             this.isView = true;
           }
         }else{
