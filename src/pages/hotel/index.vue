@@ -94,7 +94,7 @@
 <!--            <p class="bottom">当前星享卡可代扣100元</p>-->
           </div>
           <div class="fix">
-            <van-button type="primary" size="large" @click.stop="order(room.id)" :disabled="item.room_rest_num < 1">在线预定</van-button>
+            <van-button type="primary" size="large" @click.stop="order(room.id)" :disabled="item.room_rest_num < 1">{{ item.room_rest_num < 1?'已满房':'在线预定' }}</van-button>
           </div>
         </div>
       </div>
@@ -127,7 +127,7 @@
             <!--            <p class="bottom">当前星享卡可代扣100元</p>-->
           </div>
           <div class="fix">
-            <van-button type="primary" size="large" @click.stop="order(room.id)" :disabled="item.room_rest_num < 1">在线预定</van-button>
+            <van-button type="primary" size="large" @click.stop="order(room.id)" :disabled="item.room_rest_num < 1">{{ item.room_rest_num < 1?'已满房':'在线预定' }}</van-button>
           </div>
         </div>
       </div>

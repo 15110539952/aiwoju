@@ -250,10 +250,14 @@ export default {
   },
   mounted(){
     this.$store.dispatch('setCoupon', ''); // 重置优惠券
-    this.getDetail();
-    this.$nextTick(() => {
-
-    })
+    hotelOrder({start_time: this.startDate,end_time:this.endDate,room_type_id:this.room_type_id,}).then(res=>{
+      // console.log(res.data)
+      this.hotelorder = res.data;
+      this.peopleList = res.data.user;
+      let personal = res.data.personal;
+      this.users = [{name:personal.nickname,phone:personal.mobile}];
+      this.calcTotal();
+    });
   },
   methods:{
     // 点击入住人图标弹出入住人列表
@@ -273,17 +277,12 @@ export default {
       // console.log(moment(this.endDate).toArray())
       let s = moment(this.startDate).toArray();
       let e = moment(this.endDate).toArray();
-
       this.startDateText = isten(s[1]+=1)+'月'+isten(s[2])+'日';
       this.endDateText = isten(e[1]+=1)+'月'+isten(e[2])+'日';
-
-      // console.log(this.room_type_id)
       hotelOrder({start_time: this.startDate,end_time:this.endDate,room_type_id:this.room_type_id,}).then(res=>{
-        // console.log(res.data)
         this.hotelorder = res.data;
         this.peopleList = res.data.user;
         this.calcTotal();
-        // this.total = (this.actionRoomId*this.hotelorder.tot_price).toFixed(2);
       });
     },
     calcTotal(){ // 计算总价
