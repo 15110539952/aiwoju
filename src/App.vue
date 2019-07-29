@@ -73,7 +73,7 @@ export default {
       location.href = window.location.href.split('#')[0].split('?')[0];
     }
     if(process.env.NODE_ENV === 'development'){
-      this.$store.dispatch('setToken', {token:'75a8a77f-9c8a-4f7f-a3c4-54e17738317d',expires_in:31536000});
+      this.$store.dispatch('setToken', {token:'be96b732-bfa9-4330-9cce-27223fa89ddb',expires_in:31536000});
       console.log(this.token);
       this.isView = true;
     }else{
