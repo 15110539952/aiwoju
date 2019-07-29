@@ -65,8 +65,8 @@
     computed:{
     },
     mounted(){
-      this.hotel_lng = this.$route.query.lng || 116.404;
-      this.hotel_lat = this.$route.query.lat || 39.915;
+      this.hotel_lng = parseFloat(this.$route.query.lng) || 116.404;
+      this.hotel_lat = parseFloat(this.$route.query.lat) || 39.915;
       this.hotel_name = this.$route.query.name || '';
       this.hotel_address = this.$route.query.address || '';
       console.log(this.hotel_name,this.hotel_address)
@@ -80,7 +80,7 @@
             this.lng = parseFloat(res.longitude); // 经度，浮点数，范围为180 ~ -180。
             // let speed = res.speed; // 速度，以米/每秒计
             // let accuracy = res.accuracy; // 位置精度
-            this.car();
+            // this.car();
           },
           fail:(res)=>{
             // alert(res.errMsg);
@@ -93,12 +93,27 @@
           }
         });
       });
+
       this.init();
     },
     components: {
       "v-header": header,
     },
     methods:{
+      //坐标转换完之后的回调函数
+      translateCallback(data){
+        if(data.status === 0) {
+          console.log(data.points);
+          this.hotel_lng = data.points[0].lng;
+          this.hotel_lat = data.points[0].lat;
+          this.map.setCenter(data.points[0]);
+
+          let pt = new BMap.Point(this.hotel_lng, this.hotel_lat);
+          let dianIcon = new BMap.Icon(require('assets/img/map-end-icon.png'), new BMap.Size(64,94));
+          let marker2 = new BMap.Marker(pt,{icon:dianIcon});  // 创建标注
+          this.map.addOverlay(marker2);
+        }
+      },
       init() {
         // let map = new qq.maps.Map(document.getElementById("container"), {
         //   // 地图的中心地理坐标。
@@ -108,10 +123,11 @@
         this.map = new BMap.Map("container");
         this.map.centerAndZoom(new BMap.Point(this.hotel_lng, this.hotel_lat), 16);
 
-        let pt = new BMap.Point(this.hotel_lng, this.hotel_lat);
-        let dianIcon = new BMap.Icon(require('assets/img/map-end-icon.png'), new BMap.Size(64,94));
-        let marker2 = new BMap.Marker(pt,{icon:dianIcon});  // 创建标注
-        this.map.addOverlay(marker2);
+        var convertor = new BMap.Convertor();
+        var pointArr = [];
+        pointArr.push(new BMap.Point(this.hotel_lng,this.hotel_lat));
+        convertor.translate(pointArr, 1, 5, this.translateCallback);
+
 
         // let geolocation = new BMap.Geolocation();
         // geolocation.getCurrentPosition((r)=>{
