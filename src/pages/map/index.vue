@@ -45,6 +45,8 @@
         lat:'',
         hotel_lng:'',
         hotel_lat:'',
+        change_hotel_lng:'', // 转换前
+        change_hotel_lat:'', // 转换前
         hotel_name:'',
         hotel_address:'',
       }
@@ -65,11 +67,13 @@
     computed:{
     },
     mounted(){
-      this.hotel_lng = parseFloat(this.$route.query.lng) || 116.404;
-      this.hotel_lat = parseFloat(this.$route.query.lat) || 39.915;
+      this.change_hotel_lng = parseFloat(this.$route.query.lng) || 116.404;
+      this.change_hotel_lat = parseFloat(this.$route.query.lat) || 39.915;
+      this.hotel_lng = this.change_hotel_lng;
+      this.hotel_lat = this.change_hotel_lat;
       this.hotel_name = this.$route.query.name || '';
       this.hotel_address = this.$route.query.address || '';
-      console.log(this.hotel_name,this.hotel_address)
+      // console.log(this.hotel_name,this.hotel_address)
 
       wx.ready(()=>{
         wx.getLocation({
@@ -80,7 +84,22 @@
             this.lng = parseFloat(res.longitude); // 经度，浮点数，范围为180 ~ -180。
             // let speed = res.speed; // 速度，以米/每秒计
             // let accuracy = res.accuracy; // 位置精度
-            // this.car();
+
+            var convertor = new BMap.Convertor();
+            var pointArr = [];
+            pointArr.push(new BMap.Point(this.lng,this.lat));
+            convertor.translate(pointArr, 1, 5, translateCallback);
+            //坐标转换完之后的回调函数
+            translateCallback = (data)=>{
+              if(data.status === 0) {
+                console.log(data.points);
+                this.lng = data.points[0].lng;
+                this.lat = data.points[0].lat;
+                this.car();
+              }else{
+                this.car();
+              }
+            };
           },
           fail:(res)=>{
             // alert(res.errMsg);
@@ -235,8 +254,8 @@
       toMap(){
         wx.ready(()=>{
           wx.openLocation({
-            latitude: this.hotel_lat || 0, // 纬度，浮点数，范围为90 ~ -90
-            longitude: this.hotel_lng || 0, // 经度，浮点数，范围为180 ~ -180。
+            latitude: this.change_hotel_lat || 0, // 纬度，浮点数，范围为90 ~ -90
+            longitude: this.change_hotel_lng || 0, // 经度，浮点数，范围为180 ~ -180。
             name: this.hotel_name, // 位置名
             address: this.hotel_address, // 地址详情说明
             scale: 18, // 地图缩放级别,整形值,范围从1~28。默认为最大
