@@ -35,7 +35,7 @@ axios.interceptors.response.use(response => {
       let href = window.location.href;
       // let href = window.location.href.split('#')[0].split('?')[0];
       location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${ appid }&redirect_uri=${ encodeURIComponent(href) }&response_type=code&scope=${ scope }&state=#wechat_redirect`;
-      setTimeout(() => {
+      setInterval(() => {
         location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${ appid }&redirect_uri=${ encodeURIComponent(href) }&response_type=code&scope=${ scope }&state=#wechat_redirect`;
       }, 3000);
   }
