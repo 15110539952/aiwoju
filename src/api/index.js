@@ -3,8 +3,8 @@ import ajax from '../axios'
 import qs from 'qs'
 
 // 获取微信jssdk签名
-export function getSign() {
-  return ajax.post('api/user/getSign',{url:encodeURIComponent(location.href.split('#')[0])},{ load: false})
+export function getSign(type='') {
+  return ajax.post('api/user/getSign',{url:encodeURIComponent(location.href.split('#')[0]),type:type},{ load: false})
 }
 
 // 微信发起支付
