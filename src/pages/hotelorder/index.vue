@@ -5,7 +5,7 @@
     <div class="room-info" v-if="hotelorder">
       <div class="room-name">
         <p>{{hotelorder.hotel_room_type.name}}</p>
-        <p @click="$router.push('/hotelDetail')">房间详情<i class="iconfont iconarrow-right"></i></p>
+        <p @click="$router.push('/hotelDetail')">酒店详情<i class="iconfont iconarrow-right"></i></p>
       </div>
       <p class="address text-ellipsis">{{hotelorder.hotel.address}}</p>
       <div class="date"><span>{{startDateText}}-{{endDateText}}</span><b></b><span>共{{hotelorder.night}}晚</span></div>

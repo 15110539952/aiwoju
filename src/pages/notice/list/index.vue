@@ -60,10 +60,11 @@ export default {
   methods:{
     onRefresh(done){
       this.current_page = 1;
-      noticeList({status:'98',page:this.current_page}).then(res=>{
+      noticeList({page:this.current_page}).then(res=>{
         done && done();
         this.last_page = res.data.last_page;
         this.noticeList = res.data.data;
+        this.current_page += 1;
       })
     },
     loadMore(done){

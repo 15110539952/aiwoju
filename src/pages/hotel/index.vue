@@ -393,7 +393,7 @@ export default {
             peo_lng: this.lng,
             peo_lat: this.lat,
             page: 1
-          }).then((res) => {
+          },false).then((res) => {
             this.juli = res.data.juli || 0;
           });
         },

@@ -49,8 +49,8 @@ export function homeAddScore(data) {
 }
 
 //酒店房间列表
-export function hotel(data) {
-  return ajax.get('api/hotel/index',data,{ load: true})
+export function hotel(data,load=true) {
+  return ajax.get('api/hotel/index',data,{ load: load})
 }
 
 
