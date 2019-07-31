@@ -63,6 +63,8 @@ export default {
     //   document.documentElement.style.fontSize = deviceWidth / 10 + 'px'
     // }
     // console.log(window.location.href)
+    console.log(this.$utils.getUrlKey('invite'));
+    localStorage.setItem('invite', this.$utils.getUrlKey('invite'));
     let appid = 'wxc4c761371120fe9b'; // 星团公众号
     // let appid = 'wxc142f2f0effc3768'; // 曼节奏主题公寓
 
@@ -155,7 +157,8 @@ export default {
   },
   methods:{
     wxShare(){
-      let link = window.location.href.split('#')[0].split('?')[0];
+      let link = window.location.href.split('#')[0].split('?')[0]+'?invite='+localStorage.getItem('invite');
+      console.log('wxshare-link',link);
       getSign().then(res=>{
         let data = res.data;
         this.wxSign = data;

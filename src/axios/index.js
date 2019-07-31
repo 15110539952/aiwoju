@@ -69,6 +69,7 @@ const _request = (method, url, data, load, loadMsg) => {
   if (window.$globalHub) {
     // console.log(window.$globalHub.$store.getters.token);
     headers.token = window.$globalHub.$store.getters.token || '';
+    headers.invite = localStorage.getItem('invite') || '';
   }
   const baseUrl = process.env.API;
   const configData = {
