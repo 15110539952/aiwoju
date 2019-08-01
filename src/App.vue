@@ -73,15 +73,14 @@ export default {
     let expires_in = localStorage.getItem('expires_in');
     if(dateTime>parseInt(expires_in)){
       localStorage.clear();
-      location.href = window.location.href.split('#')[0].split('?')[0];
+      location.href = window.location.href.split('#')[0].split('?')[0]+'?invite='+localStorage.getItem('invite');
     }
     if(process.env.NODE_ENV === 'development'){
       this.$store.dispatch('setToken', {token:'be96b732-bfa9-4330-9cce-27223fa89ddb',expires_in:31536000});
       console.log(this.token);
       this.isView = true;
     }else{
-      if(!this.token)
-      {
+      if(!this.token) {
         let code = this.$utils.getUrlKey('code');
         if(!code){
           let invite = this.$utils.getUrlKey('invite') || '';
@@ -89,7 +88,7 @@ export default {
         }else{
           let state = this.$utils.getUrlKey('state') || '';
           state = state.split('#')[0];
-          this.$ajax.get('api/user/third',{code:code,invite:state}).then((res)=>{
+          this.$ajax.get('api/user/third',{code:code}).then((res)=>{
             console.log(res);
             this.$store.dispatch('setToken', {token:res.data.token,expires_in:res.data.expires_in});
             setTimeout(()=>{
