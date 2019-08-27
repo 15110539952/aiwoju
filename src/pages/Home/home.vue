@@ -87,7 +87,7 @@
       </div>
       <div class="right">每七日一轮</div>
     </div>
-    <v-footer></v-footer>
+    <v-footer :appid="appid" :scope="scope" :is_grant="is_grant"></v-footer>
     <van-popup v-model="showCalendar" position="right" style="height:100%;width:100%;">
       <calender
         :date="nowDate"
@@ -108,7 +108,7 @@ import footer from "@/components/Footer";
 import Calender from '@/components/Calender/calender.vue'
 import { Toast } from 'vant'
 import {isten,commonJs,weekDay}  from '@/commonJs/index.js'
-import {home,homeAddScore,timeLimit} from '@/api/index'
+import {home,homeAddScore,timeLimit,Grant} from '@/api/index'
 
 
 let moment = require('moment');
@@ -162,6 +162,9 @@ export default {
           endDateText:isten(endDateText),
           day:1,
           timelimit:'',
+          is_grant: false,
+          appid: '',
+          scope: '',
         }
     },
     components: {
@@ -194,6 +197,17 @@ export default {
           }
         },8000)
         this.$store.dispatch('setStartEndDate',{start:this.startDate,end:this.endDate});
+        Grant().then(res=>{
+          if(res.code === '2002'){
+            this.is_grant = true;
+            this.appid = res.data.appid;
+            this.scope = res.data.scope;
+          }else{
+            // this.is_grant = true;
+            // this.appid = 'ceshi'
+            // this.scope = 'ceshi';
+          }
+        });
       });
       // timeLimit().then(res=>{
       //   this.timeLimit = res.data.timelimit;
@@ -226,8 +240,13 @@ export default {
         this.day = moment(dateList.endDate.format).diff(moment(dateList.startDate.format), 'days')
       },
       go(){
-        console.log(this.startDate);
-        console.log(this.endDate);
+        if(this.is_grant){
+          let href = window.location.href.split('#')[0].split('?')[0]+'#/hotel?is_hour_home='+this.is_hour_home?1:0+'&startDate='+this.startDate+'&endDate='+this.endDate;
+          location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${ this.appid }&redirect_uri=${ encodeURIComponent(href) }&response_type=code&scope=${ this.scope }&state=#wechat_redirect`;
+          return;
+        }
+        // console.log(this.startDate);
+        // console.log(this.endDate);
         // if(this.day>this.timeLimit){
         //   Toast(`最多可选择${this.timeLimit}天,请重新选择`);
         //   return;

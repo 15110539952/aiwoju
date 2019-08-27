@@ -18,8 +18,8 @@
           :src="props.active ? iconList[0].active : iconList[0].normal">
       </van-tabbar-item>
       <van-tabbar-item
-        replace
-        to="/order">
+        @click="goOrder"
+        replace>
         <span>订单</span>
         <img
           class="order"
@@ -28,8 +28,8 @@
           :src="props.active ? iconList[1].active : iconList[1].normal">
       </van-tabbar-item>
       <van-tabbar-item
-        replace
-        to="/me">
+        @click="goMe"
+        replace>
         <span>个人中心</span>
         <img
           class="me"
@@ -38,12 +38,27 @@
           :src="props.active ? iconList[2].active : iconList[2].normal">
       </van-tabbar-item>
     </van-tabbar>
+
+
+<!--    to="/order"-->
+<!--    to="/me"-->
   </div>
 </template>
 
 <script>
 export default {
   name:'Footer',
+  props:{
+    appid: {
+      default: ''
+    },
+    scope: {
+      default: ''
+    },
+    is_grant: {
+      default: false
+    },
+  },
   data() {
     return {
       active: 0,
@@ -61,6 +76,30 @@ export default {
           active: require('assets/img/me-active.png')
         }
       ],
+    }
+  },
+  mounted(){
+    console.log(this.appid,this.scope,this.is_grant);
+  },
+  methods:{
+    goMe(){
+      if(this.is_grant){
+        // console.log(this.appid,this.scope,this.is_grant);
+        let href = window.location.href.split('#')[0].split('?')[0]+'#/me';
+        // console.log(href);
+        location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${ this.appid }&redirect_uri=${ encodeURIComponent(href) }&response_type=code&scope=${ this.scope }&state=#wechat_redirect`;
+      }else{
+        this.$router.push('/me');
+      }
+    },
+    goOrder(){
+      if(this.is_grant){
+        let href = window.location.href.split('#')[0].split('?')[0]+'#/order';
+        location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${ this.appid }&redirect_uri=${ encodeURIComponent(href) }&response_type=code&scope=${ this.scope }&state=#wechat_redirect`;
+      }else{
+        this.$router.push('/order');
+      }
+
     }
   }
 }

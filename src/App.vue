@@ -83,12 +83,11 @@ export default {
       if(!this.token) {
         let code = this.$utils.getUrlKey('code');
         if(!code){
-          let invite = this.$utils.getUrlKey('invite') || '';
           location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${encodeURIComponent(window.location.href)}&response_type=code&scope=snsapi_base&state=${invite}#wechat_redirect`;
         }else{
           let state = this.$utils.getUrlKey('state') || '';
           state = state.split('#')[0];
-          this.$ajax.get('api/user/third',{code:code}).then((res)=>{
+          this.$ajax.get('api/user/third',{code:code,invite:invite}).then((res)=>{
             console.log(res);
             this.$store.dispatch('setToken', {token:res.data.token,expires_in:res.data.expires_in});
             setTimeout(()=>{

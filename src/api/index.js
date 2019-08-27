@@ -12,6 +12,11 @@ export function payOrder(data) {
   return ajax.post('api/order/order_pay',data,{ load: true})
 }
 
+// 请求授权
+export function Grant(data) {
+  return ajax.post('api/index/grant',data,{ load: false})
+}
+
 
 // 酒店分享
 export function hotelShare(data) {
