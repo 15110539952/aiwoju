@@ -162,7 +162,7 @@ export default {
           endDateText:isten(endDateText),
           day:1,
           timelimit:'',
-          is_grant: false,
+          is_grant: false, // 判断是否二次授权
           appid: '',
           scope: '',
         }
@@ -197,8 +197,8 @@ export default {
           }
         },8000)
         this.$store.dispatch('setStartEndDate',{start:this.startDate,end:this.endDate});
-        Grant().then(res=>{
-          if(res.code === '2002'){
+        Grant().then(res=>{ // 请求接口判断是否二次授权
+          if(res.code === 2002){
             this.is_grant = true;
             this.appid = res.data.appid;
             this.scope = res.data.scope;
@@ -207,6 +207,7 @@ export default {
             // this.appid = 'ceshi'
             // this.scope = 'ceshi';
           }
+          console.log('is_grant:',this.is_grant);
         });
       });
       // timeLimit().then(res=>{

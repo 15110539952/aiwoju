@@ -28,17 +28,17 @@ axios.interceptors.response.use(response => {
       // }, 2000);
     }
   }
-  if (response.data.code === 2002) {
-      localStorage.setItem('token2', 'token2');
-      let appid = response.data.data.appid;
-      let scope = response.data.data.scope;
-      let href = window.location.href;
-      // let href = window.location.href.split('#')[0].split('?')[0];
-      location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${ appid }&redirect_uri=${ encodeURIComponent(href) }&response_type=code&scope=${ scope }&state=#wechat_redirect`;
-      // setInterval(() => {
-      //   location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${ appid }&redirect_uri=${ encodeURIComponent(href) }&response_type=code&scope=${ scope }&state=#wechat_redirect`;
-      // }, 3000);
-  }
+  // if (response.data.code === 2002) {
+  //     localStorage.setItem('token2', 'token2');
+  //     let appid = response.data.data.appid;
+  //     let scope = response.data.data.scope;
+  //     let href = window.location.href;
+  //     // let href = window.location.href.split('#')[0].split('?')[0];
+  //     location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${ appid }&redirect_uri=${ encodeURIComponent(href) }&response_type=code&scope=${ scope }&state=#wechat_redirect`;
+  //     // setInterval(() => {
+  //     //   location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${ appid }&redirect_uri=${ encodeURIComponent(href) }&response_type=code&scope=${ scope }&state=#wechat_redirect`;
+  //     // }, 3000);
+  // }
   closeLoading();
   return response.data; //直接返回后台返回的json object
 }, error => {

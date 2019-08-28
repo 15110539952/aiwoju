@@ -173,6 +173,11 @@ export default {
       // 获取截图的blob数据
       this.$refs.cropper.getCropBlob((data) => {
         // console.log(data);
+        // var aLink = document.createElement('a')
+        // aLink.download = 'author-img'
+        // aLink.href = window.URL.createObjectURL(data)
+        // aLink.click();
+        // return;
         let formData = new FormData();
         formData.append('images[0]',data);
         headUpadta(formData).then(res=>{
