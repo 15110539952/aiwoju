@@ -18,9 +18,9 @@
     </div>
   </div>
 </template>
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .bottomTab {
-    
+
   .head-part {
     position: fixed;
     bottom: 0px;

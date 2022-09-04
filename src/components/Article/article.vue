@@ -52,7 +52,7 @@ export default {
   }
 };
 </script>
-<style lang='scss' scoped>
+<style lang='less' scoped>
 #article {
   width: 100%;
   box-sizing: border-box;
